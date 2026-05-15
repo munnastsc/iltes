@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Large static assets (serve from CDN or external)
+public/audio/
+public/pdfs/
+
+# Backup / temp data files
+data/local-store-backup.json
+data/local-store-titles-backup.json
+data/local-store.backup.*.json
+data/local-store.json.backup.*.json
+data/scraped_reading.json
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Stray / temp root files
+Couldn't
+New Text Document.txt
+iltes-sathi-ai@0.1.0
+next
+npm
+dev-run.log
+add-16-20.js
+Sidebar.tsx

@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String         @id @default(cuid())
+  name             String?
+  email            String         @unique
+  isSubscribed     Boolean        @default(false)
+  subscriptionEnd  DateTime?
+  chatHistory      ChatHistory[]
+  progress         Progress[]
+  createdAt        DateTime       @default(now())
+}
+
+model PaymentRequest {
+  id            String   @id @default(cuid())
+  email         String
+  transactionId String   @unique
+  amount        Float
+  status        String   @default("PENDING") 
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CambridgeBook {
+  id          String   @id @default(cuid())
+  bookNumber  Int      
+  testNumber  Int      
+  module      String   
+  content     Json     
+  audioUrl    String?  
+}
+
+model ChatHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  role      String   
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  bookNumber  Int
+  testNumber  Int
+  module      String
+  score       Float?
+  completedAt DateTime @default(now())
+}

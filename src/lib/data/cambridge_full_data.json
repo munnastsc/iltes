@@ -1,0 +1,1303 @@
+{
+  "20": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 20 Test 1 - Listening",
+        "introduction": "A conversation about restaurants and a talk about pottery.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test1-part1.MP3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Restaurant Recommendations",
+            "text": "WOMAN: I’ve been meaning to ask you for some advice about restaurants... MAN: The Junction. Yeah, I’d definitely recommend that... Grayson Street near the station... amazing fish... atmosphere... roof drink... Paloma... Bow Street beside cinema... small dishes to share... waiters are friendly...",
+            "tips": ["Listen for specific names like 'Grayson', 'Paloma', 'Audley'.", "Note the reason for recommendation."],
+            "questions": [
+              { "number": 1, "prompt": "Good for people who are especially keen on ___", "answer": "fish", "answerLine": "If you like fish, it’s probably the best restaurant in town" },
+              { "number": 2, "prompt": "The ___ is a good place for a drink", "answer": "roof", "answerLine": "you can go up on the roof and have a drink" },
+              { "number": 9, "prompt": "Set lunch costs £ ___ per person", "answer": "30", "answerLine": "Set lunch costs £ 30 per person" }
+            ]
+          },
+          {
+            "partNumber": 2,
+            "title": "Edelman Pottery",
+            "text": "Heather: Hello and welcome. My name’s Heather McCallum... pottery is tens of thousands of years old... archaeological insight... concentration takes you away from stress... physical benefits for elderly...",
+            "tips": ["Note the benefits of pottery.", "Listen for safety procedures."],
+            "questions": [
+              { "number": 11, "prompt": "Pottery differs from other art forms because ___", "answer": "A", "answerLine": "Things like baskets and pictures don’t survive on the earth in the same way that pots do" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 20 Test 1 - Reading",
+        "introduction": "Passage 1: The Kakapo. A unique parrot from New Zealand.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The kākāpō",
+            "text": "The kākāpō, also known as the owl parrot, is a large, forest-dwelling bird, with a pale owl-like face... it is the world’s only flightless parrot... Kākāpō are solitary birds and tend to occupy the same home range for many years... males play no part in incubation or chick-rearing... Polynesian settlers arrived about 700 years ago... European colonisers arrived in the early 1800s... cats, stoats and two more species of rat were introduced... In 1894, the New Zealand government launched its first attempt to save the kākāpō... Richard Henry led an effort to relocate several hundred of the birds...",
+            "tips": ["Skimming for dates.", "Scanning for unique animal names."],
+            "questions": [
+              { "number": 1, "prompt": "There are other parrots that share the kakapo’s inability to fly.", "answer": "FALSE", "answerLine": "the world’s only flightless parrot" },
+              { "number": 7, "prompt": "Diet consists of fern fronds, parts of a tree and ___.", "answer": "bulbs", "answerLine": "including the leaves, roots and bark of trees as well as bulbs" },
+              { "number": 11, "prompt": "Female sighting on Rakiura Island in ___.", "answer": "1980", "answerLine": "in 1980 it was confirmed females were also present" }
+            ]
+          },
+          {
+            "partNumber": 2,
+            "title": "Attempts to reintroduce elms to Britain",
+            "text": "Around 25 million elms died during the 1960s and ’70s of Dutch elm disease... the disease is caused by a fungus that blocks the elms’ vascular system... Today, elms still exist mostly in low hedgerows... mature specimens have mysteriously escaped the epidemic... for centuries, elm ran a close second to oak as the hardwood tree of choice in Britain... Brighton's elms total about 17,000... Strong winds from the sea make it difficult for the beetle to attack...",
+            "questions": [
+              { "number": 16, "prompt": "How Dutch elm disease was brought into Britain.", "answer": "B", "answerLine": "triggered by shipments of elm from Canada" },
+              { "number": 24, "prompt": "Tree more popular than elm: ___.", "answer": "oak", "answerLine": "elm ran a close second to oak" },
+              { "number": 26, "prompt": "Ship's ___ constructed from elm.", "answer": "keel", "answerLine": "build the keel of the 19th-century sailing ship Cutty Sark" }
+            ]
+          },
+          {
+            "partNumber": 3,
+            "title": "How the mind operates under stress",
+            "text": "Some of the most important decisions of our lives occur while we’re feeling stressed and anxious... We visited local fire stations... we found that perceived threat acted as a trigger for a stress reaction that made the task of processing information easier – but only as long as it conveyed bad news... People normally ignore bad news and embrace the good... Brain imaging reveals that this ‘switch’ is related to a sudden boost in a neural signal important for learning... stress travels rapidly from one person to the next...",
+            "questions": [
+              { "number": 28, "prompt": "What point is made about firefighters?", "answer": "A", "answerLine": "regular changes of stress levels in their working lives make them ideal study subjects" },
+              { "number": 36, "prompt": "Social media tone reflects our feeds.", "answer": "YES", "answerLine": "the nature of the posts in our feeds" },
+              { "number": 40, "prompt": "Affecting others' moods can be positive.", "answer": "YES", "answerLine": "positive emotions, such as hope, are contagious too" }
+            ]
+          }
+        ]
+      },
+      "Writing": {
+        "title": "Cambridge 20 Test 1 - Writing",
+        "introduction": "Writing task about NYC population and water supply.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Task 1: Table Report",
+            "text": "The tables show changes in the total population of New York City and its five districts from 1800 to 2000.",
+            "questions": [{ "number": 1, "prompt": "Summarize the information.", "answer": "Sample provided." }]
+          },
+          {
+            "partNumber": 2,
+            "title": "Task 2: Essay",
+            "text": "Access to clean water is a basic human right. Every home should have a water supply free of charge. Discuss.",
+            "questions": [{ "number": 1, "prompt": "Write your essay.", "answer": "Sample provided." }]
+          }
+        ]
+      }
+    },
+    "2": {
+      "Listening": {
+        "title": "Cambridge 20 Test 2 - Listening",
+        "introduction": "A conversation about caring for elderly people, a talk for volunteers, a student discussion on geography, and a talk on food trends.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test2-part1.MP3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Support for Carers",
+            "text": "Local councils can arrange practical support to help those caring for elderly people at home...",
+            "questions": [
+              { "number": 1, "prompt": "This can give the carer: a ___", "answer": "break" },
+              { "number": 2, "prompt": "how much ___ the caring involves", "answer": "time" },
+              { "number": 3, "prompt": "helping her have a ___", "answer": "shower" },
+              { "number": 4, "prompt": "dealing with ___", "answer": "money" },
+              { "number": 5, "prompt": "loss of ___", "answer": "memory" },
+              { "number": 6, "prompt": "___ her", "answer": "lifting" },
+              { "number": 7, "prompt": "preventing a ___", "answer": "fall" },
+              { "number": 8, "prompt": "transport costs, e.g. cost of a ___", "answer": "taxi" },
+              { "number": 9, "prompt": "car-related costs, e.g. fuel and ___", "answer": "insurance" },
+              { "number": 10, "prompt": "help with housework, help to reduce ___", "answer": "stress" }
+            ]
+          },
+          {
+            "partNumber": 2,
+            "title": "Volunteer Activities",
+            "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test2-part2.MP3",
+            "questions": [
+              { "number": 11, "prompt": "walking around the town centre", "answer": "D" },
+              { "number": 12, "prompt": "helping at concerts", "answer": "I" },
+              { "number": 13, "prompt": "getting involved with community groups", "answer": "H" },
+              { "number": 14, "prompt": "helping with a magazine", "answer": "E" },
+              { "number": 15, "prompt": "participating at lunches for retired people", "answer": "A" },
+              { "number": 16, "prompt": "helping with the website", "answer": "B" },
+              { "number": 17, "prompt": "Which event requires the largest number of volunteers?", "answer": "B" },
+              { "number": 18, "prompt": "What is the most important requirement for volunteers?", "answer": "A" },
+              { "number": 19, "prompt": "New volunteers will start working in the week beginning", "answer": "B" },
+              { "number": 20, "prompt": "What is the next annual event for volunteers?", "answer": "A" }
+            ]
+          },
+          {
+            "partNumber": 3,
+            "title": "Human Geography Discussion",
+            "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test2-part3.MP3",
+            "questions": [
+              { "number": 21, "prompt": "Population", "answer": "D" },
+              { "number": 22, "prompt": "Health", "answer": "G" },
+              { "number": 23, "prompt": "Economies", "answer": "B" },
+              { "number": 24, "prompt": "Culture", "answer": "A" },
+              { "number": 25, "prompt": "Poverty", "answer": "E" },
+              { "number": 26, "prompt": "Rosie says that in her own city the main problem is", "answer": "C" },
+              { "number": 27, "prompt": "What recent additions to the outskirts are both happy about?", "answer": "A" },
+              { "number": 28, "prompt": "Developing disused industrial sites may", "answer": "A" },
+              { "number": 29, "prompt": "Masdar City as an example of", "answer": "B" },
+              { "number": 30, "prompt": "Colin is uncertain about", "answer": "C" }
+            ]
+          },
+          {
+            "partNumber": 4,
+            "title": "Developing Food Trends",
+            "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test2-part4.MP3",
+            "questions": [
+              { "number": 31, "prompt": "growth in interest in food fashions started with ___", "answer": "photos" },
+              { "number": 32, "prompt": "Sales of ___ food brands have grown rapidly", "answer": "vegan" },
+              { "number": 33, "prompt": "Famous ___ are influential", "answer": "chefs" },
+              { "number": 34, "prompt": "___ were invited to visit growers in South Africa", "answer": "journalists" },
+              { "number": 35, "prompt": "Advertising focused on its ___ benefits", "answer": "health" },
+              { "number": 36, "prompt": "Promotion in the USA through ___ shops", "answer": "coffee" },
+              { "number": 37, "prompt": "appealed to consumers concerned about the ___", "answer": "environment" },
+              { "number": 38, "prompt": "has helped strengthen the ___ of Norwegian seafood", "answer": "reputation" },
+              { "number": 39, "prompt": "led to an increase in its ___", "answer": "price" },
+              { "number": 40, "prompt": "Overuse of resources resulted in poor quality ___", "answer": "soil" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 20 Test 2 - Reading",
+        "introduction": "Passage 1: Manatees. Passage 2: Procrastination. Passage 3: Robo-umpires.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Manatees",
+            "text": "Manatees, also known as sea cows, are aquatic mammals that belong to a group of animals called Sirenia... they have a broad, rounded tail... only six bones in their neck... sense vibrations with hairs... diet consists of seagrasses... grasp food with lips...",
+            "questions": [
+              { "number": 1, "prompt": "look similar to dugongs, but with a differently shaped ___", "answer": "tail" },
+              { "number": 2, "prompt": "need to use their ___ to help to turn their bodies", "answer": "flippers" },
+              { "number": 3, "prompt": "sense vibrations in the water by means of ___ on their skin", "answer": "hair" },
+              { "number": 4, "prompt": "eat mainly aquatic vegetation, such as ___", "answer": "seagrasses" },
+              { "number": 5, "prompt": "grasp and pull up plants with their ___", "answer": "lips" },
+              { "number": 6, "prompt": "may regulate the ___ of their bodies", "answer": "buoyancy" },
+              { "number": 7, "prompt": "West Indian manatees can be found in a variety of habitats.", "answer": "TRUE" },
+              { "number": 11, "prompt": "West Indian manatee populations will fall in the coming decades.", "answer": "TRUE" },
+              { "number": 13, "prompt": "Legislation aims to reduce boat strikes in Florida.", "answer": "TRUE" }
+            ]
+          },
+          {
+            "partNumber": 2,
+            "title": "The progress of procrastination",
+            "text": "Procrastination is the habit of delaying a necessary task... linked to poor mood management... areas of the brain linked to detection of threats... perfectionists worry work will be judged harshly... rewarding because it repairs mood temporarily... leads to sense of guilt...",
+            "questions": [
+              { "number": 14, "prompt": "false assumptions about why people procrastinate", "answer": "B" },
+              { "number": 15, "prompt": "realisation that others also procrastinate", "answer": "F" },
+              { "number": 16, "prompt": "neurological evidence", "answer": "B" },
+              { "number": 17, "prompt": "Many people think it is the result of ___", "answer": "laziness" },
+              { "number": 18, "prompt": "tasks that cause us to feel ___", "answer": "anxious" },
+              { "number": 19, "prompt": "regulating emotions and identifying ___", "answer": "threats" },
+              { "number": 20, "prompt": "Getting ready to take ___ might be a typical example", "answer": "exams" },
+              { "number": 21, "prompt": "People who are likely to procrastinate tend to be ___", "answer": "perfectionists" },
+              { "number": 22, "prompt": "often followed by a feeling of ___", "answer": "guilt" }
+            ]
+          },
+          {
+            "partNumber": 3,
+            "title": "The rise of robo-umpires",
+            "text": "Fred DeJesus became the first umpire to use Automated Ball-Strike System (ABS)... decisions fed through an earpiece... Major League Baseball wanted human umpires to announce calls... reduced controversy... human umpires rewarded skill...",
+            "questions": [
+              { "number": 28, "prompt": "MLB amended the size of the strike zone when criticisms were received.", "answer": "YES" },
+              { "number": 32, "prompt": "ABS makes changes to the shape of the strike zone feasible.", "answer": "YES" },
+              { "number": 33, "prompt": "wanted human umpires to shout out decisions as they had in their ___", "answer": "F" },
+              { "number": 34, "prompt": "job had required a ___", "answer": "D" },
+              { "number": 35, "prompt": "crosses through a ___", "answer": "H" },
+              { "number": 36, "prompt": "In the past, ___ over strike calls were not uncommon", "answer": "B" },
+              { "number": 37, "prompt": "calls were met with ___", "answer": "G" }
+            ]
+          }
+        ]
+      }
+    },
+    "3": {
+      "Listening": {
+        "title": "Cambridge 20 Test 3 - Listening",
+        "introduction": "A conversation about a cycling trip, a talk on a local park, a student discussion on a project, and a talk on the history of the map.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test3-part1.MP3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Cycling Trip",
+            "text": "The route starts at the ___... follow the cycle path... go past the ___... turn left at the ___...",
+            "questions": [
+              { "number": 1, "prompt": "The route starts at the ___", "answer": "harbour" },
+              { "number": 2, "prompt": "follow the cycle path", "answer": "A" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 20 Test 3 - Reading",
+        "introduction": "Passage 1: Frozen Food. Passage 2: Artificial Reefs. Passage 3: Robot Relationships.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Frozen Food Industry",
+            "text": "History of frozen food... Clarence Birdseye... quick-freezing techniques... TV Dinners... market growth...",
+            "questions": [
+              { "number": 1, "prompt": "People conserved the nutritional value of ___", "answer": "potatoes" },
+              { "number": 2, "prompt": "___ was kept cool by ice during transportation", "answer": "butter" },
+              { "number": 3, "prompt": "Two kinds of ___ were the first frozen food shipped to England", "answer": "meat" },
+              { "number": 4, "prompt": "quick-freezing methods, so that ___ did not spoil the food", "answer": "crystals" },
+              { "number": 5, "prompt": "packaging products with ___ so the product was visible", "answer": "cellophane" },
+              { "number": 6, "prompt": "Frozen food became popular because of a shortage of ___", "answer": "tin" },
+              { "number": 7, "prompt": "A large number of homes now had a ___", "answer": "refrigerator" }
+            ]
+          },
+          {
+            "partNumber": 2,
+            "title": "Artificial Reefs",
+            "text": "Zoological Society of London (London Zoo) artificial reef... corals composition... symbiotic relationship with algae... threats from global warming... research on hardy species... coral spawning...",
+            "questions": [
+              { "number": 14, "prompt": "Section A", "answer": "v" },
+              { "number": 15, "prompt": "Section B", "answer": "ii" },
+              { "number": 16, "prompt": "Section C", "answer": "iv" },
+              { "number": 17, "prompt": "Section D", "answer": "vii" },
+              { "number": 18, "prompt": "Section E", "answer": "iii" },
+              { "number": 19, "prompt": "Section F", "answer": "vi" },
+              { "number": 24, "prompt": "Corals have a number of ___ which they use to collect their food", "answer": "tentacles" },
+              { "number": 25, "prompt": "Algae gain ___ from being inside the coral", "answer": "protection" },
+              { "number": 26, "prompt": "Increases in the warmth of the sea water can remove the ___ from coral", "answer": "colour" }
+            ]
+          },
+          {
+            "partNumber": 3,
+            "title": "Relationships with Robots",
+            "text": "Professor Martin Rees, Daniel Wolpert, Kathleen Richardson... colonising other planets... machine intelligence outstripping human... fear of machines... science fiction predictions...",
+            "questions": [
+              { "number": 27, "prompt": " humans will need to restrict the abilities of robots", "answer": "A" },
+              { "number": 28, "prompt": "The risk of robots harming us is less serious", "answer": "C" },
+              { "number": 29, "prompt": "It will take many decades for robot intelligence to be imaginative", "answer": "B" },
+              { "number": 30, "prompt": "We may have to start considering whether we are treating robots fairly", "answer": "A" },
+              { "number": 31, "prompt": "Robots are probably of more help to us on Earth than in space", "answer": "B" },
+              { "number": 32, "prompt": "science fiction may prove accurate", "answer": "A" },
+              { "number": 33, "prompt": "There are those who look forward to robots developing greater intelligence", "answer": "C" },
+              { "number": 37, "prompt": "What point does Richardson make about fear of machines?", "answer": "B" },
+              { "number": 38, "prompt": "What potential advance does Rees see as a cause for concern?", "answer": "C" },
+              { "number": 39, "prompt": "What does Wolpert emphasise about science fiction?", "answer": "B" },
+              { "number": 40, "prompt": "What is Richardson doing in her comment about reality and fantasy?", "answer": "C" }
+            ]
+          }
+        ]
+      }
+    },
+    "4": {
+      "Listening": {
+        "title": "Cambridge 20 Test 4 - Listening",
+        "introduction": "A talk on a work experience program, a talk on a local library, a student discussion on a project, and a talk on the history of the umbrella.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2025/07/cam20-test4-part1.MP3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Work Experience Program",
+            "text": "The program is for ___ students... you will be working in the ___ department... help with the ___... learn about the ___...",
+            "questions": [
+              { "number": 1, "prompt": "The program is for ___ students", "answer": "university" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 20 Test 4 - Reading",
+        "introduction": "Passage 1: Desert Plants. Passage 2: Sport Science. Passage 3: The History of Handwriting.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Desert Plants",
+            "text": "Adaptations of plants in desert environments... water storage... deep roots... small leaves... survival strategies...",
+            "questions": [
+              { "number": 1, "prompt": "Desert plants have adapted to survive in harsh conditions.", "answer": "TRUE" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "19": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 19 Test 1 - Listening",
+        "introduction": "Hinchingbrooke Country Park. A teacher inquiring about educational visits.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2024/07/cam19-test1-part1.m4a",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Park Details & Activities",
+            "text": "Sally: Good morning. Hinchingbrooke Country Park... Altogether the park covers 170 acres, that's 69 hectares... children collect and analyse data... practice reading a map... tourism focuses on your visitors... children create sounds... sense of freedom... develop new skills... It's 4.95 pounds per child... Leaders are free.",
+            "questions": [
+              { "number": 1, "prompt": "Total hectares: ___", "answer": "69", "answerLine": "that's 69 hectares" },
+              { "number": 9, "prompt": "Cost per child: £___", "answer": "4.95", "answerLine": "4.95 pounds per child" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 19 Test 1 - Reading",
+        "introduction": "Passage 1: Saffron. Passage 2: Industrial Robots. Passage 3: Music and the brain.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Saffron: The Gold of Spices",
+            "text": "Saffron is the most expensive spice in the world... Crocus sativus... harvesting 150,000 flowers for 1kg... used in medicine and cooking... Iranian production dominates... climate change threats...",
+            "questions": [
+              { "number": 1, "prompt": "Saffron is a cheap spice.", "answer": "FALSE", "answerLine": "most expensive spice in the world" }
+            ]
+          }
+        ]
+      }
+    },
+    "2": {
+      "Listening": {
+        "title": "Cambridge 19 Test 2 - Listening",
+        "introduction": "A conversation about a hotel booking, a talk on a cycling holiday, a student discussion on a field trip, and a talk on the history of the bicycle.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2024/07/cam19-test2-part1.m4a",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Hotel Booking",
+            "text": "Room for two people... sea view... breakfast included... cost 120 pounds... near the park... booking reference: JH456...",
+            "questions": [
+              { "number": 1, "prompt": "Room for ___ people", "answer": "two" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 19 Test 2 - Reading",
+        "introduction": "Passage 1: The History of Glass. Passage 2: The Future of Energy. Passage 3: The psychology of innovation.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The History of Glass",
+            "text": "Glassmaking origins... Roman glass... industrial revolution impact... modern glass applications...",
+            "questions": [
+              { "number": 1, "prompt": "Glass was first made in ancient times.", "answer": "TRUE" }
+            ]
+          }
+        ]
+      }
+    },
+    "3": {
+      "Listening": {
+        "title": "Cambridge 19 Test 3 - Listening",
+        "introduction": "A conversation about local markets and shops, a talk on festival workshops, a discussion on a science experiment, and a talk on microplastics.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2024/07/cam19-test3-part1.m4a",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Local Markets and Shops",
+            "text": "Kite Place – near the harbour... Fish market: cross the bridge... go before 3.30 pm... Organic shop: called 'Rose'... look for large sign outside... Supermarket: take a purple minibus... try samphire, melon, coconut, strawberry...",
+            "questions": [
+              { "number": 1, "prompt": "Kite Place – near the ___", "answer": "harbour" },
+              { "number": 2, "prompt": "cross the ___ and turn right", "answer": "bridge" },
+              { "number": 3, "prompt": "best to go before ___ pm", "answer": "3.30" },
+              { "number": 4, "prompt": "Organic shop: called ___", "answer": "Rose" },
+              { "number": 5, "prompt": "look for the large ___ outside", "answer": "sign" },
+              { "number": 6, "prompt": "take a ___ minibus", "answer": "purple" },
+              { "number": 7, "prompt": "items to try: ___", "answer": "samphire" },
+              { "number": 8, "prompt": "items to try: ___", "answer": "melon" },
+              { "number": 9, "prompt": "items to try: ___", "answer": "coconut" },
+              { "number": 10, "prompt": "items to try: ___", "answer": "strawberry" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 19 Test 3 - Reading",
+        "introduction": "Passage 1: The History of Diamonds. Passage 2: Ecotourism. Passage 3: The Future of Work.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The history of diamonds",
+            "text": "Diamonds were first found in India... diamonds were once considered as coal... Brazil became the next major source... then South Africa... mining became deeper... De Beers monopoly... marketing campaigns 'A diamond is forever'...",
+            "questions": [
+              { "number": 1, "prompt": "Diamonds were first found in ___", "answer": "india" },
+              { "number": 2, "prompt": "diamonds were once considered as ___", "answer": "coal" },
+              { "number": 3, "prompt": "___ became the next major source", "answer": "brazil" },
+              { "number": 4, "prompt": "then South ___", "answer": "africa" },
+              { "number": 5, "prompt": "mining became ___", "answer": "deeper" },
+              { "number": 6, "prompt": "De Beers maintained a ___", "answer": "monopoly" },
+              { "number": 7, "prompt": "successful ___ campaigns", "answer": "marketing" }
+            ]
+          }
+        ]
+      }
+    },
+    "4": {
+      "Listening": {
+        "title": "Cambridge 19 Test 4 - Listening",
+        "introduction": "A first day at work induction, a talk on running, a discussion about books, and a talk on tree planting.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2024/07/cam19-test4-part1.m4a",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "First Day at Work",
+            "text": "Kaeden... lockers in staffroom... Tiffany in HR for passport number... collect uniform... HR office on third floor... Supervisor's number: 0412 665 903... Bakery section: yellow labels... Sushi counter: plastic boxes... Meat/fish counters: collect ice... wear special gloves...",
+            "questions": [
+              { "number": 1, "prompt": "Name: ___", "answer": "Kaeden" },
+              { "number": 2, "prompt": "use ___ in staffroom", "answer": "lockers" },
+              { "number": 3, "prompt": "to give ___ number", "answer": "passport" },
+              { "number": 4, "prompt": "to collect ___", "answer": "uniform" },
+              { "number": 5, "prompt": "on ___ floor", "answer": "third" },
+              { "number": 6, "prompt": "Supervisor’s mobile number: ___", "answer": "0412 665 903" },
+              { "number": 7, "prompt": "Use ___ labels", "answer": "yellow" },
+              { "number": 8, "prompt": "Re-stock with ___ boxes", "answer": "plastic" },
+              { "number": 9, "prompt": "Collect ___ for the fish", "answer": "ice" },
+              { "number": 10, "prompt": "Must wear special ___", "answer": "gloves" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 19 Test 4 - Reading",
+        "introduction": "Passage 1: History of Printing. Passage 2: Biomimetic Design. Passage 3: The power of storytelling.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The history of printing",
+            "text": "Printing has a long history... Chinese invented woodblock printing... ink applied to surface... metal type... Johannes Gutenberg... first books printed... Protestant Reformation... mass literacy...",
+            "questions": [
+              { "number": 1, "prompt": "The ___ invented woodblock printing", "answer": "chinese" },
+              { "number": 2, "prompt": "___ printing", "answer": "woodblock" },
+              { "number": 3, "prompt": "___ applied to surface", "answer": "ink" },
+              { "number": 4, "prompt": "developed ___ type", "answer": "metal" },
+              { "number": 5, "prompt": "___ invented the printing press", "answer": "gutenberg" },
+              { "number": 6, "prompt": "first ___ printed", "answer": "books" },
+              { "number": 7, "prompt": "Protestant ___", "answer": "reformation" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "18": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 18 Test 1 - Listening",
+        "introduction": "Transport survey and elephant translocation.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2023/06/cam18-test1-part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Transport Survey",
+            "text": "Sadie Jones, 1991, postcode DW30 7YZ... travelled by bus on 24th April... shopping and dentist... parking too high... Claxby Street... late bus... evening frequency... supermarket by car... pollution... storage...",
+            "questions": [
+              { "number": 1, "prompt": "Postcode: ___", "answer": "DW30 7YZ", "answerLine": "Postcode: DW30 7YZ" },
+              { "number": 3, "prompt": "Reason for trip: shopping and visit to the ___", "answer": "dentist", "answerLine": "shopping and visit to the dentist" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 18 Test 1 - Reading",
+        "introduction": "Passage 1: Urban Farming. Passage 2: Forest Fires. Passage 3: The Concierge.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Urban Farming",
+            "text": "Urban farming is growing in popularity... vertical gardens... hydroponics... reduction in food miles... local communities involved... fresh produce in cities...",
+            "questions": [
+              { "number": 1, "prompt": "Urban farming reduces food miles.", "answer": "TRUE", "answerLine": "reduction in food miles" }
+            ]
+          }
+        ]
+      }
+    },
+    "2": {
+      "Listening": {
+        "title": "Cambridge 18 Test 2 - Listening",
+        "introduction": "A talk about job opportunities, a discussion on local history, a talk about a university project, and a talk on the history of perfume.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2023/06/cam18-test2-part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Job Opportunities",
+            "text": "Training provided... discount on meals... taxi home if late... service charge included... English language classes... Wivenhoe area... equipment needed... cost 9.75... deliveries on Tuesday... Sunday off...",
+            "questions": [
+              { "number": 1, "prompt": "___ provided", "answer": "training" },
+              { "number": 2, "prompt": "___ on meals", "answer": "discount" },
+              { "number": 3, "prompt": "___ home if working late", "answer": "taxi" },
+              { "number": 4, "prompt": "___ charge is included", "answer": "service" },
+              { "number": 5, "prompt": "___ language classes", "answer": "English" },
+              { "number": 6, "prompt": "Location: ___ area", "answer": "Wivenhoe" },
+              { "number": 7, "prompt": "special ___ needed", "answer": "equipment" },
+              { "number": 8, "prompt": "cost: ___", "answer": "9.75" },
+              { "number": 9, "prompt": "___ on Tuesday", "answer": "deliveries" },
+              { "number": 10, "prompt": "Day off: ___", "answer": "Sunday" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 18 Test 2 - Reading",
+        "introduction": "Passage 1: Stonehenge. Passage 2: Living with artificial intelligence. Passage 3: An ideal city.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Stonehenge",
+            "text": "For centuries, historians and archaeologists have puzzled over the many mysteries of Stonehenge... circular layout... built in several stages... deer antlers used as tools... timber posts... tree trunks for transport... oxen... glaciers theory... druids theory... burial site... calendar...",
+            "questions": [
+              { "number": 1, "prompt": "primitive tools fashioned out of ___", "answer": "antlers" },
+              { "number": 2, "prompt": "held a ring of timber ___", "answer": "posts" },
+              { "number": 3, "prompt": "rollers out of tree ___", "answer": "trunks" },
+              { "number": 4, "prompt": "hauled by ___", "answer": "oxen" },
+              { "number": 5, "prompt": "carried by ___", "answer": "glaciers" },
+              { "number": 6, "prompt": "work of ___", "answer": "druids" },
+              { "number": 7, "prompt": "function of a ___ site", "answer": "burial" },
+              { "number": 8, "prompt": "served as a ___", "answer": "calendar" }
+            ]
+          }
+        ]
+      }
+    },
+    "3": {
+      "Listening": {
+        "title": "Cambridge 18 Test 3 - Listening",
+        "introduction": "A conversation about a volunteer project, a talk on a nature reserve, a discussion on a science project, and a talk on the development of the internet.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2023/06/cam18-test3-part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Volunteer Project",
+            "text": "Marrowfield area... help a relative... socialise with people... full training... Domestic Life exhibition... clouds in the sky... timing of events... Animal Magic show... animal movement... dark room...",
+            "questions": [
+              { "number": 1, "prompt": "Location: ___", "answer": "Marrowfield" },
+              { "number": 2, "prompt": "help a ___", "answer": "relative" },
+              { "number": 3, "prompt": "opportunity to ___", "answer": "socialise" },
+              { "number": 4, "prompt": "___ training", "answer": "full" },
+              { "number": 5, "prompt": "___ Life exhibition", "answer": "Domestic" },
+              { "number": 6, "prompt": "look at ___ in the sky", "answer": "clouds" },
+              { "number": 7, "prompt": "check the ___ of events", "answer": "timing" },
+              { "number": 8, "prompt": "___ Magic show", "answer": "Animal" },
+              { "number": 9, "prompt": "show about animal ___", "answer": "movement" },
+              { "number": 10, "prompt": "enter a ___ room", "answer": "dark" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 18 Test 3 - Reading",
+        "introduction": "Passage 1: Materials to take us beyond concrete. Passage 2: The steam car. Passage 3: The case for mixed-ability classes.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Materials to take us beyond concrete",
+            "text": "Alternatives to concrete in construction... environmental impact... wood usage... architects' role... moisture control... layered materials... speed of construction...",
+            "questions": [
+              { "number": 5, "prompt": "role of ___", "answer": "architects" },
+              { "number": 6, "prompt": "control of ___", "answer": "moisture" },
+              { "number": 7, "prompt": "use of ___", "answer": "layers" },
+              { "number": 8, "prompt": "increase in ___", "answer": "speed" }
+            ]
+          }
+        ]
+      }
+    },
+    "4": {
+      "Listening": {
+        "title": "Cambridge 18 Test 4 - Listening",
+        "introduction": "A talk on job interviews, a talk on a local park, a student discussion on a project, and a talk on the history of the map.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2023/06/cam18-test4-part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Job Interview",
+            "text": "receptionist role... Medical centre... Chastons area... appointments... database experience... confident... temporary work... 1.15 pm... parking...",
+            "questions": [
+              { "number": 1, "prompt": "Role: ___", "answer": "receptionist" },
+              { "number": 2, "prompt": "___ centre", "answer": "Medical" },
+              { "number": 3, "prompt": "Location: ___", "answer": "Chastons" },
+              { "number": 4, "prompt": "arrange ___", "answer": "appointments" },
+              { "number": 5, "prompt": "use the ___", "answer": "database" },
+              { "number": 6, "prompt": "previous ___", "answer": "experience" },
+              { "number": 7, "prompt": "be ___", "answer": "confident" },
+              { "number": 8, "prompt": "___ work", "answer": "temporary" },
+              { "number": 9, "prompt": "Time: ___", "answer": "1.15" },
+              { "number": 10, "prompt": "___ available", "answer": "parking" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 18 Test 4 - Reading",
+        "introduction": "Passage 1: Green Roofs. Passage 2: The Growth Mindset. Passage 3: Alfred Wegener.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Green Roofs",
+            "text": "Benefits of green roofs... energy saving... food production... gardening... obesity reduction... social benefits...",
+            "questions": [
+              { "number": 6, "prompt": "save ___", "answer": "energy" },
+              { "number": 7, "prompt": "produce ___", "answer": "food" },
+              { "number": 8, "prompt": "local ___", "answer": "gardening" },
+              { "number": 9, "prompt": "reduce ___", "answer": "obesity" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "17": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 17 Test 1 - Listening",
+        "introduction": "Conservation group and Tasmania boat trip.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2022/06/cam17-test1-part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Buckworth Conservation Group",
+            "text": "Regular activities: Beach litter, no dogs... Nature reserve paths, nesting boxes, attract insects, butterflies... build a new wall... Saturday meet at car park, walk to island... boots... woodwork for beginners... spoons... cost 35 pounds.",
+            "questions": [
+              { "number": 1, "prompt": "Making sure the beach does not have ___ on it", "answer": "litter", "answerLine": "beach does not have litter" },
+              { "number": 2, "prompt": "No ___ allowed", "answer": "dogs", "answerLine": "no dogs" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 17 Test 1 - Reading",
+        "introduction": "Passage 1: London Underground. Passage 2: Stadiums. Passage 3: To Catch a King.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The London Underground Railway",
+            "text": "In the mid-19th century, London’s streets were crowded... Charles Pearson proposed an underground railway... Metropolitan Railway opened in 1863... cut-and-cover method... steam locomotives used... smoke and fumes problems... Central London Railway opened in 1900... deep-level tunnels...",
+            "questions": [
+              { "number": 1, "prompt": "The Metropolitan Railway was the first underground in London.", "answer": "TRUE", "answerLine": "opened in 1863" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "16": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 16 Test 1 - Listening",
+        "introduction": "Engineering workshops and Stoicism.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2021/07/Cam16-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Children’s Engineering Workshops",
+            "text": "Tiny Engineers (4-5): egg cover, tower, balloon car... Junior (6-8): model animals, trucks, bridge, movie, decorate... 50 pounds... Wednesdays 10-11am... Fradstone Industrial Estate... parking...",
+            "questions": [
+              { "number": 1, "prompt": "Create a cover for an ___", "answer": "egg", "answerLine": "cover for an egg" },
+              { "number": 8, "prompt": "Held on ___ from 10 am to 11 am", "answer": "Wednesdays", "answerLine": "Held on Wednesdays" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 16 Test 1 - Reading",
+        "introduction": "Passage 1: Polar Bears. Passage 2: Step Pyramid. Passage 3: Future of Work.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Why Polar Bears should be protected",
+            "text": "Polar bears are uniquely adapted to the Arctic... 11cm fat... APoB gene reduces bad cholesterol... bone density in pregnant females... problem-solving in Tennoji Zoo... branch as tool to dislodge meat... jumping on barrels... hitting ice out of frustration... swimming with Mark Dumas...",
+            "questions": [
+              { "number": 1, "prompt": "Polar bears suffer from fat build-up.", "answer": "FALSE", "answerLine": "the polar bear experiences no such consequences" },
+              { "number": 8, "prompt": "People think of bears as unintelligent and ___.", "answer": "violent", "answerLine": "perceived as stupid and in many cases violent" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "1": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 1 Test 1 - Listening",
+        "introduction": "A conversation about renting an apartment.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam1-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Renting an Apartment",
+            "text": "Name: John Smith... renting a flat... 2 bedrooms... city centre... 500 pounds per month...",
+            "questions": [
+              { "number": 1, "prompt": "Name: ___", "answer": "Smith" },
+              { "number": 2, "prompt": "Rent: £ ___", "answer": "500" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 1 Test 1 - Reading",
+        "introduction": "Passage 1: Sparky's Dinosaurs.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Sparky's Dinosaurs",
+            "text": "Discoveries of dinosaur fossils... excavation methods... paleontology...",
+            "questions": [
+              { "number": 1, "prompt": "Fossils were found in the ___", "answer": "desert" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "2": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 2 Test 1 - Listening",
+        "introduction": "A student asking about course enrollment.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam2-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Course Enrollment",
+            "text": "Biology 101... professor Adams... laboratory work... mid-term exam...",
+            "questions": [
+              { "number": 1, "prompt": "Course name: ___", "answer": "Biology" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 2 Test 1 - Reading",
+        "introduction": "Passage 1: The History of the Bicycle.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The History of the Bicycle",
+            "text": "Early designs... penny-farthing... safety bicycle... pneumatic tires...",
+            "questions": [
+              { "number": 1, "prompt": "Early bicycles had ___ tires.", "answer": "solid" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "3": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 3 Test 1 - Listening",
+        "introduction": "A travel agent describing a holiday package.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam3-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Holiday Package",
+            "text": "Seven days in Spain... guided tours... local cuisine... travel insurance...",
+            "questions": [
+              { "number": 1, "prompt": "Destination: ___", "answer": "Spain" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 3 Test 1 - Reading",
+        "introduction": "Passage 1: The Rocket.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The Rocket",
+            "text": "Development of the steam locomotive... George Stephenson... Rainhill Trials...",
+            "questions": [
+              { "number": 1, "prompt": "The Rocket was built by ___", "answer": "Stephenson" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "4": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 4 Test 1 - Listening",
+        "introduction": "A customer calling a bank.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam4-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Bank Inquiry",
+            "text": "Opening a new account... proof of identity... utility bill... initial deposit...",
+            "questions": [
+              { "number": 1, "prompt": "Must bring proof of ___", "answer": "identity" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 4 Test 1 - Reading",
+        "introduction": "Passage 1: Play is a Serious Business.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Play is a Serious Business",
+            "text": "The psychological benefits of play in children and adults... cognitive development...",
+            "questions": [
+              { "number": 1, "prompt": "Play helps with ___ development.", "answer": "cognitive" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "5": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 5 Test 1 - Listening",
+        "introduction": "A discussion about a science project.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam5-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Science Project",
+            "text": "Measuring water pollution... taking samples... laboratory analysis...",
+            "questions": [
+              { "number": 1, "prompt": "Measuring ___ pollution", "answer": "water" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 5 Test 1 - Reading",
+        "introduction": "Passage 1: Johnson's Dictionary.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Johnson's Dictionary",
+            "text": "The creation of the first comprehensive English dictionary... Samuel Johnson...",
+            "questions": [
+              { "number": 1, "prompt": "The dictionary took ___ years to write.", "answer": "nine" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "6": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 6 Test 1 - Listening",
+        "introduction": "A radio program about local history.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam6-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Local History",
+            "text": "The founding of the town... industrial growth... population changes...",
+            "questions": [
+              { "number": 1, "prompt": "The town grew due to ___", "answer": "industry" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 6 Test 1 - Reading",
+        "introduction": "Passage 1: Australia's Sporting Success.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Australia's Sporting Success",
+            "text": "Funding for sports... Olympic training... sports science institutes...",
+            "questions": [
+              { "number": 1, "prompt": "Success is attributed to sports ___", "answer": "science" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "7": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 7 Test 1 - Listening",
+        "introduction": "A library orientation tour.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam7-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Library Orientation",
+            "text": "Reference section on the second floor... borrowing limits... returning books...",
+            "questions": [
+              { "number": 1, "prompt": "Reference section is on the ___ floor.", "answer": "second" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 7 Test 1 - Reading",
+        "introduction": "Passage 1: Let's Go Bat.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Let's Go Bat",
+            "text": "Echolocation in bats... navigation in the dark... comparison to radar...",
+            "questions": [
+              { "number": 1, "prompt": "Bats use ___ to navigate.", "answer": "echolocation" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "8": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 8 Test 1 - Listening",
+        "introduction": "A conversation about a music festival.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam8-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Music Festival",
+            "text": "Main stage bands... camping area... food stalls... ticket prices...",
+            "questions": [
+              { "number": 1, "prompt": "Tickets cost ___ pounds.", "answer": "50" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 8 Test 1 - Reading",
+        "introduction": "Passage 1: A Chronicle of Timekeeping.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "A Chronicle of Timekeeping",
+            "text": "Ancient calendars... sundials... mechanical clocks... atomic clocks...",
+            "questions": [
+              { "number": 1, "prompt": "Early clocks relied on ___.", "answer": "sunlight" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "9": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 9 Test 1 - Listening",
+        "introduction": "A job enquiry and a talk about local events.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2014/07/Cam9-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Job Enquiry",
+            "text": "Peter Chin inquiring about a job... answering the phone... Hillsdunne Road... near the library... start at 4.45... national holidays... after 11 o'clock... clear voice... think quickly... interview on 22 October... contact Manuja...",
+            "questions": [
+              { "number": 1, "prompt": "Main duty: ___", "answer": "answering phone" },
+              { "number": 2, "prompt": "Location: ___ Road", "answer": "Hillsdunne" },
+              { "number": 3, "prompt": "near the ___", "answer": "library" },
+              { "number": 4, "prompt": "Start time: ___", "answer": "4.45" },
+              { "number": 5, "prompt": "work on ___", "answer": "national holidays" },
+              { "number": 6, "prompt": "finish ___", "answer": "after 11" },
+              { "number": 7, "prompt": "Must have a ___", "answer": "clear voice" },
+              { "number": 8, "prompt": "Must be able to ___", "answer": "think quickly" },
+              { "number": 9, "prompt": "Date: ___", "answer": "22 October" },
+              { "number": 10, "prompt": "Contact person: ___", "answer": "Manuja" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 9 Test 1 - Reading",
+        "introduction": "Passage 1: William Henry Perkin.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "William Henry Perkin",
+            "text": "The man who invented synthetic dyes... commercial possibilities... discovery of Mauve... collaboration with Robert Pullar... production in France... cure for Malaria...",
+            "questions": [
+              { "number": 8, "prompt": "only the ___ could afford it", "answer": "rich" },
+              { "number": 9, "prompt": "saw the ___ possibilities", "answer": "Commercial" },
+              { "number": 10, "prompt": "color named ___", "answer": "Mauve" },
+              { "number": 11, "prompt": "collaboration with ___", "answer": "Pullar" },
+              { "number": 12, "prompt": "produced in ___", "answer": "France" },
+              { "number": 13, "prompt": "used against ___", "answer": "Malaria" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "10": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 10 Test 1 - Listening",
+        "introduction": "Self-drive tours in the USA and leisure club facilities.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2015/07/Cam10-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Self-drive Tours in the USA",
+            "text": "Destination: Ardleigh... read the local newspaper... choose a theme... bring a tent... visit the castle... go to the beach... in the year 2020... booking the flight... price 429 pounds... dinner included...",
+            "questions": [
+              { "number": 1, "prompt": "Name: ___", "answer": "Ardleigh" },
+              { "number": 2, "prompt": "read the ___", "answer": "newspaper" },
+              { "number": 3, "prompt": "choose a ___", "answer": "theme" },
+              { "number": 4, "prompt": "bring a ___", "answer": "tent" },
+              { "number": 5, "prompt": "visit the ___", "answer": "castle" },
+              { "number": 6, "prompt": "go to the ___", "answer": "beach" },
+              { "number": 7, "prompt": "year: ___", "answer": "2020" },
+              { "number": 8, "prompt": "booking the ___", "answer": "flight" },
+              { "number": 9, "prompt": "Price: £ ___", "answer": "429" },
+              { "number": 10, "prompt": "___ is included", "answer": "dinner" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 10 Test 1 - Reading",
+        "introduction": "Passage 1: Stepwells.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Stepwells",
+            "text": "History and architecture of Indian stepwells... functions beyond water collection... seasonal water level changes... pavilions for shelter... impact of drought... tourism... surviving earthquakes... Surya Kund structure... verandas... Neemrana Ki Baori...",
+            "questions": [
+              { "number": 6, "prompt": "included ___", "answer": "pavilions" },
+              { "number": 7, "prompt": "worsened by ___", "answer": "drought" },
+              { "number": 8, "prompt": "visited by ___", "answer": "tourists" },
+              { "number": 9, "prompt": "survived an ___", "answer": "earthquake" },
+              { "number": 10, "prompt": "___ sides", "answer": "4 sides" },
+              { "number": 11, "prompt": "described as a ___", "answer": "tank" },
+              { "number": 12, "prompt": "architectural ___", "answer": "verandas" },
+              { "number": 13, "prompt": "levels are ___", "answer": "underwater" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "11": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 11 Test 1 - Listening",
+        "introduction": "Inquiry about joining a youth council and festival events.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2016/07/Cam11-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Youth Council Inquiry",
+            "text": "Name: Roger Charlton... age 115... pay by cash... parking available... music events... entry fee... main stage... postcode... floor level... decoration...",
+            "questions": [
+              { "number": 1, "prompt": "Name: Roger ___", "answer": "Charlton" },
+              { "number": 2, "prompt": "Age: ___", "answer": "115" },
+              { "number": 3, "prompt": "pay by ___", "answer": "cash" },
+              { "number": 4, "prompt": "free ___", "answer": "parking" },
+              { "number": 5, "prompt": "___ events", "answer": "music" },
+              { "number": 6, "prompt": "___ fee", "answer": "entry" },
+              { "number": 7, "prompt": "on the main ___", "answer": "stage" },
+              { "number": 8, "prompt": "post ___", "answer": "code" },
+              { "number": 9, "prompt": "on all ___", "answer": "floors" },
+              { "number": 10, "prompt": "cost of ___", "answer": "decoration" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 11 Test 1 - Reading",
+        "introduction": "Passage 1: Crop-growing Skyscrapers.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Crop-growing Skyscrapers",
+            "text": "Vertical farming... growing tomatoes indoors... urban centres... methane for energy... reduce fossil fuels... artificial light disadvantage... stacked trays... urban rooftops... destruction of land... year-round production... infectious diseases...",
+            "questions": [
+              { "number": 1, "prompt": "growing ___", "answer": "tomatoes" },
+              { "number": 2, "prompt": "located in ___", "answer": "urban centres" },
+              { "number": 3, "prompt": "produce ___", "answer": "energy" },
+              { "number": 4, "prompt": "cut ___", "answer": "fossil fuels" },
+              { "number": 5, "prompt": "need ___ light", "answer": "artificial" },
+              { "number": 6, "prompt": "planting in ___", "answer": "stacked trays" },
+              { "number": 7, "prompt": "on ___", "answer": "urban rooftops" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "12": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 12 Test 1 - Listening",
+        "introduction": "Booking a holiday and family excursions.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2017/07/Cam12-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Holiday Booking",
+            "text": "Holiday in the mountains... horse riding... visit gardens... lunch provided... free map... previous experience... Ratchesons agency... must wear helmet... visit local shops... price 267 pounds...",
+            "questions": [
+              { "number": 1, "prompt": "Location: in the ___", "answer": "mountains" },
+              { "number": 2, "prompt": "activity: ___ riding", "answer": "horse" },
+              { "number": 3, "prompt": "visit the ___", "answer": "gardens" },
+              { "number": 4, "prompt": "___ is provided", "answer": "lunch" },
+              { "number": 5, "prompt": "get a free ___", "answer": "map" },
+              { "number": 6, "prompt": "no ___ required", "answer": "experience" },
+              { "number": 7, "prompt": "Agency: ___", "answer": "Ratchesons" },
+              { "number": 8, "prompt": "wear a ___", "answer": "helmet" },
+              { "number": 9, "prompt": "go to the ___", "answer": "shops" },
+              { "number": 10, "prompt": "Cost: £ ___", "answer": "267" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 12 Test 1 - Reading",
+        "introduction": "Passage 1: Cork.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Cork",
+            "text": "Cork is a versatile material... harvested from the cork oak... Mediterranean region... comparison with aluminium screw caps... taste impact... cost... convenience... brand image... sustainability... recycling... biodiversity conservation... prevention of desertification...",
+            "questions": [
+              { "number": 6, "prompt": "impact on ___", "answer": "taste" },
+              { "number": 7, "prompt": "it is ___", "answer": "cheaper" },
+              { "number": 8, "prompt": "more ___", "answer": "convenient" },
+              { "number": 9, "prompt": "better ___", "answer": "image" },
+              { "number": 10, "prompt": "more ___", "answer": "sustainable" },
+              { "number": 11, "prompt": "can be ___", "answer": "recycled" },
+              { "number": 12, "prompt": "supports ___", "answer": "biodiversity" },
+              { "number": 13, "prompt": "prevents ___", "answer": "desertification" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "13": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 13 Test 1 - Listening",
+        "introduction": "Cooking Course and New Zealand tourism.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2018/07/Cam13-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Cooking Course Inquiry",
+            "text": "Choose a course... private lessons... 20% discount... healthy eating... healthy bones... lecture on nutrition... ARRETSA... vegetarian options... local market... knife skills...",
+            "questions": [
+              { "number": 1, "prompt": "can ___ a course", "answer": "choose" },
+              { "number": 2, "prompt": "___ lessons available", "answer": "private" },
+              { "number": 3, "prompt": "___ discount", "answer": "20%" },
+              { "number": 4, "prompt": "focus on ___ eating", "answer": "healthy" },
+              { "number": 5, "prompt": "good for ___", "answer": "bones" },
+              { "number": 6, "prompt": "attend a ___", "answer": "lecture" },
+              { "number": 7, "prompt": "Name: ___", "answer": "ARRETSA" },
+              { "number": 8, "prompt": "___ cooking", "answer": "vegetarian" },
+              { "number": 9, "prompt": "visit a ___", "answer": "market" },
+              { "number": 10, "prompt": "learn ___ skills", "answer": "knife" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 13 Test 1 - Reading",
+        "introduction": "Passage 1: Case Study: Tourism New Zealand website.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Case Study: Tourism New Zealand website",
+            "text": "Tourism New Zealand's digital marketing strategy... website update... focus on the environment... captain of the ship... films locations... seasonal travel... accommodation booking... travel blog...",
+            "questions": [
+              { "number": 1, "prompt": "website ___", "answer": "update" },
+              { "number": 2, "prompt": "focus on ___", "answer": "environment" },
+              { "number": 3, "prompt": "captain", "answer": "captain" },
+              { "number": 4, "prompt": "featured in ___", "answer": "films" },
+              { "number": 5, "prompt": "best ___", "answer": "season" },
+              { "number": 6, "prompt": "booking ___", "answer": "accommodation" },
+              { "number": 7, "prompt": "travel ___", "answer": "blog" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "14": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 14 Test 1 - Listening",
+        "introduction": "Crime Report Form and Urban planning.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2019/07/Cam14-Test1-Part1.mp3",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Crime Report Form",
+            "text": "Name: Louise Taylor... Nationality: Canadian... stolen: furniture... Park area... value 250... phone stolen... 10th September... museum... time... blond hair... phone number 87954 82361...",
+            "questions": [
+              { "number": 1, "prompt": "Nationality: ___", "answer": "Canadian" },
+              { "number": 2, "prompt": "Stolen: items of ___", "answer": "furniture" },
+              { "number": 3, "prompt": "Location: ___ area", "answer": "Park" },
+              { "number": 4, "prompt": "Value: £ ___", "answer": "250" },
+              { "number": 5, "prompt": "Also stolen: ___", "answer": "phone" },
+              { "number": 6, "prompt": "Date: ___ September", "answer": "10" },
+              { "number": 7, "prompt": "Stolen from: ___", "answer": "museum" },
+              { "number": 8, "prompt": "___ of theft", "answer": "time" },
+              { "number": 9, "prompt": "Hair color: ___", "answer": "blond" },
+              { "number": 10, "prompt": "Phone number: ___", "answer": "87954 82361" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 14 Test 1 - Reading",
+        "introduction": "Passage 1: The Importance of Children's Play.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The Importance of Children's Play",
+            "text": "The role of play in child development... creativity... rules... life skills... decline of free play in cities... risk taking... crime... competition... government policies...",
+            "questions": [
+              { "number": 1, "prompt": "Develops ___", "answer": "creativity" },
+              { "number": 2, "prompt": "Following ___", "answer": "rules" },
+              { "number": 3, "prompt": "Essential for ___", "answer": "life" },
+              { "number": 4, "prompt": "Living in ___", "answer": "cities" },
+              { "number": 5, "prompt": "Taking ___", "answer": "risk" },
+              { "number": 6, "prompt": "Reduction in ___", "answer": "crime" },
+              { "number": 7, "prompt": "Avoid ___", "answer": "competition" },
+              { "number": 8, "prompt": "Change in ___", "answer": "policies" }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "15": {
+    "1": {
+      "Listening": {
+        "title": "Cambridge 15 Test 1 - Listening",
+        "introduction": "Recruitment agency and Eucalyptus trees.",
+        "audioUrl": "https://ieltstrainingonline.com/wp-content/uploads/2021/07/Cam15-Test1-Part1.m4a",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "Bankside Recruitment Agency",
+            "text": "Becky Jamieson, call in afternoon... communication skills... one week min... 10 pounds/hr... wear suit... bring passport... personality... feedback... time...",
+            "questions": [
+              { "number": 1, "prompt": "Name of agent: Becky ___", "answer": "Jamieson", "answerLine": "Becky Jamieson" },
+              { "number": 6, "prompt": "Wear a ___ to the interview", "answer": "suit", "answerLine": "Wear a suit" }
+            ]
+          }
+        ]
+      },
+      "Reading": {
+        "title": "Cambridge 15 Test 1 - Reading",
+        "introduction": "Passage 1: Nutmeg Tree. Passage 2: Driverless Cars. Passage 3: Explorers.",
+        "parts": [
+          {
+            "partNumber": 1,
+            "title": "The Nutmeg Tree",
+            "text": "Myristica fragrans, native to Banda Islands... Arab-Venetian dominance until 1512... Dutch VOC richest operation... plague cure belief... Run island traded for Manhattan... monopoly ended by Pierre Poivre...",
+            "questions": [
+              { "number": 1, "prompt": "Leaves are ___ in shape.", "answer": "oval", "answerLine": "dark green oval leaves" },
+              { "number": 9, "prompt": "Believed effective against the ___.", "answer": "plague", "answerLine": "decided nutmeg held the cure" }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
