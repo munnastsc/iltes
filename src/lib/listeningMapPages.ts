@@ -7,7 +7,6 @@ const MAP_IMAGES: Record<string, string> = {
     '9_4_2':  '/images/listening/listen_9_4_2.png',
     '11_1_2': '/images/listening/listen_11_1_2.png',
     '11_2_2': '/images/listening/listen_11_2_2.png',
-    '11_3_2': '/images/listening/listen_11_3_2.png',
     '11_4_2': '/images/listening/listen_11_4_2.png',
     '12_4_2': '/images/listening/listen_12_4_2.png',
     '13_1_2': '/images/listening/listen_13_1_2.png',
