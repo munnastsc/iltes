@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState, useRef, type ReactNode } from 'react';
 import Link from 'next/link';
 import { Headphones, BookOpen, PenLine, Mic, Volume2, CheckCircle2, AlertCircle } from 'lucide-react';
 import AnswerPractice from './AnswerPractice';
+import { getMapImage } from '../lib/listeningMapPages';
+import { getWritingImage } from '../lib/cambridgeWritingPages';
 
 type QuestionItem = {
     number?: number;
@@ -400,6 +402,26 @@ export default function BookNavigation({ bookNumber, records, initialModule, ini
                                         <img src={activePart.imageUrl} alt="Part visual" className="mx-auto rounded" style={{ maxHeight: '380px' }} />
                                     </div>
                                 )}
+                                {!activePart.imageUrl && selectedModule === 'Listening' && (() => {
+                                    const imgUrl = getMapImage(bookNumber, selectedTest, selectedPart);
+                                    if (!imgUrl) return null;
+                                    return (
+                                        <div className="mb-5 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={imgUrl} alt="Map / Plan / Diagram" className="w-full h-auto" />
+                                        </div>
+                                    );
+                                })()}
+                                {selectedModule === 'Writing' && selectedPart === 1 && (() => {
+                                    const imgUrl = getWritingImage(bookNumber, selectedTest);
+                                    if (!imgUrl) return null;
+                                    return (
+                                        <div className="mb-5 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={imgUrl} alt="Task 1 — Chart / Graph / Diagram" className="w-full h-auto" />
+                                        </div>
+                                    );
+                                })()}
 
                                 <PassageRenderer text={activePart.text || ''} module={selectedModule} />
                             </div>
