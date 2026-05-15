@@ -13,6 +13,10 @@ const MAP_IMAGES: Record<string, string> = {
     '14_2_2': '/images/listening/listen_14_2_2.png',
     '15_2_2': '/images/listening/listen_15_2_2.png',
     '15_4_2': '/images/listening/listen_15_4_2.png',
+    '16_1_2': '/images/listening/listen_16_1_2.png',
+    '16_4_2': '/images/listening/listen_16_4_2.png',
+    '18_2_2': '/images/listening/listen_18_2_2.png',
+    '19_1_2': '/images/listening/listen_19_1_2.png',
 };
 
 export function getMapImage(book: number, test: number, section: number): string | null {
