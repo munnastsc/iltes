@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 type ChatRequestBody = {
     message?: string;
     context?: string;
@@ -50,6 +46,7 @@ export async function POST(request: Request) {
         // Try OpenAI first
         if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'sk-your-openai-api-key-here') {
             try {
+                const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
                 const response = await openai.chat.completions.create({
                     model: 'gpt-3.5-turbo', // Or gpt-4-turbo-preview
                     messages: [

@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 type Body = {
     taskType?: 'task1' | 'task2';
     prompt?: string;
@@ -97,6 +93,7 @@ Required JSON shape:
 }
 `;
 
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
         const completion = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             temperature: 0.2,

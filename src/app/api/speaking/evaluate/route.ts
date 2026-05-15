@@ -2,10 +2,6 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { findSpeakingTopicById } from '../../../../lib/speakingTopics';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 type BandBreakdown = {
     fluencyAndCoherence: number;
     lexicalResource: number;
@@ -105,6 +101,7 @@ export async function POST(request: Request) {
             }
 
             try {
+                const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
                 const transcription = await openai.audio.transcriptions.create({
                     file: audioFile,
                     model: 'whisper-1',
@@ -154,6 +151,7 @@ Required JSON shape:
 `;
 
         try {
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
             const completion = await openai.chat.completions.create({
                 model: 'gpt-4o-mini',
                 temperature: 0.3,

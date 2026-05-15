@@ -2,10 +2,6 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { getMockAudioScript } from '../../../lib/mockAudioScripts';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 export const runtime = 'nodejs';
 
 function missingConfigResponse() {
@@ -18,6 +14,7 @@ function missingConfigResponse() {
 }
 
 async function buildAudioFromText(text: string, voice: string) {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const speech = await openai.audio.speech.create({
         model: 'gpt-4o-mini-tts',
         voice: voice as any,
