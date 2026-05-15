@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { ChevronLeft, FilePenLine, Loader2, Sparkles, BookOpen } from 'lucide-react';
 import { CAMBRIDGE_WRITING_TASKS, CAMBRIDGE_WRITING_BOOKS, getCambridgeWritingTasks } from '../../../lib/cambridgeWritingTasks';
-import { getWritingPage } from '../../../lib/cambridgeWritingPages';
-import PDFPageViewer from '../../../components/PDFPageViewer';
+import { getWritingImage } from '../../../lib/cambridgeWritingPages';
 
 type TaskType = 'task1' | 'task2';
 
@@ -240,18 +239,14 @@ export default function WritingAIEvaluatorPage() {
                                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-violet-400 focus:bg-white resize-none leading-6"
                             />
 
-                            {/* Task 1 chart/graph image from PDF */}
+                            {/* Task 1 chart/graph image */}
                             {source === 'cambridge' && taskType === 'task1' && (() => {
-                                const info = getWritingPage(camBook, camTest);
-                                if (info) {
-                                    return (
-                                        <PDFPageViewer
-                                            pdfUrl={`/pdfs/cambridge/${encodeURIComponent(info.pdfFile)}`}
-                                            pageNumber={info.page}
-                                            label="Task 1 — Chart / Graph / Diagram"
-                                        />
-                                    );
-                                }
+                                const imgUrl = getWritingImage(camBook, camTest);
+                                if (imgUrl) return (
+                                    <div className="mt-3 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                        <img src={imgUrl} alt="Task 1 — Chart / Graph / Diagram" className="w-full h-auto" />
+                                    </div>
+                                );
                                 return (
                                     <p className="mt-2 text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2 border border-slate-200">
                                         📄 Open your Cambridge {camBook} book to Test {camTest} Writing Task 1 to see the chart/graph.

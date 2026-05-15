@@ -8,8 +8,7 @@ import {
     XCircle, Clock, Volume2, Trophy, ChevronRight,
 } from 'lucide-react';
 import { ListeningTest, ListeningSection, QGroup, Question } from '../../../../../lib/listeningData';
-import { getMapPage } from '../../../../../lib/listeningMapPages';
-import PDFPageViewer from '../../../../../components/PDFPageViewer';
+import { getMapImage } from '../../../../../lib/listeningMapPages';
 
 const BOOK_PDF: Record<number, string> = {
     9:  'Cambridge IELTS 09 www.iac-uk.com.pdf',
@@ -428,22 +427,11 @@ function SectionPanel({ sec, book, test, answers, submitted, onChange }: {
                             </p>
                         )}
                         {isMapInstruction(grp.instruction) && (() => {
-                            const mapInfo = getMapPage(book, test, sec.section);
-                            if (mapInfo) {
-                                return (
-                                    <PDFPageViewer
-                                        pdfUrl={`/pdfs/cambridge/${encodeURIComponent(mapInfo.pdfFile)}`}
-                                        pageNumber={mapInfo.page}
-                                        label="Map / Plan / Diagram"
-                                    />
-                                );
-                            }
-                            const fb = BOOK_PDF[book];
-                            if (fb) return (
-                                <a href={`/pdfs/cambridge/${encodeURIComponent(fb)}`} target="_blank" rel="noopener noreferrer"
-                                    className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800 hover:bg-amber-100 transition">
-                                    📄 View Map / Diagram in PDF
-                                </a>
+                            const imgUrl = getMapImage(book, test, sec.section);
+                            if (imgUrl) return (
+                                <div className="mt-3 rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                                    <img src={imgUrl} alt="Map / Plan / Diagram" className="w-full h-auto" />
+                                </div>
                             );
                             return null;
                         })()}
