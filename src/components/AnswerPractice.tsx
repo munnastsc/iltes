@@ -6,7 +6,7 @@ import ExamTimer from './ExamTimer';
 import { saveObjectiveAttempt } from '../lib/practiceAnalytics';
 import { moduleBandEstimate } from '../lib/ieltsBand';
 
-type QuestionType = 'fill_in_blank' | 'mcq' | 'double_mcq' | 'true_false' | 'matching';
+type QuestionType = 'fill_in_blank' | 'mcq' | 'double_mcq' | 'true_false' | 'matching' | 'heading_match';
 
 type QuestionItem = {
     number?: number;
@@ -27,6 +27,7 @@ type Props = {
         testNumber?: number;
         partNumber?: number;
     };
+    headingOptions?: string[];
 };
 
 function evaluateQuestion(q: QuestionItem, userVal: string | string[] | undefined) {
@@ -137,7 +138,7 @@ function FillInBlankRenderer({
     );
 }
 
-export default function AnswerPractice({ title, questions, type = 'Reading', durationMinutes, meta }: Props) {
+export default function AnswerPractice({ title, questions, type = 'Reading', durationMinutes, meta, headingOptions }: Props) {
     const [inputs, setInputs] = useState<Record<number, string | string[]>>({});
     const [checked, setChecked] = useState(false);
     const [isExamMode, setIsExamMode] = useState(false);
@@ -237,7 +238,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
 
     // Group questions by their detected section type for Cambridge-style display
     // We group consecutive questions of the same type together
-    type QGroup = { type: QuestionType | 'fill_in_blank'; questions: QuestionItem[] };
+    type QGroup = { type: QuestionType | 'fill_in_blank' | 'heading_match'; questions: QuestionItem[] };
     const groups: QGroup[] = [];
     for (const q of questionPool) {
         const qtype = (q.type || 'fill_in_blank') as QuestionType;
@@ -295,6 +296,27 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                 </div>
             ) : (
                 <div className="p-5">
+                    {/* List of Headings panel */}
+                    {headingOptions && headingOptions.length > 0 && (
+                        <div className="mb-5 rounded-lg border border-blue-200 bg-blue-50 overflow-hidden">
+                            <div className="bg-blue-700 px-4 py-2">
+                                <p className="text-xs font-bold text-white uppercase tracking-wider">List of Headings</p>
+                            </div>
+                            <div className="px-4 py-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+                                {headingOptions.map((opt, idx) => {
+                                    const dot = opt.indexOf('.');
+                                    const numeral = dot >= 0 ? opt.slice(0, dot) : String(idx + 1);
+                                    const text = dot >= 0 ? opt.slice(dot + 1).trim() : opt;
+                                    return (
+                                        <div key={idx} className="flex gap-2 py-0.5">
+                                            <span className="shrink-0 w-7 text-right text-xs font-bold text-blue-800 italic">{numeral}.</span>
+                                            <span className="text-xs text-slate-700">{text}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                     {/* Cambridge-style grouped questions */}
                     <div className="space-y-6">
                         {groups.map((group, gi) => {
@@ -314,6 +336,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     : 'TRUE / FALSE / NOT GIVEN'
                                             )}
                                             {group.type === 'fill_in_blank' && 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer'}
+                                            {group.type === 'heading_match' && 'Choose the correct heading from the list for each paragraph'}
                                             {group.type === 'matching' && (() => {
                                                 const firstAns = (group.questions[0]?.answer || '').trim();
                                                 const firstOpts = group.questions[0]?.options;
@@ -593,6 +616,49 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                             </div>
                                                         </div>
                                                     )}
+
+                                                    {/* Heading match: roman numeral buttons */}
+                                                    {q.type === 'heading_match' && (() => {
+                                                        const opts = headingOptions && headingOptions.length > 0
+                                                            ? headingOptions.map(o => { const d = o.indexOf('.'); return d >= 0 ? o.slice(0, d).trim() : o; })
+                                                            : ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi'];
+                                                        return (
+                                                            <div className="flex items-start gap-3">
+                                                                <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                                    {key}
+                                                                </span>
+                                                                <div className="flex-1">
+                                                                    <p className="text-sm text-slate-500 italic mb-2">Paragraph {String.fromCharCode(64 + (q.number ? q.number - (questionPool.find(x => x.type === 'heading_match')?.number ?? q.number) + 1 : 1))}</p>
+                                                                    <div className="flex flex-wrap gap-1.5">
+                                                                        {opts.map((opt) => {
+                                                                            const selected = (typeof userVal === 'string' ? userVal : '').toLowerCase() === opt.toLowerCase();
+                                                                            const isAns = opt.toLowerCase() === ans.toLowerCase();
+                                                                            return (
+                                                                                <label key={opt} className={`flex cursor-pointer items-center justify-center min-w-[2.5rem] h-8 px-2 rounded-lg border text-xs font-bold italic transition ${
+                                                                                    checked
+                                                                                        ? isAns ? 'border-emerald-400 bg-emerald-100 text-emerald-800'
+                                                                                        : selected && !isAns ? 'border-rose-400 bg-rose-100 text-rose-800'
+                                                                                        : 'border-slate-200 bg-slate-50 text-slate-400'
+                                                                                        : selected ? 'border-blue-500 bg-blue-100 text-blue-800'
+                                                                                        : 'border-slate-300 bg-white text-slate-600 hover:border-blue-300'
+                                                                                }`}>
+                                                                                    <input type="radio" name={`q_${key}`} disabled={checked} checked={selected}
+                                                                                        onChange={() => handleInputChange(key, opt)} className="hidden" />
+                                                                                    {opt}
+                                                                                </label>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+                                                                    {checked && iswrong && (
+                                                                        <p className="mt-1 text-xs font-semibold text-rose-600">✗ Answer: <strong>{ans}</strong></p>
+                                                                    )}
+                                                                    {checked && isCorrect && (
+                                                                        <p className="mt-1 text-xs font-semibold text-emerald-600">✓ Correct</p>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })()}
 
                                                     {/* Evidence after check */}
                                                     {checked && q.answerLine && (

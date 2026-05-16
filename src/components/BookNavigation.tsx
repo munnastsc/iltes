@@ -24,6 +24,7 @@ type ContentPart = {
     audioUrl?: string | null;
     tips?: string[];
     questions?: QuestionItem[];
+    headingOptions?: string[];
 };
 
 type ContentShape = {
@@ -438,6 +439,7 @@ export default function BookNavigation({ bookNumber, records, initialModule, ini
                             type={selectedModule as any}
                             durationMinutes={content.examConfig?.durationMinutes}
                             meta={{ bookNumber, testNumber: selectedTest, partNumber: selectedPart }}
+                            headingOptions={activePart.headingOptions}
                         />
                     )}
 
