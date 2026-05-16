@@ -123,7 +123,7 @@ function PassageRenderer({ text, module }: { text: string; module: string }) {
         return <p className="italic text-slate-400">No passage content available yet.</p>;
     }
 
-    const blocks = text.split(/\n\n+/).filter((b) => b.trim());
+    const blocks = text.split(/\n\n+/).filter((b) => b.trim() && !/^\d+Drop heading here$/.test(b.trim()));
 
     return (
         <div className="space-y-4">
