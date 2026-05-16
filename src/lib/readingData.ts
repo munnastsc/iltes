@@ -58,7 +58,7 @@ const RAW: RawEntry[] = [
             'F','D','G','E','D','A','B','C',
             'FALSE','FALSE','TRUE','NOT GIVEN','TRUE',
             'C','B','D','C','B',
-            'YES','YES','NOT GIVEN','NO','NOT GIVEN','NO','','',''],
+            'YES','YES','NOT GIVEN','NO','NOT GIVEN','NO','A','B','C'],
     },
     {
         book: 9, test: 3,
@@ -317,7 +317,7 @@ const RAW: RawEntry[] = [
             'C','D','A','E',
             'A','C','C','D','A','D',
             'E','A','D','B',
-            'expeditions','isolated/uncontacted','land surface',''],
+            'expeditions','isolated/uncontacted','land surface'],
     },
     {
         book: 15, test: 2,
@@ -372,7 +372,7 @@ const RAW: RawEntry[] = [
     {
         book: 16, test: 4,
         passages: ['Passage 1', 'Passage 2', 'Passage 3'],
-        a: ['posts','canal','ventilation','lid','weight','climbing','FALSE','NOT GIVEN','FALSE','TRUE','gold','architect\'s name','harbour','A','B','D','B','D','H','F','B','C','YES','NO','NOT GIVEN','YES','iii','vi','ii','i','vii','v','C','B','A','NO','NOT GIVEN','YES','NO','YES'],
+        a: ['posts','canal','ventilation','lid','weight','climbing','FALSE','NOT GIVEN','FALSE','TRUE','gold','architect','harbour','A','B','D','B','D','H','F','B','C','YES','NO','NOT GIVEN','YES','iii','vi','ii','i','vii','v','C','B','A','NO','NOT GIVEN','YES','NO','YES'],
     },
     // Cambridge 17
     {
