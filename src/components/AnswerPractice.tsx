@@ -338,7 +338,21 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     ? 'YES / NO / NOT GIVEN'
                                                     : 'TRUE / FALSE / NOT GIVEN'
                                             )}
-                                            {group.type === 'fill_in_blank' && (group.questions[0]?.instruction || 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer')}
+                                            {group.type === 'fill_in_blank' && (() => {
+                                                const inst = group.questions[0]?.instruction;
+                                                if (inst) return inst;
+                                                if (type === 'Writing') {
+                                                    return title.includes('Part 2') || title.includes('Task 2')
+                                                        ? 'You should spend about 40 minutes on this task. Write at least 250 words.'
+                                                        : 'You should spend about 20 minutes on this task. Write at least 150 words.';
+                                                }
+                                                if (type === 'Speaking') {
+                                                    if (title.includes('Part 2')) return 'Talk about the topic for 1–2 minutes. Make notes during 1 minute preparation time.';
+                                                    if (title.includes('Part 3')) return 'Discuss abstract questions related to the Part 2 topic.';
+                                                    return 'Answer the examiner\'s questions about familiar topics.';
+                                                }
+                                                return 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer';
+                                            })()}
                                             {group.type === 'heading_match' && 'Choose the correct heading from the list for each paragraph'}
                                             {group.type === 'matching' && (() => {
                                                 const firstAns = (group.questions[0]?.answer || '').trim();
