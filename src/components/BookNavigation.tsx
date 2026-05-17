@@ -9,11 +9,12 @@ import { getWritingImage } from '../lib/cambridgeWritingPages';
 
 type QuestionItem = {
     number?: number;
-    type?: 'fill_in_blank' | 'mcq' | 'double_mcq' | 'true_false' | 'matching';
+    type?: 'fill_in_blank' | 'mcq' | 'double_mcq' | 'true_false' | 'matching' | 'heading_match';
     prompt?: string;
     answer?: string;
     answerLine?: string;
     options?: string[];
+    instruction?: string;
 };
 
 type ContentPart = {

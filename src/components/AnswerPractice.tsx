@@ -15,6 +15,7 @@ type QuestionItem = {
     answer?: string;
     answerLine?: string;
     options?: string[];
+    instruction?: string;
 };
 
 type Props = {
@@ -337,7 +338,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     ? 'YES / NO / NOT GIVEN'
                                                     : 'TRUE / FALSE / NOT GIVEN'
                                             )}
-                                            {group.type === 'fill_in_blank' && 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer'}
+                                            {group.type === 'fill_in_blank' && (group.questions[0]?.instruction || 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer')}
                                             {group.type === 'heading_match' && 'Choose the correct heading from the list for each paragraph'}
                                             {group.type === 'matching' && (() => {
                                                 const firstAns = (group.questions[0]?.answer || '').trim();
