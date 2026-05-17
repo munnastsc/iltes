@@ -327,7 +327,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                             return (
                                 <div key={gi} className="rounded-lg border border-slate-200 overflow-hidden">
                                     {/* Section header */}
-                                    <div className="bg-slate-700 px-4 py-2">
+                                    <div className="bg-red-700 px-4 py-2">
                                         <p className="text-xs font-bold text-slate-200 uppercase tracking-wider">{rangeLabel}</p>
                                         <p className="text-[10px] text-slate-400 mt-0.5">
                                             {group.type === 'true_false' && (
@@ -373,7 +373,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     {/* Fill-in-blank: inline input in sentence */}
                                                     {(!q.type || q.type === 'fill_in_blank') && (
                                                         <div className="flex gap-2 items-baseline flex-wrap">
-                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white">
+                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white">
                                                                 {key}
                                                             </span>
                                                             <FillInBlankRenderer
@@ -401,7 +401,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                             : ['A','B','C','D','E','F','G','H'];
                                                         return (
                                                             <div className="flex items-start gap-3">
-                                                                <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                                <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white mt-0.5">
                                                                     {key}
                                                                 </span>
                                                                 <div className="flex-1">
@@ -454,7 +454,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     {/* True/False/Not Given / Yes/No */}
                                                     {q.type === 'true_false' && (
                                                         <div className="flex items-start gap-3">
-                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white mt-0.5">
                                                                 {key}
                                                             </span>
                                                             <div className="flex-1">
@@ -504,7 +504,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     {/* MCQ with options */}
                                                     {q.type === 'mcq' && q.options && (
                                                         <div className="flex items-start gap-3">
-                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white mt-0.5">
                                                                 {key}
                                                             </span>
                                                             <div className="flex-1">
@@ -547,7 +547,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     {/* MCQ without options — fallback to letter select */}
                                                     {q.type === 'mcq' && !q.options && (
                                                         <div className="flex items-start gap-3">
-                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white mt-0.5">
                                                                 {key}
                                                             </span>
                                                             <div className="flex-1">
@@ -582,7 +582,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                     {/* Double MCQ */}
                                                     {q.type === 'double_mcq' && q.options && (
                                                         <div className="flex items-start gap-3">
-                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                            <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white mt-0.5">
                                                                 {key}
                                                             </span>
                                                             <div className="flex-1">
@@ -624,7 +624,7 @@ export default function AnswerPractice({ title, questions, type = 'Reading', dur
                                                             : ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi'];
                                                         return (
                                                             <div className="flex items-start gap-3">
-                                                                <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-slate-700 text-[10px] font-bold text-white mt-0.5">
+                                                                <span className="shrink-0 inline-flex h-5 w-5 items-center justify-center rounded bg-red-600 text-[10px] font-bold text-white mt-0.5">
                                                                     {key}
                                                                 </span>
                                                                 <div className="flex-1">
