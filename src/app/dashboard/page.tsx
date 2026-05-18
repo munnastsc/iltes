@@ -72,6 +72,10 @@ export default function DashboardPage() {
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
+                            <Link href="/dashboard/ai-tutor"
+                                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-900/30">
+                                <Bot size={15} /> AI Tutor
+                            </Link>
                             <Link href="/dashboard/writing"
                                 className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-violet-500 transition shadow-lg shadow-violet-900/30">
                                 <PenLine size={15} /> Writing AI
@@ -109,6 +113,20 @@ export default function DashboardPage() {
 
                 {/* Quick Actions */}
                 <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <Link href="/dashboard/ai-tutor"
+                        className="group flex items-center gap-4 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-violet-50 p-5 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-600 group-hover:bg-indigo-500 transition shadow-md shadow-indigo-200">
+                            <Bot size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">AI Tutor</p>
+                                <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-black text-indigo-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">বাংলায় IELTS শেখো — 24/7</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-indigo-500 transition" />
+                    </Link>
                     <Link href="/dashboard/writing"
                         className="group flex items-center gap-4 rounded-2xl border border-violet-100 bg-white p-5 shadow-sm hover:shadow-md hover:border-violet-300 transition-all">
                         <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-100 group-hover:bg-violet-200 transition">

@@ -2,15 +2,18 @@
 import { useState, useMemo } from 'react';
 import { Search, Copy, CheckCheck } from 'lucide-react';
 import { SYNONYM_GROUPS } from '../lib/paraphraseData';
+import { EXPANDED_SYNONYM_GROUPS } from '../lib/paraphraseSynonymData';
+
+const ALL_SYNONYM_GROUPS = [...SYNONYM_GROUPS, ...EXPANDED_SYNONYM_GROUPS];
 
 export default function ParaphraseSynonyms() {
     const [query, setQuery] = useState('');
     const [copied, setCopied] = useState<string | null>(null);
 
     const filtered = useMemo(() => {
-        if (!query.trim()) return SYNONYM_GROUPS;
+        if (!query.trim()) return ALL_SYNONYM_GROUPS;
         const q = query.toLowerCase();
-        return SYNONYM_GROUPS.map((group) => ({
+        return ALL_SYNONYM_GROUPS.map((group) => ({
             ...group,
             pairs: group.pairs.filter(
                 (p) => p.base.toLowerCase().includes(q) || p.synonyms.some((s) => s.toLowerCase().includes(q)),
@@ -52,15 +55,15 @@ export default function ParaphraseSynonyms() {
                             <h3 className="text-sm font-black text-slate-900">{group.category}</h3>
                         </div>
                         <div className="divide-y divide-slate-50">
-                            {group.pairs.map((pair) => (
-                                <div key={pair.base} className="flex flex-wrap items-start gap-3 px-4 py-3">
+                            {group.pairs.map((pair, pairIdx) => (
+                                <div key={pairIdx} className="flex flex-wrap items-start gap-3 px-4 py-3">
                                     <span className="min-w-[120px] rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-black text-white">
                                         {pair.base}
                                     </span>
                                     <div className="flex flex-wrap gap-1.5">
-                                        {pair.synonyms.map((syn) => (
+                                        {pair.synonyms.map((syn, synIdx) => (
                                             <button
-                                                key={syn}
+                                                key={synIdx}
                                                 onClick={() => copy(syn)}
                                                 title="Click to copy"
                                                 className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-medium transition ${

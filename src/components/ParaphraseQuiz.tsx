@@ -1,7 +1,8 @@
 'use client';
 import { useState, useMemo } from 'react';
 import { CheckCircle2, XCircle, ChevronRight, RotateCcw, Trophy, Filter } from 'lucide-react';
-import { QUIZ_QUESTIONS, type QuizQuestion, type TechniqueId } from '../lib/paraphraseData';
+import { ALL_QUIZ_QUESTIONS, type QuizQuestion } from '../lib/paraphraseQuizData';
+import type { TechniqueId } from '../lib/paraphraseData';
 
 type Filter = { difficulty: 'all' | 'easy' | 'medium' | 'hard'; technique: TechniqueId | 'all'; type: QuizQuestion['type'] | 'all' };
 
@@ -11,7 +12,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function ParaphraseQuiz() {
     const [filters, setFilters] = useState<Filter>({ difficulty: 'all', technique: 'all', type: 'all' });
-    const [questions, setQuestions] = useState<QuizQuestion[]>(() => shuffle(QUIZ_QUESTIONS));
+    const [questions, setQuestions] = useState<QuizQuestion[]>(() => shuffle(ALL_QUIZ_QUESTIONS));
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
     const [answered, setAnswered] = useState(false);
@@ -20,7 +21,7 @@ export default function ParaphraseQuiz() {
     const [history, setHistory] = useState<Array<{ id: string; correct: boolean; technique: TechniqueId }>>([]);
 
     const filtered = useMemo(() => {
-        let q = QUIZ_QUESTIONS;
+        let q = ALL_QUIZ_QUESTIONS;
         if (filters.difficulty !== 'all') q = q.filter((x) => x.difficulty === filters.difficulty);
         if (filters.technique !== 'all') q = q.filter((x) => x.technique === filters.technique);
         if (filters.type !== 'all') q = q.filter((x) => x.type === filters.type);

@@ -1,21 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Loader2, CheckCircle2, AlertCircle, Shuffle } from 'lucide-react';
-
-const PRACTICE_SENTENCES = [
-    { text: 'The government introduced new laws to reduce carbon emissions.', hint: 'synonym: government, introduced, new, reduce' },
-    { text: 'Scientists have discovered that regular sleep improves memory.', hint: 'synonym: scientists, discovered, regular, improves' },
-    { text: 'Many young people prefer to live in cities rather than rural areas.', hint: 'synonym: many, young people, prefer, cities, rural' },
-    { text: 'Because the economy grew, unemployment fell significantly.', hint: 'clause restructure: Because → Due to' },
-    { text: 'The university requires students to attend at least 80% of lectures.', hint: 'synonym + word form: requires, attend, lectures' },
-    { text: 'Researchers found that children who read daily perform better at school.', hint: 'active→passive or synonym: found, perform better' },
-    { text: 'Although technology has many benefits, it also creates new problems.', hint: 'clause restructure: Although → Despite' },
-    { text: 'The rapid growth of social media has changed the way people communicate.', hint: 'nominalization: growth, changed, communicate' },
-    { text: 'Governments should invest more in renewable energy sources.', hint: 'synonym: governments, invest, renewable energy' },
-    { text: 'The results of the study were not conclusive.', hint: 'antonym+negation: not conclusive → inconclusive' },
-    { text: 'Air pollution causes thousands of premature deaths every year.', hint: 'synonym: causes, premature deaths, every year' },
-    { text: 'Students who exercise regularly tend to achieve higher grades.', hint: 'synonym: exercise regularly, tend to achieve, higher grades' },
-];
+import { PRACTICE_SENTENCES } from '../lib/paraphrasePracticeData';
 
 type Result = {
     score: number;

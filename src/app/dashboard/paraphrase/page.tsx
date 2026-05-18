@@ -117,9 +117,9 @@ export default function ParaphrasePage() {
                     <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {[
                             { v: '6', l: 'Techniques' },
-                            { v: '30+', l: 'Quiz Questions' },
-                            { v: '200+', l: 'Synonyms' },
-                            { v: '12', l: 'Practice Sentences' },
+                            { v: '700+', l: 'Quiz Questions' },
+                            { v: '1000+', l: 'Synonyms' },
+                            { v: '500+', l: 'Practice Sentences' },
                         ].map((s) => (
                             <div key={s.l} className="rounded-xl border border-white/5 bg-white/5 px-4 py-3">
                                 <p className="text-xl font-black text-white">{s.v}</p>
@@ -245,7 +245,7 @@ export default function ParaphrasePage() {
                     <div className="space-y-4">
                         <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3">
                             <p className="text-sm text-amber-800 font-medium">
-                                IELTS এ সবচেয়ে বেশি দরকার হওয়া <strong>200+ synonym</strong> — category অনুযায়ী সাজানো।
+                                IELTS এ সবচেয়ে বেশি দরকার হওয়া <strong>1000+ synonym</strong> — category অনুযায়ী সাজানো।
                                 যেকোনো শব্দ search করো। Synonym এ click করলে copy হয়ে যাবে — সরাসরি Writing বা Speaking এ ব্যবহার করো।
                             </p>
                         </div>

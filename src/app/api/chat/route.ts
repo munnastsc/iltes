@@ -1,37 +1,68 @@
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 type ChatRequestBody = {
     message?: string;
     context?: string;
+    history?: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }>;
 };
 
-const SYSTEM_PROMPT = `
-You are 'IELTS Sathi AI', a senior IELTS expert and coach. Your goal is to help students achieve a high band score (8.0+) in the IELTS exam. 
-Always respond in Bengali (বাংলা). Use English for technical IELTS terms (e.g., 'True/False/Not Given', 'Lexical Resource', 'Coherence and Cohesion', 'Skimming', 'Scanning').
-Provide detailed explanations, specific strategies, tips, and tricks. 
-When asked about a specific module (Listening, Reading, Writing, Speaking), give a step-by-step approach.
-Focus on logic, common traps (distractors), and time management.
-Encourage the student and be professional yet friendly.
-If the student asks in English, still respond in Bengali but you can provide English translations for key tips.
-`;
+const SYSTEM_PROMPT = `তুমি "ILTES AI Tutor" — বিশ্বের সেরা IELTS শিক্ষক এবং English expert।
+
+তোমার পরিচয়:
+- নাম: ILTES AI Tutor
+- তুমি Cambridge IELTS Books 9–20 এর সব question, answer ও strategy জানো
+- তুমি শুধু IELTS না, সব English grammar এরও master
+
+তোমার শিক্ষার স্টাইল:
+- সবসময় বাংলায় explain করো (English technical terms রাখো, বাংলায় মিশিয়ে)
+- গল্প ও মজার উদাহরণ দিয়ে শেখাও — কখনো boring করো না
+- Real life এর সাথে মিলিয়ে বোঝাও (যেমন: "ধরো তুমি বাজারে গেছো...")
+- জটিল grammar কে ছোট shortcut বা trick দিয়ে explain করো
+- Student এর ভুলকে বকা না দিয়ে kindly correct করো
+- প্রতিটা answer এ student কে encourage করো, হাসি দিয়ে শেষ করো
+
+তুমি যা করতে পারো:
+1. IELTS Listening: section analysis, distractor identification, keyword matching, note completion
+2. IELTS Reading: True/False/Not Given logic, matching headings, skimming/scanning tricks
+3. IELTS Writing: Task 1 (graph/letter/diagram), Task 2 (essay types), band scoring, sample sentences
+4. IELTS Speaking: Part 1/2/3 strategy, how to extend answers, fluency tricks
+5. English Grammar: tense, voice, clause, preposition, article — সব shortcut ও trick সহ
+6. Cambridge Books 9–20: যেকোনো specific question explain করো
+7. Vocabulary ও Paraphrase: synonym, academic words, paraphrase techniques
+8. Band Score Strategy: কোন skill এ কত time দেবে, common mistakes কীভাবে avoid করবে
+
+Response Format (সবসময় follow করো):
+- 🎯 প্রথমে direct answer দাও
+- 📌 Rule বা Tip আলাদা করে দাও
+- 💡 Real example দাও (Cambridge বা daily life থেকে)
+- ✅ Memory trick বা shortcut দাও যদি relevant হয়
+- 🔥 Encouragement দিয়ে শেষ করো
+
+Cambridge Book এর specific question হলে:
+- Exact answer বলো
+- Audio/passage এ কোন keyword ছিল explain করো
+- Distractor কোনটা এবং কেন wrong তা বলো
+- Same type এর future question এ কীভাবে approach করবে বলো
+
+গুরুত্বপূর্ণ:
+- কখনো "I don't know" বলবে না — জানলে explain করো, না জানলে related strategy দাও
+- Response বেশি ছোট করবে না — student যেন পুরোপুরি বুঝতে পারে
+- Emoji ব্যবহার করো response কে lively রাখতে
+- বাংলা ও English mix করো naturally`;
 
 function buildFallbackReply(message: string): string {
     const lower = message.toLowerCase();
-
-    if (lower.includes('reading')) {
-        return 'Reading এ আগে question type identify করুন। তারপর keywords mark করে passage scan করুন, এবং True/False/Not Given-এ exact evidence না পেলে Not Given দিন।';
+    if (lower.includes('reading') || lower.includes('রিডিং')) {
+        return '🎯 Reading এ সবচেয়ে বড় trick হলো — answer passage এ আছেই, শুধু সঠিক keyword খুঁজতে হবে!\n\n📌 True/False/Not Given Rule:\n- True = passage এ exactly same idea আছে\n- False = passage এ opposite idea আছে  \n- Not Given = passage এ এই topic নেই\n\n💡 Example: Passage বলছে "cars are common" — Question: "Vehicles are popular" → TRUE (vehicles = cars, popular = common)\n\n✅ Trick: Answer সবসময় order এ থাকে passage এ!\n\n🔥 তুমি পারবেই, practice করতে থাকো!';
     }
-    if (lower.includes('writing')) {
-        return 'Writing Task 2 এ প্রথমে clear thesis লিখুন, তারপর 2 body paragraph-এ idea + example দিন। grammar এর চেয়ে coherence আর task response আগে নিশ্চিত করুন।';
+    if (lower.includes('listening') || lower.includes('লিসেনিং')) {
+        return '🎯 Listening এর সবচেয়ে বড় secret — audio শোনার আগেই question পড়ো!\n\n📌 3 Steps:\n1. Question এর keywords underline করো\n2. Audio তে সেই keyword এর synonym শোনো\n3. Distractor (প্রথম যা বলে) এ trap না হয়ে final answer নাও\n\n💡 Example: Question: "meeting time" → Audio: "originally 3pm but changed to 4pm" → Answer: 4pm (distractor: 3pm)\n\n✅ Trick: Distractor সবসময় আগে আসে, সঠিক answer পরে confirm হয়!\n\n🔥 Listening practice এর জন্য Cambridge audio ব্যবহার করো — তুমি improve করবেই!';
     }
-    if (lower.includes('listening')) {
-        return 'Listening এ section শুরু হওয়ার আগে instruction পড়ুন, answer limit দেখুন, আর distractor words শুনে panic না করে final correction ধরুন।';
+    if (lower.includes('writing') || lower.includes('রাইটিং')) {
+        return '🎯 Writing এ Band 7+ পেতে হলে শুধু grammar নয়, structure ও coherence দরকার!\n\n📌 Task 2 Magic Formula:\nIntro (2 sentences) → Body 1 (idea + explain + example) → Body 2 (idea + explain + example) → Conclusion (1-2 sentences)\n\n💡 Example Intro: "It is argued that technology has transformed modern education. While this brings numerous benefits, it also presents significant challenges."\n\n✅ Trick: প্রতি paragraph এ একটাই main idea রাখো — examiner বুঝতে পারবে!\n\n🔥 লিখতে থাকো, প্রতিদিন একটা paragraph লিখলেই দেখবে কত improve হচ্ছে!';
     }
-    if (lower.includes('speaking')) {
-        return 'Speaking এ short answer না দিয়ে 2-3 line expand করুন: idea, reason, example। fluency keep করতে simple structure ব্যবহার করুন।';
-    }
-    return 'আপনার প্রশ্ন পেয়েছি। IELTS-এ score improve করতে আমরা question ধরন, logic, এবং common trap একসাথে breakdown করে practice করব। (Note: OpenAI API key missing or error, using fallback).';
+    return '🎯 IELTS এ সফল হতে হলে দরকার সঠিক strategy + consistent practice!\n\n📌 4 Module Tips:\n- Listening: আগে question পড়ো, distractor এড়াও\n- Reading: keyword দিয়ে locate করো, order follow করো\n- Writing: clear structure, one idea per paragraph\n- Speaking: extend করো, reason + example দাও\n\n✅ Daily Routine: 1 Listening test + 1 Reading passage + 15 min Writing practice\n\n🔥 তুমি পারবে! IELTS একটা skill — practice এ সব আসে!';
 }
 
 export async function POST(request: Request) {
@@ -43,39 +74,42 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
         }
 
-        // Try OpenAI first
-        if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'sk-your-openai-api-key-here') {
+        const apiKey = process.env.GEMINI_API_KEY;
+
+        if (apiKey) {
             try {
-                const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-                const response = await openai.chat.completions.create({
-                    model: 'gpt-3.5-turbo', // Or gpt-4-turbo-preview
-                    messages: [
-                        { role: 'system', content: SYSTEM_PROMPT },
-                        { role: 'user', content: `Context: ${body.context || 'General'}\nQuestion: ${message}` },
-                    ],
-                    temperature: 0.7,
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({
+                    model: 'gemini-1.5-flash',
+                    systemInstruction: SYSTEM_PROMPT,
                 });
 
-                const aiText = response.choices[0]?.message?.content;
-                if (aiText) {
-                    return NextResponse.json({
-                        text: aiText,
-                        context: body.context || 'AI Coach Live Response',
-                    });
-                }
+                const chat = model.startChat({
+                    history: body.history || [],
+                    generationConfig: {
+                        temperature: 0.8,
+                        topK: 40,
+                        topP: 0.95,
+                        maxOutputTokens: 2048,
+                    },
+                });
+
+                const contextPrefix = body.context && body.context !== 'General'
+                    ? `[Context: ${body.context}]\n`
+                    : '';
+
+                const result = await chat.sendMessage(contextPrefix + message);
+                const text = result.response.text();
+
+                return NextResponse.json({ text, source: 'gemini' });
             } catch (err) {
-                console.error('OpenAI Error:', err);
-                // Fall through to fallback
+                console.error('Gemini Error:', err);
             }
         }
 
-        // Fallback if no API key or API error
         const text = buildFallbackReply(message);
-        return NextResponse.json({
-            text,
-            context: body.context || 'General IELTS Help (Fallback)',
-        });
+        return NextResponse.json({ text, source: 'fallback' });
     } catch {
-        return NextResponse.json({ error: 'Invalid request payload.' }, { status: 400 });
+        return NextResponse.json({ error: 'Invalid request.' }, { status: 400 });
     }
 }
