@@ -3,6 +3,8 @@ import { prisma } from '../../../../lib/prisma';
 import { listLocalBooks } from '../../../../lib/localStore';
 import { findContentQaIssues } from '../../../../lib/contentQa';
 
+export const dynamic = 'force-dynamic';
+
 async function getQa() {
     try {
         let rows: any[] = [];
