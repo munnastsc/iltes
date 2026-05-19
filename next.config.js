@@ -9,6 +9,10 @@ const nextConfig = {
             },
         ],
     },
+    // Include data/ directory in serverless function bundle (for Vercel)
+    outputFileTracingIncludes: {
+        '/api/chat': ['./data/**/*'],
+    },
 };
 
 module.exports = nextConfig;
