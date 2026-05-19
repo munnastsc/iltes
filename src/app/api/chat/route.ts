@@ -101,24 +101,42 @@ async function loadKB() {
 
 // ─── REF PARSING ──────────────────────────────────────────────────────────────
 
+// Convert Bengali digits → ASCII
+function normalizeBengaliDigits(s: string): string {
+    return s.replace(/[০-৯]/g, d => String('০১২৩৪৫৬৭৮৯'.indexOf(d)));
+}
+
 function parseCambridgeRef(message: string): { book: number; test: number; question?: number; module?: string } | null {
-    const lower = message.toLowerCase();
+    const raw = normalizeBengaliDigits(message);
+    const lower = raw.toLowerCase();
 
+    // Book: "cambridge 19", "cam 19", "cam books 19", "book 19", "c19", "19 no book"
     const bookMatch =
-        lower.match(/(?:cambridge|cam|book|বই|ক্যামব্রিজ|ক্যাম)[.\s-]*(\d+)/) ||
+        lower.match(/(?:cambridge|ক্যামব্রিজ|ক্যাম)[.\s-]*(?:book|books)?[.\s-]*(\d+)/) ||
+        lower.match(/(?:cam)[.\s-]*(?:book|books)?[.\s-]*(\d+)/) ||
+        lower.match(/(?:book|বই)[.\s-]*(?:no\.?|number|নম্বর)?[.\s-]*(\d+)/) ||
         lower.match(/\bc(\d+)\b/) ||
-        lower.match(/\bcam(\d+)\b/);
+        lower.match(/\bcam(\d+)\b/) ||
+        lower.match(/(\d+)[.\s-]*(?:no\.?|number|নম্বর)[.\s-]*(?:book|বই)/);
 
+    // Test: "test 2", "test2", "t2", "2 test", "2 no test"
     const testMatch =
         lower.match(/test[.\s-]*(\d+)/) ||
-        lower.match(/\bt(\d+)\b/);
+        lower.match(/\bt(\d+)\b/) ||
+        lower.match(/(\d+)[.\s-]*(?:no\.?|number)?[.\s-]*test/) ||
+        lower.match(/(\d+)[.\s-]*(?:নম্বর|no\.?)[.\s-]*test/);
 
+    // Question: "q3", "q 3", "3 no question", "question 3", "er 3 no", "3 number", "3 nmbr", "#3"
     const qMatch =
-        lower.match(/(?:question|q\.?|no\.?|number|প্রশ্ন)[.\s#-]*(\d+)/) ||
-        lower.match(/\bq(\d+)\b/) ||
-        lower.match(/#(\d+)/);
+        lower.match(/(?:question|প্রশ্ন)[.\s-]*(?:no\.?|number|নম্বর)?[.\s#-]*(\d+)/) ||
+        lower.match(/\bq\.?\s*(\d+)\b/) ||
+        lower.match(/(\d+)[.\s-]*(?:no\.?|number|নম্বর|nmbr)[.\s-]*(?:question|প্রশ্ন|quesion|quseton|queston)/) ||
+        lower.match(/(?:no\.?|number|নম্বর)[.\s-]*(\d+)[.\s-]*(?:question|প্রশ্ন|ta|টা|টি|ti)/) ||
+        lower.match(/#\s*(\d+)/) ||
+        lower.match(/\ber\s+(\d+)\s+(?:no|num|নম্বর|question|প্রশ্ন)\b/);
 
-    const moduleMatch = lower.match(/\b(listening|reading|লিসেনিং|রিডিং|লিস্টেনিং)\b/);
+    // Module: listening / reading in English or Bangla
+    const moduleMatch = lower.match(/\b(listening|reading|লিসেনিং|রিডিং|লিস্টেনিং|listeing|lisening)\b/);
 
     if (!bookMatch || !testMatch) return null;
     const book = parseInt(bookMatch[1]);
@@ -128,10 +146,25 @@ function parseCambridgeRef(message: string): { book: number; test: number; quest
     let mod: string | undefined;
     if (moduleMatch) {
         const m = moduleMatch[1];
-        mod = (m === 'লিসেনিং' || m === 'listening' || m === 'লিস্টেনিং') ? 'listening' : 'reading';
+        mod = (m.startsWith('list') || m === 'লিসেনিং' || m === 'লিস্টেনিং') ? 'listening' : 'reading';
     }
 
     return { book, test, question: qMatch ? parseInt(qMatch[1]) : undefined, module: mod };
+}
+
+// Extract Cambridge ref from chat history (for follow-up messages like "২", "বিস্তারিত")
+function parseCambridgeRefFromHistory(
+    history: Array<{ role: string; parts: Array<{ text: string }> }>
+): { book: number; test: number; question?: number; module?: string } | null {
+    // Walk history in reverse, find last user message with a Cambridge ref
+    for (let i = history.length - 1; i >= 0; i--) {
+        const entry = history[i];
+        if (entry.role === 'user') {
+            const ref = parseCambridgeRef(entry.parts?.[0]?.text || '');
+            if (ref) return ref;
+        }
+    }
+    return null;
 }
 
 // ─── PASSAGE HELPERS ──────────────────────────────────────────────────────────
@@ -303,8 +336,12 @@ export async function POST(request: Request) {
         const message = body.message?.trim();
         if (!message) return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
 
-        // 1. Parse Cambridge reference
-        const ref = parseCambridgeRef(message);
+        // 1. Parse Cambridge reference — also check history for follow-up messages ("১", "২", "বিস্তারিত" etc.)
+        let ref = parseCambridgeRef(message);
+        const isFollowUp = !ref && /^[১২৩123]$|বিস্তারিত|distractor|strategy|গল্পে|explain|ব্যাখ্যা/i.test(message);
+        if (!ref && isFollowUp && body.history?.length) {
+            ref = parseCambridgeRefFromHistory(body.history);
+        }
         let kb: KBResult | null = null;
         if (ref) {
             kb = await lookupKB(ref.book, ref.test, ref.question, ref.module);
