@@ -70,23 +70,29 @@ function formatText(text: string) {
 }
 
 export default function AiTutorPage() {
-    const [messages, setMessages] = useState<Message[]>(() => {
-        if (typeof window === 'undefined') return [WELCOME];
+    const [messages, setMessages] = useState<Message[]>([WELCOME]);
+
+    useEffect(() => {
         try {
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 const parsed = JSON.parse(saved) as Message[];
-                return parsed.length > 0 ? parsed : [WELCOME];
+                if (parsed.length > 0) setMessages(parsed);
             }
         } catch { /* empty */ }
-        return [WELCOME];
-    });
+    }, []);
 
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [activeTopic, setActiveTopic] = useState('all');
     const bottomRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
+
+    // Question Selector state
+    const [selBook, setSelBook] = useState(9);
+    const [selTest, setSelTest] = useState(1);
+    const [selModule, setSelModule] = useState<'Reading' | 'Listening'>('Reading');
+    const [selQ, setSelQ] = useState(1);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -213,20 +219,83 @@ export default function AiTutorPage() {
             <div className="flex-1 overflow-y-auto px-4 py-4">
                 <div className="mx-auto max-w-3xl space-y-4">
 
-                    {/* Quick questions (show when only welcome message) */}
+                    {/* Question Selector + Quick Questions (show when only welcome message) */}
                     {messages.length === 1 && (
-                        <div className="rounded-2xl border border-indigo-100 bg-white p-4 shadow-sm">
-                            <p className="mb-3 text-xs font-black uppercase tracking-wider text-slate-400">⚡ Quick Questions</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {QUICK_QUESTIONS.map((q) => (
-                                    <button
-                                        key={q.label}
-                                        onClick={() => sendMessage(q.q)}
-                                        className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-medium text-slate-700 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700 transition"
-                                    >
-                                        {q.label}
-                                    </button>
-                                ))}
+                        <div className="space-y-3">
+                            {/* Cambridge Question Selector */}
+                            <div className="rounded-2xl border border-teal-200 bg-teal-50 p-4 shadow-sm">
+                                <p className="mb-3 text-xs font-black uppercase tracking-wider text-teal-700">📚 Cambridge Books — যেকোনো Question Explain করাও</p>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Book</label>
+                                        <select
+                                            value={selBook}
+                                            onChange={e => setSelBook(Number(e.target.value))}
+                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
+                                        >
+                                            {Array.from({length: 12}, (_, i) => i + 9).map(b => (
+                                                <option key={b} value={b}>Cambridge {b}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Test</label>
+                                        <select
+                                            value={selTest}
+                                            onChange={e => setSelTest(Number(e.target.value))}
+                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
+                                        >
+                                            {[1,2,3,4].map(t => (
+                                                <option key={t} value={t}>Test {t}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Module</label>
+                                        <select
+                                            value={selModule}
+                                            onChange={e => setSelModule(e.target.value as 'Reading' | 'Listening')}
+                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
+                                        >
+                                            <option value="Reading">Reading</option>
+                                            <option value="Listening">Listening</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Question</label>
+                                        <select
+                                            value={selQ}
+                                            onChange={e => setSelQ(Number(e.target.value))}
+                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
+                                        >
+                                            {Array.from({length: 40}, (_, i) => i + 1).map(n => (
+                                                <option key={n} value={n}>Q{n}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => sendMessage(`Cambridge ${selBook} Test ${selTest} ${selModule} Q${selQ} explain koro`)}
+                                    className="w-full rounded-xl bg-teal-600 py-2.5 text-sm font-bold text-white hover:bg-teal-500 transition"
+                                >
+                                    ✨ এই Question টা Explain করো
+                                </button>
+                            </div>
+
+                            {/* Quick questions */}
+                            <div className="rounded-2xl border border-indigo-100 bg-white p-4 shadow-sm">
+                                <p className="mb-3 text-xs font-black uppercase tracking-wider text-slate-400">⚡ Quick Questions</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    {QUICK_QUESTIONS.map((q) => (
+                                        <button
+                                            key={q.label}
+                                            onClick={() => sendMessage(q.q)}
+                                            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-xs font-medium text-slate-700 hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700 transition"
+                                        >
+                                            {q.label}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     )}
