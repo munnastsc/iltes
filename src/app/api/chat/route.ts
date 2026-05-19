@@ -110,7 +110,7 @@ function parseCambridgeRef(message: string): { book: number; test: number; quest
     const raw = normalizeBengaliDigits(message);
     const lower = raw.toLowerCase();
 
-    // Book: "cambridge 19", "cam 19", "cam books 19", "book 19", "c19", "19 no book"
+    // Book: "cambridge 19", "cam books 19", "book 19", "c19", "19 no book"
     const bookMatch =
         lower.match(/(?:cambridge|ক্যামব্রিজ|ক্যাম)[.\s-]*(?:book|books)?[.\s-]*(\d+)/) ||
         lower.match(/(?:cam)[.\s-]*(?:book|books)?[.\s-]*(\d+)/) ||
@@ -119,29 +119,38 @@ function parseCambridgeRef(message: string): { book: number; test: number; quest
         lower.match(/\bcam(\d+)\b/) ||
         lower.match(/(\d+)[.\s-]*(?:no\.?|number|নম্বর)[.\s-]*(?:book|বই)/);
 
-    // Test: "test 2", "test2", "t2", "2 test", "2 no test"
+    // Test: "test 1", "t1", "1 test"
     const testMatch =
         lower.match(/test[.\s-]*(\d+)/) ||
         lower.match(/\bt(\d+)\b/) ||
         lower.match(/(\d+)[.\s-]*(?:no\.?|number)?[.\s-]*test/) ||
         lower.match(/(\d+)[.\s-]*(?:নম্বর|no\.?)[.\s-]*test/);
 
-    // Question: "q3", "q 3", "3 no question", "question 3", "er 3 no", "3 number", "3 nmbr", "#3"
-    const qMatch =
-        lower.match(/(?:question|প্রশ্ন)[.\s-]*(?:no\.?|number|নম্বর)?[.\s#-]*(\d+)/) ||
-        lower.match(/\bq\.?\s*(\d+)\b/) ||
-        lower.match(/(\d+)[.\s-]*(?:no\.?|number|নম্বর|nmbr)[.\s-]*(?:question|প্রশ্ন|quesion|quseton|queston)/) ||
-        lower.match(/(?:no\.?|number|নম্বর)[.\s-]*(\d+)[.\s-]*(?:question|প্রশ্ন|ta|টা|টি|ti)/) ||
-        lower.match(/#\s*(\d+)/) ||
-        lower.match(/\ber\s+(\d+)\s+(?:no|num|নম্বর|question|প্রশ্ন)\b/);
-
-    // Module: listening / reading in English or Bangla
-    const moduleMatch = lower.match(/\b(listening|reading|লিসেনিং|রিডিং|লিস্টেনিং|listeing|lisening)\b/);
+    // Module
+    const moduleMatch = lower.match(/\b(listening|reading|লিসেনিং|রিডিং|লিস্টেনিং|listeing|lisening|readng|readin)\b/);
 
     if (!bookMatch || !testMatch) return null;
     const book = parseInt(bookMatch[1]);
     const test = parseInt(testMatch[1]);
     if (book < 9 || book > 20 || test < 1 || test > 4) return null;
+
+    // Question — explicit patterns first
+    let question: number | undefined;
+    const explicitQ =
+        lower.match(/(?:question|প্রশ্ন|qn)[.\s-]*(?:no\.?|number|নম্বর)?[.\s#-]*(\d+)/) ||
+        lower.match(/\bq\.?\s*(\d+)\b/) ||
+        lower.match(/#\s*(\d+)/);
+
+    if (explicitQ) {
+        question = parseInt(explicitQ[1]);
+    } else {
+        // Flexible: find any number that is NOT book and NOT test, in range 1-40
+        // Works for: "3 no qustoin", "er 3 ta", "3 number", "3 nmbr", "3 no", standalone 3
+        const allNums = [...lower.matchAll(/\b(\d+)\b/g)]
+            .map(m => parseInt(m[1]))
+            .filter(n => n !== book && n !== test && n >= 1 && n <= 40);
+        if (allNums.length > 0) question = allNums[0];
+    }
 
     let mod: string | undefined;
     if (moduleMatch) {
@@ -149,7 +158,7 @@ function parseCambridgeRef(message: string): { book: number; test: number; quest
         mod = (m.startsWith('list') || m === 'লিসেনিং' || m === 'লিস্টেনিং') ? 'listening' : 'reading';
     }
 
-    return { book, test, question: qMatch ? parseInt(qMatch[1]) : undefined, module: mod };
+    return { book, test, question, module: mod };
 }
 
 // Extract Cambridge ref from chat history (for follow-up messages like "২", "বিস্তারিত")
