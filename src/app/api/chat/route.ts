@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
 type ChatRequestBody = {
     message?: string;
@@ -7,108 +9,251 @@ type ChatRequestBody = {
     history?: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }>;
 };
 
+type ReadingKBEntry = { book: number; test: number; qn: number; ans: string; explanation?: string };
+type ReadingContextEntry = { book: number; test: number; passage_text?: string; question_text?: string };
+type ListeningKBEntry = { book: number; test: number; section: number; topic?: string; qn: number; type?: string; pre?: string; post?: string; q?: string; ans: string; opts?: string[] };
+
 const SYSTEM_PROMPT = `তুমি "ILTES AI Tutor" — বিশ্বের সেরা IELTS শিক্ষক এবং English expert।
 
-তোমার পরিচয়:
-- নাম: ILTES AI Tutor
-- তুমি Cambridge IELTS Books 9–20 এর সব question, answer ও strategy জানো
-- তুমি শুধু IELTS না, সব English grammar এরও master
-
 তোমার শিক্ষার স্টাইল:
-- সবসময় বাংলায় explain করো (English technical terms রাখো, বাংলায় মিশিয়ে)
-- গল্প ও মজার উদাহরণ দিয়ে শেখাও — কখনো boring করো না
-- Real life এর সাথে মিলিয়ে বোঝাও (যেমন: "ধরো তুমি বাজারে গেছো...")
+- সবসময় বাংলায় explain করো (English technical terms রাখো)
+- গল্প ও মজার উদাহরণ দিয়ে শেখাও
 - জটিল grammar কে ছোট shortcut বা trick দিয়ে explain করো
-- Student এর ভুলকে বকা না দিয়ে kindly correct করো
-- প্রতিটা answer এ student কে encourage করো, হাসি দিয়ে শেষ করো
+- Student কে kindly encourage করো
+- প্রতিটা answer এ emoji ব্যবহার করো
 
-তুমি যা করতে পারো:
-1. IELTS Listening: section analysis, distractor identification, keyword matching, note completion
-2. IELTS Reading: True/False/Not Given logic, matching headings, skimming/scanning tricks
-3. IELTS Writing: Task 1 (graph/letter/diagram), Task 2 (essay types), band scoring, sample sentences
-4. IELTS Speaking: Part 1/2/3 strategy, how to extend answers, fluency tricks
-5. English Grammar: tense, voice, clause, preposition, article — সব shortcut ও trick সহ
-6. Cambridge Books 9–20: যেকোনো specific question explain করো
-7. Vocabulary ও Paraphrase: synonym, academic words, paraphrase techniques
-8. Band Score Strategy: কোন skill এ কত time দেবে, common mistakes কীভাবে avoid করবে
-
-Response Format (সবসময় follow করো):
+Response Format:
 - 🎯 প্রথমে direct answer দাও
 - 📌 Rule বা Tip আলাদা করে দাও
-- 💡 Real example দাও (Cambridge বা daily life থেকে)
-- ✅ Memory trick বা shortcut দাও যদি relevant হয়
+- 💡 Example দাও
+- ✅ Memory trick দাও যদি relevant হয়
 - 🔥 Encouragement দিয়ে শেষ করো
 
-Cambridge Book এর specific question হলে:
-- Exact answer বলো
-- Audio/passage এ কোন keyword ছিল explain করো
-- Distractor কোনটা এবং কেন wrong তা বলো
-- Same type এর future question এ কীভাবে approach করবে বলো
+[CAMBRIDGE DATA] block দেওয়া হলে সেই exact data ই সঠিক — Gemini নিজের knowledge ব্যবহার করবে না:
+- Correct Answer ফিল্ডে যা আছে সেটাই বলো — নিজে guess করবে না
+- কেন এই answer সঠিক — passage/audio থেকে keyword দিয়ে explain করো
+- Wrong answer কেন wrong তা বলো (distractor analysis)
+- Same type question এ future approach বলো
+- IMPORTANT: [CAMBRIDGE DATA] এর Answer সবসময় trust করো, এটাই official Cambridge answer`;
 
-গুরুত্বপূর্ণ:
-- কখনো "I don't know" বলবে না — জানলে explain করো, না জানলে related strategy দাও
-- Response বেশি ছোট করবে না — student যেন পুরোপুরি বুঝতে পারে
-- Emoji ব্যবহার করো response কে lively রাখতে
-- বাংলা ও English mix করো naturally`;
+let readingKB: Record<string, ReadingKBEntry | ReadingContextEntry> | null = null;
+let listeningKB: Record<string, ListeningKBEntry> | null = null;
+
+async function loadKB() {
+    if (!readingKB) {
+        try {
+            const raw = await readFile(path.join(process.cwd(), 'data', 'reading-kb.json'), 'utf-8');
+            readingKB = JSON.parse(raw);
+        } catch { readingKB = {}; }
+    }
+    if (!listeningKB) {
+        try {
+            const raw = await readFile(path.join(process.cwd(), 'data', 'listening-kb.json'), 'utf-8');
+            listeningKB = JSON.parse(raw);
+        } catch { listeningKB = {}; }
+    }
+}
+
+function parseCambridgeRef(message: string): { book: number; test: number; question?: number; module?: string } | null {
+    const lower = message.toLowerCase();
+
+    // Book: "cambridge 9", "cam9", "c9", "book 9", "বই ৯", "ক্যামব্রিজ ৯", digits 9-20
+    const bookMatch = lower.match(/(?:cambridge|cam|book|বই|ক্যামব্রিজ|ক্যাম)[.\s-]*(\d+)/) ||
+                      lower.match(/\bc(\d+)\b/) ||
+                      lower.match(/\bcam(\d+)\b/);
+
+    // Test: "test 1", "t1", "test-1"
+    const testMatch = lower.match(/test[.\s-]*(\d+)/) ||
+                      lower.match(/\bt(\d+)\b/);
+
+    // Question: "question 5", "q5", "q. 5", "no 5", "number 5", "প্রশ্ন ৫", "#5"
+    const qMatch = lower.match(/(?:question|q\.?|no\.?|number|প্রশ্ন)[.\s#-]*(\d+)/) ||
+                   lower.match(/\bq(\d+)\b/) ||
+                   lower.match(/#(\d+)/);
+
+    // Module: reading/listening keywords in English or Bangla
+    const moduleMatch = lower.match(/\b(listening|reading|লিসেনিং|রিডিং|লিস্টেনিং)\b/);
+
+    if (!bookMatch || !testMatch) return null;
+    const book = parseInt(bookMatch[1]);
+    const test = parseInt(testMatch[1]);
+    if (book < 9 || book > 20 || test < 1 || test > 4) return null;
+
+    let mod: string | undefined;
+    if (moduleMatch) {
+        const m = moduleMatch[1];
+        mod = (m === 'লিসেনিং' || m === 'listening' || m === 'লিস্টেনিং') ? 'listening' : 'reading';
+    }
+
+    return { book, test, question: qMatch ? parseInt(qMatch[1]) : undefined, module: mod };
+}
+
+function findQuestionText(questionText: string, qn: number): string {
+    if (!questionText) return '';
+    const lines = questionText.split('\n');
+    // Find line starting with question number
+    const idx = lines.findIndex(l => /^(\d+)[.\s)]/.test(l.trim()) && parseInt(l.trim()) === qn);
+    if (idx >= 0) {
+        // Include instruction header (few lines before) + question + next 2 lines
+        const start = Math.max(0, idx - 2);
+        const end = Math.min(lines.length, idx + 3);
+        return lines.slice(start, end).join(' ').trim();
+    }
+    return '';
+}
+
+function findPassageExcerpt(passageText: string, keyword: string): string {
+    if (!passageText || !keyword) return passageText.slice(0, 800);
+    const lower = passageText.toLowerCase();
+    const kw = keyword.toLowerCase().slice(0, 30);
+    const idx = lower.indexOf(kw);
+    if (idx >= 0) {
+        const start = Math.max(0, idx - 200);
+        const end = Math.min(passageText.length, idx + 600);
+        return passageText.slice(start, end);
+    }
+    return passageText.slice(0, 800);
+}
+
+async function getCambridgeContext(book: number, test: number, qn?: number, module?: string): Promise<string> {
+    await loadKB();
+    let ctx = '';
+
+    const isListening = module === 'listening';
+    const isReading = module === 'reading';
+    const tryBoth = !module;
+
+    // Reading lookup
+    if (isReading || tryBoth) {
+        if (qn && readingKB) {
+            const key = `${book}_${test}_${qn}`;
+            const entry = readingKB[key] as ReadingKBEntry | undefined;
+            if (entry) {
+                ctx += `[CAMBRIDGE DATA — Reading]\n`;
+                ctx += `Cambridge ${book} Test ${test} Q${qn}\n`;
+                ctx += `Correct Answer: ${entry.ans}\n`;
+                if (entry.explanation) ctx += `Answer Explanation (from passage): ${entry.explanation}\n`;
+
+                const ctxKey = `${book}_${test}_context`;
+                const ctxEntry = readingKB[ctxKey] as ReadingContextEntry | undefined;
+                if (ctxEntry) {
+                    const qText = findQuestionText(ctxEntry.question_text || '', qn);
+                    if (qText) ctx += `\nQuestion: ${qText}\n`;
+                    if (ctxEntry.passage_text) {
+                        const excerpt = findPassageExcerpt(ctxEntry.passage_text, entry.explanation || '');
+                        ctx += `\nPassage excerpt:\n${excerpt}\n`;
+                    }
+                }
+                return ctx;
+            }
+        }
+        // No specific question — context overview
+        if (!qn && readingKB) {
+            const ctxKey = `${book}_${test}_context`;
+            const ctxEntry = readingKB[ctxKey] as ReadingContextEntry | undefined;
+            if (ctxEntry?.passage_text) {
+                ctx += `[CAMBRIDGE DATA — Reading]\nCambridge ${book} Test ${test}\n`;
+                ctx += `Passage (excerpt): ${ctxEntry.passage_text.slice(0, 800)}\n`;
+                if (ctxEntry.question_text) {
+                    ctx += `\nQuestions overview: ${ctxEntry.question_text.slice(0, 400)}\n`;
+                }
+                return ctx;
+            }
+        }
+    }
+
+    // Listening lookup
+    if (isListening || (tryBoth && !ctx)) {
+        if (qn && listeningKB) {
+            for (let sec = 1; sec <= 4; sec++) {
+                const key = `${book}_${test}_${sec}_${qn}`;
+                const entry = listeningKB[key];
+                if (entry) {
+                    ctx += `[CAMBRIDGE DATA — Listening]\n`;
+                    ctx += `Cambridge ${book} Test ${test} Q${qn}\n`;
+                    ctx += `Section ${sec}: ${entry.topic || ''}\n`;
+                    const qText = entry.pre ? `${entry.pre} ___ ${entry.post || ''}` : (entry.q || '');
+                    if (qText) ctx += `Question: ${qText}\n`;
+                    if (entry.opts?.length) ctx += `Options: ${entry.opts.join(' / ')}\n`;
+                    ctx += `Correct Answer: ${entry.ans}\n`;
+                    ctx += `Question Type: ${entry.type || 'fill_in_blank'}\n`;
+                    return ctx;
+                }
+            }
+        }
+        // No specific question — list first few
+        if (!qn && listeningKB) {
+            const sampleKeys = Object.keys(listeningKB).filter(k => k.startsWith(`${book}_${test}_`)).slice(0, 8);
+            if (sampleKeys.length) {
+                ctx += `[CAMBRIDGE DATA — Listening]\nCambridge ${book} Test ${test}\n`;
+                ctx += `Sample questions:\n`;
+                sampleKeys.forEach(k => {
+                    const e = listeningKB![k];
+                    ctx += `  Q${e.qn}: ${e.pre ? e.pre + ' ___' : (e.q || '')} → Answer: ${e.ans}\n`;
+                });
+                return ctx;
+            }
+        }
+    }
+
+    return ctx;
+}
 
 function buildFallbackReply(message: string): string {
     const lower = message.toLowerCase();
     if (lower.includes('reading') || lower.includes('রিডিং')) {
-        return '🎯 Reading এ সবচেয়ে বড় trick হলো — answer passage এ আছেই, শুধু সঠিক keyword খুঁজতে হবে!\n\n📌 True/False/Not Given Rule:\n- True = passage এ exactly same idea আছে\n- False = passage এ opposite idea আছে  \n- Not Given = passage এ এই topic নেই\n\n💡 Example: Passage বলছে "cars are common" — Question: "Vehicles are popular" → TRUE (vehicles = cars, popular = common)\n\n✅ Trick: Answer সবসময় order এ থাকে passage এ!\n\n🔥 তুমি পারবেই, practice করতে থাকো!';
+        return '🎯 Reading এ সবচেয়ে বড় trick হলো — answer passage এ আছেই!\n\n📌 True/False/Not Given:\n- True = same idea আছে\n- False = opposite আছে\n- Not Given = নেই\n\n✅ Trick: Answer order follow করে passage এ!\n\n🔥 তুমি পারবে!';
     }
     if (lower.includes('listening') || lower.includes('লিসেনিং')) {
-        return '🎯 Listening এর সবচেয়ে বড় secret — audio শোনার আগেই question পড়ো!\n\n📌 3 Steps:\n1. Question এর keywords underline করো\n2. Audio তে সেই keyword এর synonym শোনো\n3. Distractor (প্রথম যা বলে) এ trap না হয়ে final answer নাও\n\n💡 Example: Question: "meeting time" → Audio: "originally 3pm but changed to 4pm" → Answer: 4pm (distractor: 3pm)\n\n✅ Trick: Distractor সবসময় আগে আসে, সঠিক answer পরে confirm হয়!\n\n🔥 Listening practice এর জন্য Cambridge audio ব্যবহার করো — তুমি improve করবেই!';
+        return '🎯 Listening secret — audio আগে question পড়ো!\n\n📌 3 Steps:\n1. Keywords underline করো\n2. Synonym শোনো\n3. Distractor এড়াও\n\n🔥 Practice করতে থাকো!';
     }
-    if (lower.includes('writing') || lower.includes('রাইটিং')) {
-        return '🎯 Writing এ Band 7+ পেতে হলে শুধু grammar নয়, structure ও coherence দরকার!\n\n📌 Task 2 Magic Formula:\nIntro (2 sentences) → Body 1 (idea + explain + example) → Body 2 (idea + explain + example) → Conclusion (1-2 sentences)\n\n💡 Example Intro: "It is argued that technology has transformed modern education. While this brings numerous benefits, it also presents significant challenges."\n\n✅ Trick: প্রতি paragraph এ একটাই main idea রাখো — examiner বুঝতে পারবে!\n\n🔥 লিখতে থাকো, প্রতিদিন একটা paragraph লিখলেই দেখবে কত improve হচ্ছে!';
-    }
-    return '🎯 IELTS এ সফল হতে হলে দরকার সঠিক strategy + consistent practice!\n\n📌 4 Module Tips:\n- Listening: আগে question পড়ো, distractor এড়াও\n- Reading: keyword দিয়ে locate করো, order follow করো\n- Writing: clear structure, one idea per paragraph\n- Speaking: extend করো, reason + example দাও\n\n✅ Daily Routine: 1 Listening test + 1 Reading passage + 15 min Writing practice\n\n🔥 তুমি পারবে! IELTS একটা skill — practice এ সব আসে!';
+    return '🎯 IELTS এ দরকার strategy + practice!\n\n📌 Daily: 1 Listening + 1 Reading + 15 min Writing\n\n🔥 তুমি পারবে!';
 }
 
 export async function POST(request: Request) {
     try {
         const body = (await request.json()) as ChatRequestBody;
         const message = body.message?.trim();
-
-        if (!message) {
-            return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
-        }
+        if (!message) return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
 
         const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) return NextResponse.json({ text: buildFallbackReply(message), source: 'fallback' });
 
-        if (apiKey) {
-            try {
-                const genAI = new GoogleGenerativeAI(apiKey);
-                const model = genAI.getGenerativeModel({
-                    model: 'gemini-1.5-flash',
-                    systemInstruction: SYSTEM_PROMPT,
-                });
-
-                const chat = model.startChat({
-                    history: body.history || [],
-                    generationConfig: {
-                        temperature: 0.8,
-                        topK: 40,
-                        topP: 0.95,
-                        maxOutputTokens: 2048,
-                    },
-                });
-
-                const contextPrefix = body.context && body.context !== 'General'
-                    ? `[Context: ${body.context}]\n`
-                    : '';
-
-                const result = await chat.sendMessage(contextPrefix + message);
-                const text = result.response.text();
-
-                return NextResponse.json({ text, source: 'gemini' });
-            } catch (err) {
-                console.error('Gemini Error:', err);
-            }
+        // Detect Cambridge reference and inject data
+        let cambridgeContext = '';
+        const ref = parseCambridgeRef(message);
+        if (ref) {
+            cambridgeContext = await getCambridgeContext(ref.book, ref.test, ref.question, ref.module);
         }
 
-        const text = buildFallbackReply(message);
-        return NextResponse.json({ text, source: 'fallback' });
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.5-flash',
+                systemInstruction: SYSTEM_PROMPT,
+            });
+
+            const chat = model.startChat({
+                history: body.history || [],
+                generationConfig: { temperature: 0.7, topK: 40, topP: 0.95, maxOutputTokens: 2048 },
+            });
+
+            const contextPrefix = body.context && body.context !== 'General' ? `[Context: ${body.context}]\n` : '';
+            const fullMessage = cambridgeContext
+                ? `${contextPrefix}${cambridgeContext}\n\nStudent এর প্রশ্ন: ${message}`
+                : `${contextPrefix}${message}`;
+
+            const result = await chat.sendMessage(fullMessage);
+            return NextResponse.json({ text: result.response.text(), source: 'gemini' });
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            if (msg.includes('429') || msg.includes('quota') || msg.includes('Too Many')) {
+                return NextResponse.json({ text: '⏳ একটু বেশি request হয়েছে। ৩০ সেকেন্ড পর আবার try করো!', source: 'rate_limit' });
+            }
+            console.error('Gemini Error:', err);
+        }
+
+        return NextResponse.json({ text: buildFallbackReply(message), source: 'fallback' });
     } catch {
         return NextResponse.json({ error: 'Invalid request.' }, { status: 400 });
     }

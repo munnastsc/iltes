@@ -28,7 +28,8 @@ export default function VocabFlashcardMode() {
     const [sessionDone, setSessionDone] = useState(false);
     const [pronResult, setPronResult] = useState<PronResult>(null);
     const [isListening, setIsListening] = useState(false);
-    const recognitionRef = useRef<SpeechRecognition | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const recognitionRef = useRef<any>(null);
 
     const deck = useMemo(() => {
         const filtered = VOCABULARY.filter(
@@ -112,8 +113,9 @@ export default function VocabFlashcardMode() {
 
     function checkPronunciation(targetWord: string) {
         if (typeof window === 'undefined') return;
-        const SpeechRecognition = (window as Window & { SpeechRecognition?: typeof window.SpeechRecognition; webkitSpeechRecognition?: typeof window.SpeechRecognition }).SpeechRecognition
-            || (window as Window & { webkitSpeechRecognition?: typeof window.SpeechRecognition }).webkitSpeechRecognition;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const w = window as any;
+        const SpeechRecognition = w.SpeechRecognition || w.webkitSpeechRecognition;
         if (!SpeechRecognition) {
             alert('আপনার browser এ speech recognition সাপোর্ট নেই। Chrome বা Edge ব্যবহার করুন।');
             return;
