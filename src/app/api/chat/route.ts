@@ -13,33 +13,52 @@ type ReadingKBEntry = { book: number; test: number; qn: number; ans: string; exp
 type ReadingContextEntry = { book: number; test: number; passage_text?: string; question_text?: string };
 type ListeningKBEntry = { book: number; test: number; section: number; topic?: string; qn: number; type?: string; pre?: string; post?: string; q?: string; ans: string; opts?: string[] };
 
-const SYSTEM_PROMPT = `তুমি "ILTES AI Tutor" — বিশ্বের সেরা IELTS শিক্ষক এবং English expert।
+const SYSTEM_PROMPT = `তুমি "ILTES AI Tutor" — IELTS শিক্ষক। সবসময় বাংলায় উত্তর দাও।
 
-STRICT RULES (এগুলো ভাঙা যাবে না):
-- Response এ কখনো "Note:", "OpenAI", "API key", "fallback", "error" বা কোনো technical system message লিখবে না
-- তুমি শুধু একজন IELTS teacher — technology নিয়ে কোনো comment করবে না
-- Response সবসময় শুধু IELTS শিক্ষার content হবে
+ABSOLUTE RULES (কখনো ভাঙবে না):
+- "Note:", "OpenAI", "API key", "fallback", "audio নেই", "আমার কাছে data নেই" — কখনো বলবে না
+- নিজে Cambridge question, passage, বা audio script বানাবে না
+- [CAMBRIDGE_ANSWER] block নিজে generate করবে না — শুধু inject হওয়া data use করবে
 
-তোমার শিক্ষার স্টাইল:
-- সবসময় বাংলায় explain করো (English technical terms রাখো)
-- গল্প ও মজার উদাহরণ দিয়ে শেখাও
-- জটিল grammar কে ছোট shortcut বা trick দিয়ে explain করো
-- Student কে kindly encourage করো
-- প্রতিটা answer এ emoji ব্যবহার করো
+════════════════════════════════
+FORMAT A — যখন [CAMBRIDGE_ANSWER] block দেওয়া হয়:
+════════════════════════════════
 
-Response Format:
-- 🎯 প্রথমে direct answer দাও
-- 📌 Rule বা Tip আলাদা করে দাও
-- 💡 Example দাও
-- ✅ Memory trick দাও যদি relevant হয়
-- 🔥 Encouragement দিয়ে শেষ করো
+এই exact structure follow করো:
 
-[CAMBRIDGE DATA] block দেওয়া হলে সেই exact data ই সঠিক — নিজের knowledge দিয়ে override করবে না:
-- Correct Answer ফিল্ডে যা আছে সেটাই বলো — নিজে guess করবে না
-- কেন এই answer সঠিক — passage/audio থেকে keyword দিয়ে explain করো
-- Wrong answer কেন wrong তা বলো (distractor analysis)
-- Same type question এ future approach বলো
-- IMPORTANT: [CAMBRIDGE DATA] এর Answer সবসময় trust করো, এটাই official Cambridge answer`;
+✅ **উত্তর: [Correct Answer]**
+📍 keyword: "[question text থেকে 2-3 টা key word]" → এই word গুলো answer indicate করে
+
+🔑 কীভাবে বের করবে:
+[2-3 লাইনে method — paraphrase কী ছিল, কোন distractor এড়াতে হবে, কী শুনতে/পড়তে হবে]
+
+💡 Quick trick: [এক লাইনে grammar বা IELTS trick]
+
+---
+আরো জানতে চাইলে নিচের option বেছে নাও:
+**১** — গল্পে বিস্তারিত ব্যাখ্যা 📖
+**২** — Distractor গুলো কেন ভুল ছিল ❌
+**৩** — এই ধরনের question এর full strategy 🎯
+
+CRITICAL: Correct Answer field এ যা আছে ONLY সেটাই বলো।
+
+════════════════════════════════
+FORMAT B — General IELTS question (কোনো specific Cambridge data নেই):
+════════════════════════════════
+
+🎯 [Direct answer, 2-3 লাইন]
+📌 Tip: [একটি rule বা shortcut]
+💡 Trick: [memory trick, এক লাইন]
+🔥 [এক লাইন encourage]
+
+---
+বিস্তারিত চাইলে: **১** গল্পে example | **২** Grammar deep dive | **৩** Practice question
+
+════════════════════════════════
+STYLE:
+- বাংলায়, English technical terms রাখো
+- Concise — student চাইলে তবেই বড় করো
+- Emoji ব্যবহার করো কিন্তু overuse করো না`;
 
 let readingKB: Record<string, ReadingKBEntry | ReadingContextEntry> | null = null;
 let listeningKB: Record<string, ListeningKBEntry> | null = null;
@@ -134,7 +153,7 @@ async function getCambridgeContext(book: number, test: number, qn?: number, modu
             const key = `${book}_${test}_${qn}`;
             const entry = readingKB[key] as ReadingKBEntry | undefined;
             if (entry) {
-                ctx += `[CAMBRIDGE DATA — Reading]\n`;
+                ctx += `[CAMBRIDGE_ANSWER — Reading]\n`;
                 ctx += `Cambridge ${book} Test ${test} Q${qn}\n`;
                 ctx += `Correct Answer: ${entry.ans}\n`;
                 if (entry.explanation) ctx += `Answer Explanation (from passage): ${entry.explanation}\n`;
@@ -157,7 +176,7 @@ async function getCambridgeContext(book: number, test: number, qn?: number, modu
             const ctxKey = `${book}_${test}_context`;
             const ctxEntry = readingKB[ctxKey] as ReadingContextEntry | undefined;
             if (ctxEntry?.passage_text) {
-                ctx += `[CAMBRIDGE DATA — Reading]\nCambridge ${book} Test ${test}\n`;
+                ctx += `[CAMBRIDGE_ANSWER — Reading]\nCambridge ${book} Test ${test}\n`;
                 ctx += `Passage (excerpt): ${ctxEntry.passage_text.slice(0, 800)}\n`;
                 if (ctxEntry.question_text) {
                     ctx += `\nQuestions overview: ${ctxEntry.question_text.slice(0, 400)}\n`;
@@ -174,7 +193,7 @@ async function getCambridgeContext(book: number, test: number, qn?: number, modu
                 const key = `${book}_${test}_${sec}_${qn}`;
                 const entry = listeningKB[key];
                 if (entry) {
-                    ctx += `[CAMBRIDGE DATA — Listening]\n`;
+                    ctx += `[CAMBRIDGE_ANSWER — Listening]\n`;
                     ctx += `Cambridge ${book} Test ${test} Q${qn}\n`;
                     ctx += `Section ${sec}: ${entry.topic || ''}\n`;
                     const qText = entry.pre ? `${entry.pre} ___ ${entry.post || ''}` : (entry.q || '');
@@ -190,7 +209,7 @@ async function getCambridgeContext(book: number, test: number, qn?: number, modu
         if (!qn && listeningKB) {
             const sampleKeys = Object.keys(listeningKB).filter(k => k.startsWith(`${book}_${test}_`)).slice(0, 8);
             if (sampleKeys.length) {
-                ctx += `[CAMBRIDGE DATA — Listening]\nCambridge ${book} Test ${test}\n`;
+                ctx += `[CAMBRIDGE_ANSWER — Listening]\nCambridge ${book} Test ${test}\n`;
                 ctx += `Sample questions:\n`;
                 sampleKeys.forEach(k => {
                     const e = listeningKB![k];
