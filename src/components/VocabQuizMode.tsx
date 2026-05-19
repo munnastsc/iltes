@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo, useCallback } from 'react';
 import { CheckCircle2, XCircle, RotateCcw, Trophy } from 'lucide-react';
-import { VOCABULARY, TOPICS, POS_SHORT, type Topic, type PartOfSpeech, type BandLevel, type VocabWord } from '../lib/vocabularyData';
+import { VOCABULARY, TOPICS, POS_SHORT, CONNECTOR_TYPE_LABELS, type Topic, type PartOfSpeech, type BandLevel, type VocabWord } from '../lib/vocabularyData';
 
 type QuizType = 'word_to_bangla' | 'bangla_to_word';
 type QState = 'idle' | 'answered';
@@ -194,11 +194,16 @@ export default function VocabQuizMode() {
                             <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">
                                 {q.type === 'word_to_bangla' ? 'নিচের কোনটি সঠিক বাংলা অর্থ?' : 'নিচের কোন word এর বাংলা অর্থ এটি?'}
                             </p>
+                            {q.word.connectorType && (
+                                <span className="inline-block rounded-lg bg-teal-50 border border-teal-200 px-2.5 py-1 text-[10px] font-black text-teal-700">
+                                    {CONNECTOR_TYPE_LABELS[q.word.connectorType]}
+                                </span>
+                            )}
                             <div className="rounded-xl bg-teal-50 border border-teal-200 px-6 py-4 inline-block min-w-[200px]">
                                 <p className="text-2xl font-black text-teal-900">
                                     {q.type === 'word_to_bangla' ? q.word.word : q.word.bangla}
                                 </p>
-                                {q.type === 'word_to_bangla' && (
+                                {q.type === 'word_to_bangla' && q.word.ipa && (
                                     <p className="text-xs font-mono text-teal-500 mt-1">{q.word.ipa}</p>
                                 )}
                             </div>

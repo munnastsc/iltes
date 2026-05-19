@@ -1,5 +1,6 @@
 export type PartOfSpeech = 'noun' | 'verb' | 'adjective' | 'adverb';
-export type Topic = 'environment' | 'society' | 'technology' | 'health' | 'education' | 'economy' | 'government' | 'crime' | 'media' | 'transport' | 'general';
+export type Topic = 'environment' | 'society' | 'technology' | 'health' | 'education' | 'economy' | 'government' | 'crime' | 'media' | 'transport' | 'general' | 'connector';
+export type ConnectorType = 'addition' | 'contrast' | 'cause' | 'result' | 'example' | 'emphasis' | 'sequence' | 'conclusion' | 'condition';
 export type BandLevel = 6 | 7 | 8;
 
 export interface VocabWord {
@@ -12,6 +13,8 @@ export interface VocabWord {
     example: string;
     topic: Topic;
     band: BandLevel;
+    connectorType?: ConnectorType;
+    forms?: { noun?: string; verb?: string; adjective?: string; adverb?: string };
 }
 
 export const TOPICS: Array<{ id: Topic; label: string; icon: string }> = [
@@ -26,7 +29,20 @@ export const TOPICS: Array<{ id: Topic; label: string; icon: string }> = [
     { id: 'media', label: 'মিডিয়া', icon: '📺' },
     { id: 'transport', label: 'পরিবহন', icon: '🚌' },
     { id: 'general', label: 'সাধারণ', icon: '📖' },
+    { id: 'connector', label: 'Connectors', icon: '🔗' },
 ];
+
+export const CONNECTOR_TYPE_LABELS: Record<ConnectorType, string> = {
+    addition: 'Addition ➕',
+    contrast: 'Contrast ↔️',
+    cause: 'Cause 🔍',
+    result: 'Result ➡️',
+    example: 'Example 📌',
+    emphasis: 'Emphasis 🔥',
+    sequence: 'Sequence 🔢',
+    conclusion: 'Conclusion ✅',
+    condition: 'Condition ⚙️',
+};
 
 export const POS_LABELS: Record<PartOfSpeech, string> = {
     noun: 'Noun · বিশেষ্য',
@@ -203,4 +219,81 @@ export const VOCABULARY: VocabWord[] = [
     { id: 'gen38', word: 'circumstance', ipa: '/ˈsɜːkəmstəns/', pos: 'noun', bangla: 'পরিস্থিতি', definition: 'a fact or condition connected with an event or action', example: 'The circumstances have changed dramatically since then.', topic: 'general', band: 7 },
     { id: 'gen39', word: 'perceive', ipa: '/pəˈsiːv/', pos: 'verb', bangla: 'উপলব্ধি করা', definition: 'to become aware of or understand something', example: 'People perceive the issue very differently depending on culture.', topic: 'general', band: 7 },
     { id: 'gen40', word: 'exacerbate', ipa: '/ɪɡˈzæsəbeɪt/', pos: 'verb', bangla: 'আরো খারাপ করা', definition: 'to make a problem or bad situation worse', example: 'Cutting public funding will exacerbate the housing crisis.', topic: 'general', band: 8 },
+
+    // ── CONNECTORS — Addition ──
+    { id: 'cn01', word: 'furthermore', ipa: '/ˌfɜːðəˈmɔː/', pos: 'adverb', bangla: 'তদুপরি / আরও', definition: 'used to add another important supporting point', example: 'Regular exercise improves health. Furthermore, it reduces stress.', topic: 'connector', band: 7, connectorType: 'addition' },
+    { id: 'cn02', word: 'moreover', ipa: '/mɔːˈrəʊvə/', pos: 'adverb', bangla: 'তাছাড়া / উপরন্তু', definition: 'used to add a stronger or more important point', example: 'The plan is costly. Moreover, it is unlikely to succeed.', topic: 'connector', band: 7, connectorType: 'addition' },
+    { id: 'cn03', word: 'in addition', ipa: '/ɪn əˈdɪʃən/', pos: 'adverb', bangla: 'উপরন্তু / এছাড়াও', definition: 'used to add an extra point to what has been said', example: 'In addition to studying, she volunteers at a hospital.', topic: 'connector', band: 6, connectorType: 'addition' },
+    { id: 'cn04', word: 'additionally', ipa: '/əˈdɪʃənəli/', pos: 'adverb', bangla: 'অতিরিক্তভাবে', definition: 'as an extra thing or point', example: 'Additionally, the government should invest in infrastructure.', topic: 'connector', band: 7, connectorType: 'addition' },
+    { id: 'cn05', word: 'besides', ipa: '/bɪˈsaɪdz/', pos: 'adverb', bangla: 'এছাড়া / অতিরিক্ত', definition: 'in addition to; also', example: 'Besides being unhealthy, fast food is expensive.', topic: 'connector', band: 6, connectorType: 'addition' },
+    { id: 'cn06', word: 'likewise', ipa: '/ˈlaɪkwaɪz/', pos: 'adverb', bangla: 'একইভাবে', definition: 'in the same way; also', example: 'Likewise, other countries should adopt cleaner energy policies.', topic: 'connector', band: 7, connectorType: 'addition' },
+    { id: 'cn07', word: 'not only... but also', ipa: '/nɒt ˈəʊnli... bʌt ˈɔːlsəʊ/', pos: 'adverb', bangla: 'শুধু নয়... বরং', definition: 'used to emphasize two closely related points', example: 'Not only does pollution harm health, but it also damages ecosystems.', topic: 'connector', band: 7, connectorType: 'addition' },
+
+    // ── CONNECTORS — Contrast ──
+    { id: 'cn08', word: 'however', ipa: '/haʊˈevə/', pos: 'adverb', bangla: 'তবে / কিন্তু', definition: 'used to introduce a contrasting idea', example: 'The plan is ambitious. However, it may not succeed.', topic: 'connector', band: 6, connectorType: 'contrast' },
+    { id: 'cn09', word: 'nevertheless', ipa: '/ˌnevəðəˈles/', pos: 'adverb', bangla: 'তথাপি / তবুও', definition: 'in spite of this; despite what has been said', example: 'The task was difficult. Nevertheless, they completed it.', topic: 'connector', band: 7, connectorType: 'contrast' },
+    { id: 'cn10', word: 'nonetheless', ipa: '/ˌnʌnðəˈles/', pos: 'adverb', bangla: 'তবুও / সত্ত্বেও', definition: 'despite what has just been said', example: 'The risks are high. Nonetheless, many people take the chance.', topic: 'connector', band: 7, connectorType: 'contrast' },
+    { id: 'cn11', word: 'on the other hand', ipa: '/ɒn ðə ˈʌðə hænd/', pos: 'adverb', bangla: 'অন্যদিকে / বিপরীতে', definition: 'used to give a different or contrasting viewpoint', example: 'City life is busy. On the other hand, it offers more opportunities.', topic: 'connector', band: 6, connectorType: 'contrast' },
+    { id: 'cn12', word: 'although', ipa: '/ɔːlˈðəʊ/', pos: 'adverb', bangla: 'যদিও / তবুও', definition: 'in spite of the fact that', example: 'Although electric cars are expensive, they are better for the environment.', topic: 'connector', band: 6, connectorType: 'contrast' },
+    { id: 'cn13', word: 'despite', ipa: '/dɪˈspaɪt/', pos: 'adverb', bangla: 'সত্ত্বেও / বিপরীতে', definition: 'without being affected by; in spite of', example: 'Despite the difficulties, the project was completed on time.', topic: 'connector', band: 6, connectorType: 'contrast' },
+    { id: 'cn14', word: 'in contrast', ipa: '/ɪn ˈkɒntrɑːst/', pos: 'adverb', bangla: 'বিপরীতে / তুলনায়', definition: 'when compared with something different', example: 'In contrast to rural areas, cities are densely populated.', topic: 'connector', band: 7, connectorType: 'contrast' },
+    { id: 'cn15', word: 'whereas', ipa: '/weərˈæz/', pos: 'adverb', bangla: 'যেখানে / কিন্তু', definition: 'used to show a striking contrast between two facts', example: 'Rich nations are reducing emissions, whereas poorer ones are increasing them.', topic: 'connector', band: 7, connectorType: 'contrast' },
+    { id: 'cn16', word: 'conversely', ipa: '/ˈkɒnvɜːsli/', pos: 'adverb', bangla: 'বিপরীতভাবে', definition: 'introducing the exact opposite of what has just been stated', example: 'More money may not bring happiness. Conversely, poverty often causes misery.', topic: 'connector', band: 8, connectorType: 'contrast' },
+    { id: 'cn17', word: 'even though', ipa: '/ˈiːvən ðəʊ/', pos: 'adverb', bangla: 'যদিও / এমনকি যদিও', definition: 'despite the fact that; in spite of', example: 'Even though it is costly, the benefits outweigh the expense.', topic: 'connector', band: 6, connectorType: 'contrast' },
+
+    // ── CONNECTORS — Cause ──
+    { id: 'cn18', word: 'because', ipa: '/bɪˈkɒz/', pos: 'adverb', bangla: 'কারণ', definition: 'for the reason that', example: 'Forests are vital because they produce oxygen and absorb carbon.', topic: 'connector', band: 6, connectorType: 'cause' },
+    { id: 'cn19', word: 'since', ipa: '/sɪns/', pos: 'adverb', bangla: 'যেহেতু / কারণ', definition: 'used to give a reason', example: 'Since pollution is rising, urgent action is required.', topic: 'connector', band: 6, connectorType: 'cause' },
+    { id: 'cn20', word: 'due to', ipa: '/djuː tuː/', pos: 'adverb', bangla: 'কারণে / ফলে', definition: 'because of something', example: 'Sea levels are rising due to global warming.', topic: 'connector', band: 6, connectorType: 'cause' },
+    { id: 'cn21', word: 'owing to', ipa: '/ˈəʊɪŋ tuː/', pos: 'adverb', bangla: 'কারণে / সৌজন্যে', definition: 'because of; as a result of', example: 'Owing to budget cuts, many public services were reduced.', topic: 'connector', band: 7, connectorType: 'cause' },
+    { id: 'cn22', word: 'as a result of', ipa: '/æz ə rɪˈzʌlt ɒv/', pos: 'adverb', bangla: 'ফলে / পরিণামে', definition: 'because of a particular cause or event', example: 'As a result of the drought, crops failed across the region.', topic: 'connector', band: 6, connectorType: 'cause' },
+    { id: 'cn23', word: 'given that', ipa: '/ˈɡɪvən ðæt/', pos: 'adverb', bangla: 'প্রদত্ত যে / কারণ', definition: 'considering the fact that', example: 'Given that resources are limited, priorities must be carefully set.', topic: 'connector', band: 7, connectorType: 'cause' },
+
+    // ── CONNECTORS — Result ──
+    { id: 'cn24', word: 'therefore', ipa: '/ˈðeəfɔː/', pos: 'adverb', bangla: 'অতএব / সুতরাং', definition: 'as a result; for that reason', example: 'Pollution is increasing. Therefore, urgent action is required.', topic: 'connector', band: 6, connectorType: 'result' },
+    { id: 'cn25', word: 'thus', ipa: '/ðʌs/', pos: 'adverb', bangla: 'এভাবে / ফলে', definition: 'as a result; in this way', example: 'The population grew rapidly, thus increasing demand for food.', topic: 'connector', band: 7, connectorType: 'result' },
+    { id: 'cn26', word: 'hence', ipa: '/hens/', pos: 'adverb', bangla: 'সুতরাং / এই কারণে', definition: 'for this reason; therefore', example: 'Resources are limited. Hence, we must use them wisely.', topic: 'connector', band: 7, connectorType: 'result' },
+    { id: 'cn27', word: 'consequently', ipa: '/ˈkɒnsɪkwəntli/', pos: 'adverb', bangla: 'ফলস্বরূপ / পরিণামে', definition: 'as a result of something that has just been mentioned', example: 'Forests were destroyed. Consequently, many species lost their habitat.', topic: 'connector', band: 7, connectorType: 'result' },
+    { id: 'cn28', word: 'as a result', ipa: '/æz ə rɪˈzʌlt/', pos: 'adverb', bangla: 'ফলে / ফলস্বরূপ', definition: 'because of something that happened before', example: 'As a result, the economy recovered faster than predicted.', topic: 'connector', band: 6, connectorType: 'result' },
+    { id: 'cn29', word: 'thereby', ipa: '/ˌðeəˈbaɪ/', pos: 'adverb', bangla: 'এর মাধ্যমে / এভাবে', definition: 'by that means; with that result', example: 'They reduced production costs, thereby increasing overall profits.', topic: 'connector', band: 8, connectorType: 'result' },
+
+    // ── CONNECTORS — Example ──
+    { id: 'cn30', word: 'for example', ipa: '/fər ɪɡˈzɑːmpəl/', pos: 'adverb', bangla: 'উদাহরণস্বরূপ', definition: 'used to introduce an example', example: 'Some countries, for example Denmark, lead in wind energy.', topic: 'connector', band: 6, connectorType: 'example' },
+    { id: 'cn31', word: 'for instance', ipa: '/fər ˈɪnstəns/', pos: 'adverb', bangla: 'উদাহরণ হিসেবে', definition: 'as an example of what has been said', example: 'Many species are endangered; for instance, tigers and rhinos.', topic: 'connector', band: 6, connectorType: 'example' },
+    { id: 'cn32', word: 'such as', ipa: '/sʌtʃ æz/', pos: 'adverb', bangla: 'যেমন', definition: 'for example; of the type just mentioned', example: 'Activities such as cycling help reduce carbon emissions.', topic: 'connector', band: 6, connectorType: 'example' },
+    { id: 'cn33', word: 'in particular', ipa: '/ɪn pəˈtɪkjʊlə/', pos: 'adverb', bangla: 'বিশেষভাবে / বিশেষত', definition: 'especially; more than others', example: 'Developing nations, in particular, need international support.', topic: 'connector', band: 7, connectorType: 'example' },
+    { id: 'cn34', word: 'namely', ipa: '/ˈneɪmli/', pos: 'adverb', bangla: 'যথা / বিশেষত', definition: 'used to introduce specific details after a general statement', example: 'Two nations, namely China and the USA, lead in global emissions.', topic: 'connector', band: 7, connectorType: 'example' },
+    { id: 'cn35', word: 'to illustrate', ipa: '/tuː ˈɪləstreɪt/', pos: 'adverb', bangla: 'উদাহরণ দেওয়ার জন্য', definition: 'to give a concrete example to support a point', example: 'To illustrate, Japan has invested heavily in robotic technology.', topic: 'connector', band: 7, connectorType: 'example' },
+
+    // ── CONNECTORS — Emphasis ──
+    { id: 'cn36', word: 'indeed', ipa: '/ɪnˈdiːd/', pos: 'adverb', bangla: 'প্রকৃতপক্ষে / সত্যিই', definition: 'used to emphasize a statement is true', example: 'This is indeed one of the most pressing issues of our time.', topic: 'connector', band: 7, connectorType: 'emphasis' },
+    { id: 'cn37', word: 'in fact', ipa: '/ɪn fækt/', pos: 'adverb', bangla: 'আসলে / বাস্তবে', definition: 'used to emphasize a true or surprising statement', example: 'In fact, the problem is far more serious than many realise.', topic: 'connector', band: 6, connectorType: 'emphasis' },
+    { id: 'cn38', word: 'certainly', ipa: '/ˈsɜːtənli/', pos: 'adverb', bangla: 'নিশ্চিতভাবে / অবশ্যই', definition: 'without any doubt', example: 'Action on climate change is certainly needed now.', topic: 'connector', band: 6, connectorType: 'emphasis' },
+    { id: 'cn39', word: 'undoubtedly', ipa: '/ʌnˈdaʊtɪdli/', pos: 'adverb', bangla: 'নিঃসন্দেহে', definition: 'without doubt; definitely', example: 'Education is undoubtedly the most powerful tool against poverty.', topic: 'connector', band: 7, connectorType: 'emphasis' },
+    { id: 'cn40', word: 'clearly', ipa: '/ˈklɪəli/', pos: 'adverb', bangla: 'স্পষ্টতই / পরিষ্কারভাবে', definition: 'in a way that is obvious and easy to understand', example: 'Clearly, more investment in healthcare is required.', topic: 'connector', band: 6, connectorType: 'emphasis' },
+    { id: 'cn41', word: 'above all', ipa: '/əˈbʌv ɔːl/', pos: 'adverb', bangla: 'সর্বোপরি / সবচেয়ে গুরুত্বপূর্ণভাবে', definition: 'most importantly of all', example: 'Above all, we must protect the rights of future generations.', topic: 'connector', band: 7, connectorType: 'emphasis' },
+    { id: 'cn42', word: 'notably', ipa: '/ˈnəʊtəbli/', pos: 'adverb', bangla: 'উল্লেখযোগ্যভাবে', definition: 'in a way that deserves special attention', example: 'Notably, the poorest nations suffer most from climate change.', topic: 'connector', band: 7, connectorType: 'emphasis' },
+
+    // ── CONNECTORS — Sequence ──
+    { id: 'cn43', word: 'firstly', ipa: '/ˈfɜːstli/', pos: 'adverb', bangla: 'প্রথমত', definition: 'used to introduce the first point in an argument', example: 'Firstly, we need to identify the root causes of poverty.', topic: 'connector', band: 6, connectorType: 'sequence' },
+    { id: 'cn44', word: 'secondly', ipa: '/ˈsekəndli/', pos: 'adverb', bangla: 'দ্বিতীয়ত', definition: 'used to introduce the second point', example: 'Secondly, a clear action plan must be established.', topic: 'connector', band: 6, connectorType: 'sequence' },
+    { id: 'cn45', word: 'finally', ipa: '/ˈfaɪnəli/', pos: 'adverb', bangla: 'অবশেষে / শেষে', definition: 'at the end; after everything else', example: 'Finally, the committee agreed on a comprehensive solution.', topic: 'connector', band: 6, connectorType: 'sequence' },
+    { id: 'cn46', word: 'subsequently', ipa: '/ˈsʌbsɪkwəntli/', pos: 'adverb', bangla: 'পরবর্তীকালে / পরে', definition: 'happening after something else', example: 'The law was passed; subsequently, pollution levels dropped.', topic: 'connector', band: 7, connectorType: 'sequence' },
+    { id: 'cn47', word: 'initially', ipa: '/ɪˈnɪʃəli/', pos: 'adverb', bangla: 'প্রাথমিকভাবে / শুরুতে', definition: 'at the beginning; at first', example: 'Initially, the project faced considerable financial challenges.', topic: 'connector', band: 6, connectorType: 'sequence' },
+    { id: 'cn48', word: 'previously', ipa: '/ˈpriːviəsli/', pos: 'adverb', bangla: 'পূর্বে / আগে', definition: 'at an earlier time', example: 'Previously, this region was covered by dense forest.', topic: 'connector', band: 6, connectorType: 'sequence' },
+
+    // ── CONNECTORS — Conclusion ──
+    { id: 'cn49', word: 'in conclusion', ipa: '/ɪn kənˈkluːʒən/', pos: 'adverb', bangla: 'উপসংহারে', definition: 'used to introduce the final summary of an essay or argument', example: 'In conclusion, governments must act urgently to combat climate change.', topic: 'connector', band: 6, connectorType: 'conclusion' },
+    { id: 'cn50', word: 'to sum up', ipa: '/tuː sʌm ʌp/', pos: 'adverb', bangla: 'সংক্ষেপে বলতে গেলে', definition: 'to briefly state the main points', example: 'To sum up, technology offers both benefits and challenges.', topic: 'connector', band: 6, connectorType: 'conclusion' },
+    { id: 'cn51', word: 'overall', ipa: '/ˌəʊvərˈɔːl/', pos: 'adverb', bangla: 'সামগ্রিকভাবে', definition: 'taking everything into account; in general', example: 'Overall, the results were more positive than expected.', topic: 'connector', band: 6, connectorType: 'conclusion' },
+    { id: 'cn52', word: 'on the whole', ipa: '/ɒn ðə həʊl/', pos: 'adverb', bangla: 'সামগ্রিকভাবে / সব মিলিয়ে', definition: 'considering everything; in general', example: 'On the whole, the policy has been a success for the economy.', topic: 'connector', band: 7, connectorType: 'conclusion' },
+    { id: 'cn53', word: 'in summary', ipa: '/ɪn ˈsʌməri/', pos: 'adverb', bangla: 'সংক্ষেপে', definition: 'to briefly restate the main ideas at the end', example: 'In summary, three key solutions have been proposed here.', topic: 'connector', band: 6, connectorType: 'conclusion' },
+    { id: 'cn54', word: 'to conclude', ipa: '/tuː kənˈkluːd/', pos: 'adverb', bangla: 'উপসংহারে বলা যায়', definition: 'to bring an essay or argument to a close', example: 'To conclude, global cooperation is the only viable solution.', topic: 'connector', band: 6, connectorType: 'conclusion' },
+
+    // ── CONNECTORS — Condition ──
+    { id: 'cn55', word: 'if', ipa: '/ɪf/', pos: 'adverb', bangla: 'যদি', definition: 'on the condition that; in the event that', example: 'If governments invest in clean energy, emissions will fall.', topic: 'connector', band: 6, connectorType: 'condition' },
+    { id: 'cn56', word: 'unless', ipa: '/ʌnˈles/', pos: 'adverb', bangla: 'যদি না / ছাড়া', definition: 'except on the condition that; if not', example: 'Unless action is taken now, the situation will worsen significantly.', topic: 'connector', band: 6, connectorType: 'condition' },
+    { id: 'cn57', word: 'provided that', ipa: '/prəˈvaɪdɪd ðæt/', pos: 'adverb', bangla: 'শর্তে / যদি', definition: 'on the condition that; assuming that', example: 'The plan will succeed, provided that all parties cooperate fully.', topic: 'connector', band: 7, connectorType: 'condition' },
+    { id: 'cn58', word: 'as long as', ipa: '/æz lɒŋ æz/', pos: 'adverb', bangla: 'যতক্ষণ / যদি শুধু', definition: 'on the condition that something continues', example: 'Progress is possible as long as we remain committed to the goal.', topic: 'connector', band: 6, connectorType: 'condition' },
+    { id: 'cn59', word: 'in case', ipa: '/ɪn keɪs/', pos: 'adverb', bangla: 'যদি / ক্ষেত্রে', definition: 'as a precaution; if something should happen', example: 'We must save water in case there is a severe drought.', topic: 'connector', band: 6, connectorType: 'condition' },
 ];

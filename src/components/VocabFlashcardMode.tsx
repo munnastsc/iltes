@@ -1,7 +1,7 @@
 'use client';
-import { useState, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Check, X, RotateCcw, Volume2 } from 'lucide-react';
-import { VOCABULARY, TOPICS, POS_LABELS, POS_SHORT, type Topic, type PartOfSpeech, type BandLevel } from '../lib/vocabularyData';
+import { useState, useMemo, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Check, X, RotateCcw, Volume2, Mic, MicOff } from 'lucide-react';
+import { VOCABULARY, TOPICS, POS_LABELS, POS_SHORT, CONNECTOR_TYPE_LABELS, type Topic, type PartOfSpeech, type BandLevel } from '../lib/vocabularyData';
 
 const POS_COLORS: Record<PartOfSpeech, string> = {
     noun: 'bg-blue-100 text-blue-700',
@@ -16,6 +16,8 @@ const BAND_COLORS: Record<number, string> = {
     8: 'bg-rose-100 text-rose-700',
 };
 
+type PronResult = 'correct' | 'wrong' | null;
+
 export default function VocabFlashcardMode() {
     const [topicFilter, setTopicFilter] = useState<Topic | 'all'>('all');
     const [posFilter, setPosFilter] = useState<PartOfSpeech | 'all'>('all');
@@ -24,6 +26,9 @@ export default function VocabFlashcardMode() {
     const [flipped, setFlipped] = useState(false);
     const [knownIds, setKnownIds] = useState<Set<string>>(new Set());
     const [sessionDone, setSessionDone] = useState(false);
+    const [pronResult, setPronResult] = useState<PronResult>(null);
+    const [isListening, setIsListening] = useState(false);
+    const recognitionRef = useRef<SpeechRecognition | null>(null);
 
     const deck = useMemo(() => {
         const filtered = VOCABULARY.filter(
@@ -64,6 +69,7 @@ export default function VocabFlashcardMode() {
         const newKnown = new Set([...knownIds, card.id]);
         setKnownIds(newKnown);
         setFlipped(false);
+        setPronResult(null);
         const newRemaining = deck.filter((w) => !newKnown.has(w.id));
         if (newRemaining.length === 0) { setSessionDone(true); return; }
         setCurrentIdx((prev) => prev % newRemaining.length);
@@ -72,16 +78,19 @@ export default function VocabFlashcardMode() {
     function markUnknown() {
         if (!card) return;
         setFlipped(false);
+        setPronResult(null);
         setCurrentIdx((prev) => (prev + 1) % remaining.length);
     }
 
     function prev() {
         setFlipped(false);
+        setPronResult(null);
         setCurrentIdx((prev) => (prev - 1 + remaining.length) % remaining.length);
     }
 
     function next() {
         setFlipped(false);
+        setPronResult(null);
         setCurrentIdx((prev) => (prev + 1) % remaining.length);
     }
 
@@ -90,6 +99,7 @@ export default function VocabFlashcardMode() {
         setCurrentIdx(0);
         setFlipped(false);
         setSessionDone(false);
+        setPronResult(null);
     }
 
     function speak(text: string) {
@@ -98,6 +108,38 @@ export default function VocabFlashcardMode() {
             utter.lang = 'en-GB';
             window.speechSynthesis.speak(utter);
         }
+    }
+
+    function checkPronunciation(targetWord: string) {
+        if (typeof window === 'undefined') return;
+        const SpeechRecognition = (window as Window & { SpeechRecognition?: typeof window.SpeechRecognition; webkitSpeechRecognition?: typeof window.SpeechRecognition }).SpeechRecognition
+            || (window as Window & { webkitSpeechRecognition?: typeof window.SpeechRecognition }).webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert('আপনার browser এ speech recognition সাপোর্ট নেই। Chrome বা Edge ব্যবহার করুন।');
+            return;
+        }
+        if (isListening) {
+            recognitionRef.current?.stop();
+            setIsListening(false);
+            return;
+        }
+        const recognition = new SpeechRecognition();
+        recognitionRef.current = recognition;
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 3;
+        setIsListening(true);
+        setPronResult(null);
+        recognition.onresult = (e: SpeechRecognitionEvent) => {
+            const results = Array.from(e.results[0]).map((r) => r.transcript.toLowerCase().trim());
+            const target = targetWord.toLowerCase().trim();
+            const matched = results.some((r) => r.includes(target) || target.includes(r));
+            setPronResult(matched ? 'correct' : 'wrong');
+            setIsListening(false);
+        };
+        recognition.onerror = () => setIsListening(false);
+        recognition.onend = () => setIsListening(false);
+        recognition.start();
     }
 
     const knownCount = knownIds.size;
@@ -203,18 +245,40 @@ export default function VocabFlashcardMode() {
                                     <span className="rounded-lg border border-slate-200 px-2.5 py-1 text-[10px] font-bold text-slate-500">
                                         {TOPICS.find((t) => t.id === card.topic)?.icon} {TOPICS.find((t) => t.id === card.topic)?.label}
                                     </span>
+                                    {card.connectorType && (
+                                        <span className="rounded-lg bg-teal-50 border border-teal-200 px-2.5 py-1 text-[10px] font-black text-teal-700">
+                                            {CONNECTOR_TYPE_LABELS[card.connectorType]}
+                                        </span>
+                                    )}
                                 </div>
                                 <div>
                                     <h2 className="text-4xl font-black text-slate-900">{card.word}</h2>
-                                    <p className="mt-2 text-sm font-mono text-slate-400">{card.ipa}</p>
+                                    {card.ipa && <p className="mt-2 text-sm font-mono text-slate-400">{card.ipa}</p>}
                                 </div>
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); speak(card.word); }}
-                                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-500 hover:bg-slate-50 transition"
-                                >
-                                    <Volume2 size={12} /> উচ্চারণ শোনো
-                                </button>
-                                <p className="text-xs text-slate-400 mt-2">card tap করো — অর্থ দেখতে</p>
+                                <div className="flex items-center gap-2 flex-wrap justify-center">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); speak(card.word); }}
+                                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-500 hover:bg-slate-50 transition"
+                                    >
+                                        <Volume2 size={12} /> শোনো
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); checkPronunciation(card.word); }}
+                                        className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold transition ${
+                                            isListening
+                                                ? 'border-rose-300 bg-rose-50 text-rose-600 animate-pulse'
+                                                : pronResult === 'correct'
+                                                ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                                                : pronResult === 'wrong'
+                                                ? 'border-rose-300 bg-rose-50 text-rose-700'
+                                                : 'border-violet-200 text-violet-600 hover:bg-violet-50'
+                                        }`}
+                                    >
+                                        {isListening ? <MicOff size={12} /> : <Mic size={12} />}
+                                        {isListening ? 'শুনছি...' : pronResult === 'correct' ? '✓ সঠিক!' : pronResult === 'wrong' ? '✗ চেষ্টা করো' : 'উচ্চারণ চেক'}
+                                    </button>
+                                </div>
+                                <p className="text-xs text-slate-400">card tap করো — অর্থ দেখতে</p>
                             </div>
                         ) : (
                             // Back
@@ -234,8 +298,19 @@ export default function VocabFlashcardMode() {
                                 </div>
                                 <div className="rounded-xl bg-blue-50 border border-blue-100 px-4 py-3">
                                     <p className="text-[10px] font-black uppercase tracking-wider text-blue-400 mb-1">Example</p>
-                                    <p className="text-sm text-slate-700 italic">{card.example}</p>
+                                    <p className="text-sm text-slate-700 italic">"{card.example}"</p>
                                 </div>
+                                {card.forms && Object.values(card.forms).some(Boolean) && (
+                                    <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-3">
+                                        <p className="text-[10px] font-black uppercase tracking-wider text-amber-500 mb-2">Word Family</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {card.forms.noun && <span className="rounded bg-blue-100 px-2 py-0.5 text-[11px] font-bold text-blue-700">n. {card.forms.noun}</span>}
+                                            {card.forms.verb && <span className="rounded bg-emerald-100 px-2 py-0.5 text-[11px] font-bold text-emerald-700">v. {card.forms.verb}</span>}
+                                            {card.forms.adjective && <span className="rounded bg-violet-100 px-2 py-0.5 text-[11px] font-bold text-violet-700">adj. {card.forms.adjective}</span>}
+                                            {card.forms.adverb && <span className="rounded bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700">adv. {card.forms.adverb}</span>}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

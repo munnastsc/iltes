@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ChevronLeft, BookOpen, Search, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import VocabFlashcardMode from '../../../components/VocabFlashcardMode';
 import VocabQuizMode from '../../../components/VocabQuizMode';
-import { VOCABULARY, TOPICS, POS_LABELS, POS_SHORT, type Topic, type PartOfSpeech, type BandLevel } from '../../../lib/vocabularyData';
+import { VOCABULARY, TOPICS, POS_LABELS, POS_SHORT, CONNECTOR_TYPE_LABELS, type Topic, type PartOfSpeech, type BandLevel } from '../../../lib/vocabularyData';
 
 type Tab = 'flashcard' | 'quiz' | 'list';
 
@@ -74,6 +74,19 @@ function WordCard({ word }: { word: typeof VOCABULARY[0] }) {
                 <div className="border-t border-slate-100 px-4 py-3 space-y-2 bg-slate-50">
                     <p className="text-xs text-slate-700">{word.definition}</p>
                     <p className="text-xs text-slate-500 italic">"{word.example}"</p>
+                    {word.connectorType && (
+                        <span className="inline-block rounded bg-teal-50 border border-teal-200 px-2 py-0.5 text-[10px] font-black text-teal-700">
+                            {CONNECTOR_TYPE_LABELS[word.connectorType]}
+                        </span>
+                    )}
+                    {word.forms && Object.values(word.forms).some(Boolean) && (
+                        <div className="flex flex-wrap gap-1.5">
+                            {word.forms.noun && <span className="rounded bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">n. {word.forms.noun}</span>}
+                            {word.forms.verb && <span className="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">v. {word.forms.verb}</span>}
+                            {word.forms.adjective && <span className="rounded bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-700">adj. {word.forms.adjective}</span>}
+                            {word.forms.adverb && <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">adv. {word.forms.adverb}</span>}
+                        </div>
+                    )}
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Topic:</span>
                         <span className="text-[10px] text-slate-600">
@@ -137,8 +150,8 @@ export default function VocabularyPage() {
                     <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {[
                             { v: String(VOCABULARY.length) + '+', l: 'মোট শব্দ' },
-                            { v: '11', l: 'Topics' },
-                            { v: 'IPA', l: 'Pronunciation' },
+                            { v: '12', l: 'Topics + Connectors' },
+                            { v: 'IPA + Mic', l: 'Pronunciation' },
                             { v: '3', l: 'Practice Modes' },
                         ].map((s) => (
                             <div key={s.l} className="rounded-xl border border-white/5 bg-white/5 px-4 py-3">
