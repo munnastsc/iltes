@@ -1,4 +1,4 @@
 ---
 deployment:
   tasks:
-    - source /home/learncar/nodevenv/iltes.learncarebd.com/20/bin/activate && cd /home/learncar/iltes.learncarebd.com && npm install --production=false && npm run build
+    - source /home/learncar/nodevenv/iltes.learncarebd.com/20/bin/activate && cd /home/learncar/iltes.learncarebd.com && npm install --production=false

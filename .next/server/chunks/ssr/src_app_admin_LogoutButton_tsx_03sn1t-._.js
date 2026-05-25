@@ -1,0 +1,3 @@
+module.exports=[893308,a=>{"use strict";var b=a.i(187924),c=a.i(50944);a.s(["default",0,function(){let a=(0,c.useRouter)();async function d(){await fetch("/api/admin/login",{method:"DELETE"}),a.push("/admin/login")}return(0,b.jsx)("button",{onClick:d,className:"text-xs text-slate-400 hover:text-rose-400 transition font-semibold",children:"Logout"})}])}];
+
+//# sourceMappingURL=src_app_admin_LogoutButton_tsx_03sn1t-._.js.map

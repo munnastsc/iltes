@@ -1,0 +1,3 @@
+module.exports=[455054,a=>{"use strict";var b=a.i(907997);a.s(["default",0,function(){return(0,b.jsxs)("div",{className:"flex min-h-screen flex-col items-center justify-center bg-slate-50",children:[(0,b.jsx)("div",{className:"h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600"}),(0,b.jsx)("p",{className:"mt-4 text-sm font-semibold text-slate-600 animate-pulse",children:"Loading Book Workspace..."}),(0,b.jsx)("p",{className:"mt-1 text-xs text-slate-400",children:"বইয়ের কন্টেন্ট লোড হচ্ছে, দয়া করে অপেক্ষা করুন।"})]})}])},258660,a=>{a.n(a.i(455054))}];
+
+//# sourceMappingURL=src_app_dashboard_book_%5BbookNumber%5D_loading_tsx_0w_2vdn._.js.map
