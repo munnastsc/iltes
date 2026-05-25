@@ -1,7 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/learncar/iltes.learncarebd.com
-    - /bin/cp -R . $DEPLOYPATH
-    - cd $DEPLOYPATH && npm install --production=false
-    - cd $DEPLOYPATH && npm run build
+    - cd /home/learncar/iltes.learncarebd.com && npm install --production=false
+    - cd /home/learncar/iltes.learncarebd.com && npm run build
