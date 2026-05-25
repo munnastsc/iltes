@@ -65,7 +65,14 @@ export async function GET(request: NextRequest) {
 
     const camNum = toCamNumber(book);
 
-    // 1. Try local file first
+    // 1. CDN redirect if configured
+    const cdnBase = process.env.NEXT_PUBLIC_AUDIO_CDN_URL;
+    if (cdnBase) {
+        const cdnUrl = `${cdnBase.replace(/\/$/, '')}/cam${camNum}-test${test}-part${part}.mp3`;
+        return NextResponse.redirect(cdnUrl, { status: 302 });
+    }
+
+    // 2. Try local file
     const localBuffer = await tryLocalFile(camNum, test, part);
     if (localBuffer) {
         return new Response(new Uint8Array(localBuffer), {
@@ -79,7 +86,7 @@ export async function GET(request: NextRequest) {
         });
     }
 
-    // 2. Try external sources
+    // 3. Try external sources
     for (const { url, referer } of buildSources(camNum, test, part)) {
         try {
             const upstream = await fetch(url, {

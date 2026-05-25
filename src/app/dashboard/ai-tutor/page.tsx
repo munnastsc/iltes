@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Send, RotateCcw, Bot, User, Sparkles, BookOpen, Headphones, PenLine, Mic, GraduationCap, Lightbulb } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Send, RotateCcw, Bot, User, Sparkles, BookOpen, Headphones, PenLine, Mic, MicOff, Volume2, VolumeX, GraduationCap, Lightbulb, ImageIcon, X } from 'lucide-react';
 
 type Message = {
     role: 'user' | 'assistant';
     content: string;
     timestamp: number;
+    image?: string; // base64 preview for user messages
 };
 
 type GeminiHistoryItem = {
@@ -45,16 +46,32 @@ const WELCOME: Message = {
 - Listening, Reading, Writing, Speaking এর tips ও strategy দিতে
 - English Grammar সহজ shortcut দিয়ে শেখাতে
 - IELTS এ high band score পাওয়ার secrets শেয়ার করতে
+- Question এর **ছবি তুলে পাঠাও** — আমি দেখে explain করব!
 
-💬 যেকোনো প্রশ্ন করো — বাংলায় বা English এ, যেটা সহজ লাগে!
-
-🔥 চলো শুরু করি — তোমার কোন topic এ help দরকার?`,
+💬 যেকোনো প্রশ্ন করো — বাংলায় বা English এ, যেটা সহজ লাগে!`,
     timestamp: Date.now(),
 };
 
 function formatText(text: string) {
     const lines = text.split('\n');
     return lines.map((line, i) => {
+        // Handle blockquote lines ("> ...")
+        if (line.startsWith('> ')) {
+            const inner = line.slice(2);
+            const parts = inner.split(/(\*\*[^*]+\*\*)/g);
+            return (
+                <span key={i}>
+                    <span className="block border-l-4 border-indigo-400 bg-indigo-50 pl-3 py-1 text-indigo-800 rounded-r-lg my-1 italic">
+                        {parts.map((p, j) =>
+                            p.startsWith('**') && p.endsWith('**')
+                                ? <strong key={j}>{p.slice(2, -2)}</strong>
+                                : <span key={j}>{p}</span>
+                        )}
+                    </span>
+                    {i < lines.length - 1 && <span />}
+                </span>
+            );
+        }
         const parts = line.split(/(\*\*[^*]+\*\*)/g);
         return (
             <span key={i}>
@@ -69,8 +86,51 @@ function formatText(text: string) {
     });
 }
 
+// Strip markdown for TTS
+function stripMarkdown(text: string): string {
+    return text
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/\*([^*]+)\*/g, '$1')
+        .replace(/^> /gm, '')
+        .replace(/[📖🎧✍️🗣️📝🎯✅📋📄🔍🔑💡👇🎓💬🔥📌⏳❌]/gu, '')
+        .replace(/\n{2,}/g, '. ')
+        .replace(/\n/g, ' ')
+        .trim();
+}
+
 export default function AiTutorPage() {
     const [messages, setMessages] = useState<Message[]>([WELCOME]);
+    const [input, setInput] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [activeTopic, setActiveTopic] = useState('all');
+
+    // Image state
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageData, setImageData] = useState<string | null>(null);
+    const [imageType, setImageType] = useState<string>('image/jpeg');
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Voice input state
+    const [isListening, setIsListening] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const recognitionRef = useRef<any>(null);
+
+    // Voice output state
+    const [speakingMsgId, setSpeakingMsgId] = useState<number | null>(null);
+    const [ttsEnabled, setTtsEnabled] = useState(false);
+
+    // Voice input language
+    const [voiceLang, setVoiceLang] = useState<'bn-BD' | 'en-US'>('bn-BD');
+
+    // Question Selector state + mid-conversation toggle
+    const [selBook, setSelBook] = useState(9);
+    const [selTest, setSelTest] = useState(1);
+    const [selModule, setSelModule] = useState<'Reading' | 'Listening'>('Reading');
+    const [selQ, setSelQ] = useState(1);
+    const [showSelector, setShowSelector] = useState(false);
+
+    const bottomRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         try {
@@ -81,18 +141,6 @@ export default function AiTutorPage() {
             }
         } catch { /* empty */ }
     }, []);
-
-    const [input, setInput] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [activeTopic, setActiveTopic] = useState('all');
-    const bottomRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLTextAreaElement>(null);
-
-    // Question Selector state
-    const [selBook, setSelBook] = useState(9);
-    const [selTest, setSelTest] = useState(1);
-    const [selModule, setSelModule] = useState<'Reading' | 'Listening'>('Reading');
-    const [selQ, setSelQ] = useState(1);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -116,13 +164,107 @@ export default function AiTutorPage() {
         return history.slice(-20);
     }
 
-    async function sendMessage(text?: string) {
+    // ── Image upload ─────────────────────────────────────────────────────────
+    function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (file.size > 4 * 1024 * 1024) {
+            alert('Image size 4MB এর বেশি হওয়া যাবে না।');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const result = ev.target?.result as string;
+            setImagePreview(result);
+            setImageData(result);
+            setImageType(file.type || 'image/jpeg');
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+    }
+
+    function clearImage() {
+        setImagePreview(null);
+        setImageData(null);
+    }
+
+    // ── Voice input ──────────────────────────────────────────────────────────
+    const toggleVoiceInput = useCallback(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+        if (!SpeechRecognitionAPI) {
+            alert('তোমার browser এ voice input support নেই। Chrome ব্যবহার করো।');
+            return;
+        }
+
+        if (isListening) {
+            recognitionRef.current?.stop();
+            setIsListening(false);
+            return;
+        }
+
+        const recognition = new SpeechRecognitionAPI();
+        recognitionRef.current = recognition;
+        recognition.lang = voiceLang;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.continuous = false;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        recognition.onresult = (e: any) => {
+            const transcript = e.results[0][0].transcript;
+            setInput((prev: string) => prev ? prev + ' ' + transcript : transcript);
+        };
+        recognition.onerror = () => setIsListening(false);
+        recognition.onend = () => setIsListening(false);
+
+        recognition.start();
+        setIsListening(true);
+    }, [isListening, voiceLang]);
+
+    // ── Voice output ─────────────────────────────────────────────────────────
+    function speakMessage(text: string, msgId: number) {
+        if (!ttsEnabled) return;
+        if (speakingMsgId === msgId) {
+            window.speechSynthesis.cancel();
+            setSpeakingMsgId(null);
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const clean = stripMarkdown(text);
+        const utterance = new SpeechSynthesisUtterance(clean);
+
+        // Try to find a Bengali voice; fall back to any available voice
+        const voices = window.speechSynthesis.getVoices();
+        const bnVoice = voices.find(v => v.lang.startsWith('bn'));
+        if (bnVoice) utterance.voice = bnVoice;
+
+        utterance.rate = 0.9;
+        utterance.onend = () => setSpeakingMsgId(null);
+        utterance.onerror = () => setSpeakingMsgId(null);
+
+        setSpeakingMsgId(msgId);
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // ── Send message ─────────────────────────────────────────────────────────
+    async function sendMessage(text?: string, imgData?: string | null, imgType?: string) {
         const msg = (text || input).trim();
         if (!msg || loading) return;
 
-        const userMsg: Message = { role: 'user', content: msg, timestamp: Date.now() };
+        const img = imgData !== undefined ? imgData : imageData;
+        const iType = imgType || imageType;
+
+        const userMsg: Message = {
+            role: 'user',
+            content: msg,
+            timestamp: Date.now(),
+            image: img || undefined,
+        };
         setMessages((p) => [...p, userMsg]);
         setInput('');
+        clearImage();
         setLoading(true);
 
         try {
@@ -131,14 +273,20 @@ export default function AiTutorPage() {
                 ? `IELTS ${activeTopic.charAt(0).toUpperCase() + activeTopic.slice(1)}`
                 : 'General IELTS';
 
+            const body: Record<string, unknown> = {
+                message: msg,
+                context: contextLabel,
+                history: currentHistory,
+            };
+            if (img) {
+                body.image = img;
+                body.imageType = iType;
+            }
+
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: msg,
-                    context: contextLabel,
-                    history: currentHistory,
-                }),
+                body: JSON.stringify(body),
             });
 
             const data = await res.json();
@@ -161,6 +309,8 @@ export default function AiTutorPage() {
     }
 
     function clearHistory() {
+        window.speechSynthesis?.cancel();
+        setSpeakingMsgId(null);
         setMessages([WELCOME]);
         localStorage.removeItem(STORAGE_KEY);
     }
@@ -188,12 +338,22 @@ export default function AiTutorPage() {
                                 <p className="text-[11px] text-indigo-300">World-class IELTS Coach • বাংলায় শেখো</p>
                             </div>
                         </div>
-                        <button
-                            onClick={clearHistory}
-                            className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 hover:bg-white/10 transition"
-                        >
-                            <RotateCcw size={12} /> নতুন চ্যাট
-                        </button>
+                        <div className="flex items-center gap-2">
+                            {/* TTS toggle */}
+                            <button
+                                onClick={() => { setTtsEnabled(p => !p); window.speechSynthesis?.cancel(); setSpeakingMsgId(null); }}
+                                title={ttsEnabled ? 'Voice output ON' : 'Voice output OFF'}
+                                className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs text-slate-300 hover:bg-white/10 transition"
+                            >
+                                {ttsEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                            </button>
+                            <button
+                                onClick={clearHistory}
+                                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 hover:bg-white/10 transition"
+                            >
+                                <RotateCcw size={12} /> নতুন চ্যাট
+                            </button>
+                        </div>
                     </div>
 
                     {/* Topic filter */}
@@ -228,49 +388,27 @@ export default function AiTutorPage() {
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                                     <div>
                                         <label className="block text-[10px] font-bold text-teal-600 mb-1">Book</label>
-                                        <select
-                                            value={selBook}
-                                            onChange={e => setSelBook(Number(e.target.value))}
-                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
-                                        >
-                                            {Array.from({length: 12}, (_, i) => i + 9).map(b => (
-                                                <option key={b} value={b}>Cambridge {b}</option>
-                                            ))}
+                                        <select value={selBook} onChange={e => setSelBook(Number(e.target.value))} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            {Array.from({length: 12}, (_, i) => i + 9).map(b => <option key={b} value={b}>Cambridge {b}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-bold text-teal-600 mb-1">Test</label>
-                                        <select
-                                            value={selTest}
-                                            onChange={e => setSelTest(Number(e.target.value))}
-                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
-                                        >
-                                            {[1,2,3,4].map(t => (
-                                                <option key={t} value={t}>Test {t}</option>
-                                            ))}
+                                        <select value={selTest} onChange={e => setSelTest(Number(e.target.value))} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            {[1,2,3,4].map(t => <option key={t} value={t}>Test {t}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-bold text-teal-600 mb-1">Module</label>
-                                        <select
-                                            value={selModule}
-                                            onChange={e => setSelModule(e.target.value as 'Reading' | 'Listening')}
-                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
-                                        >
+                                        <select value={selModule} onChange={e => setSelModule(e.target.value as 'Reading' | 'Listening')} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
                                             <option value="Reading">Reading</option>
                                             <option value="Listening">Listening</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-bold text-teal-600 mb-1">Question</label>
-                                        <select
-                                            value={selQ}
-                                            onChange={e => setSelQ(Number(e.target.value))}
-                                            className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400"
-                                        >
-                                            {Array.from({length: 40}, (_, i) => i + 1).map(n => (
-                                                <option key={n} value={n}>Q{n}</option>
-                                            ))}
+                                        <select value={selQ} onChange={e => setSelQ(Number(e.target.value))} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            {Array.from({length: 40}, (_, i) => i + 1).map(n => <option key={n} value={n}>Q{n}</option>)}
                                         </select>
                                     </div>
                                 </div>
@@ -305,14 +443,9 @@ export default function AiTutorPage() {
                         <div key={idx} className={`flex gap-2.5 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                             {/* Avatar */}
                             <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-sm ${
-                                msg.role === 'user'
-                                    ? 'bg-indigo-600'
-                                    : 'bg-gradient-to-br from-emerald-400 to-teal-500'
+                                msg.role === 'user' ? 'bg-indigo-600' : 'bg-gradient-to-br from-emerald-400 to-teal-500'
                             }`}>
-                                {msg.role === 'user'
-                                    ? <User size={14} className="text-white" />
-                                    : <Bot size={14} className="text-white" />
-                                }
+                                {msg.role === 'user' ? <User size={14} className="text-white" /> : <Bot size={14} className="text-white" />}
                             </div>
 
                             {/* Bubble */}
@@ -321,7 +454,30 @@ export default function AiTutorPage() {
                                     ? 'rounded-tr-sm bg-indigo-600 text-white'
                                     : 'rounded-tl-sm bg-white text-slate-800 border border-slate-100'
                             }`}>
+                                {/* Image preview in user message */}
+                                {msg.image && (
+                                    <img
+                                        src={msg.image}
+                                        alt="uploaded"
+                                        className="mb-2 max-h-40 rounded-lg object-contain"
+                                    />
+                                )}
                                 {formatText(msg.content)}
+
+                                {/* TTS button on AI messages */}
+                                {msg.role === 'assistant' && msg.content !== WELCOME.content && (
+                                    <button
+                                        onClick={() => speakMessage(msg.content, msg.timestamp)}
+                                        className={`mt-2 flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium transition ${
+                                            speakingMsgId === msg.timestamp
+                                                ? 'bg-indigo-100 text-indigo-700'
+                                                : 'text-slate-400 hover:text-indigo-500 hover:bg-slate-50'
+                                        }`}
+                                    >
+                                        {speakingMsgId === msg.timestamp ? <VolumeX size={11} /> : <Volume2 size={11} />}
+                                        {speakingMsgId === msg.timestamp ? 'বন্ধ করো' : 'শুনো'}
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}
@@ -345,15 +501,105 @@ export default function AiTutorPage() {
             </div>
 
             {/* Input area */}
-            <div className="border-t border-slate-200 bg-white px-4 py-3 shadow-lg">
+            <div className="border-t border-slate-200 bg-white px-4 pt-2 pb-3 shadow-lg">
                 <div className="mx-auto max-w-3xl">
+
+                    {/* Cambridge Question Selector — always visible, collapsible */}
+                    <div className="mb-2">
+                        <button
+                            onClick={() => setShowSelector(p => !p)}
+                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-bold transition ${
+                                showSelector
+                                    ? 'bg-teal-600 text-white'
+                                    : 'bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100'
+                            }`}
+                        >
+                            <span>📚 Cambridge Book → Question Selector</span>
+                            <span>{showSelector ? '▲' : '▼'}</span>
+                        </button>
+
+                        {showSelector && (
+                            <div className="mt-1.5 rounded-xl border border-teal-200 bg-teal-50 p-3">
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Book</label>
+                                        <select value={selBook} onChange={e => setSelBook(Number(e.target.value))} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            {Array.from({length: 12}, (_, i) => i + 9).map(b => <option key={b} value={b}>Cambridge {b}</option>)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Test</label>
+                                        <select value={selTest} onChange={e => setSelTest(Number(e.target.value))} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            {[1,2,3,4].map(t => <option key={t} value={t}>Test {t}</option>)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Module</label>
+                                        <select value={selModule} onChange={e => setSelModule(e.target.value as 'Reading' | 'Listening')} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            <option value="Reading">Reading</option>
+                                            <option value="Listening">Listening</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-teal-600 mb-1">Question</label>
+                                        <select value={selQ} onChange={e => setSelQ(Number(e.target.value))} className="w-full rounded-lg border border-teal-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-400">
+                                            {Array.from({length: 40}, (_, i) => i + 1).map(n => <option key={n} value={n}>Q{n}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => { sendMessage(`Cambridge ${selBook} Test ${selTest} ${selModule} Q${selQ} explain koro`); setShowSelector(false); }}
+                                    disabled={loading}
+                                    className="w-full rounded-xl bg-teal-600 py-2 text-sm font-bold text-white hover:bg-teal-500 disabled:opacity-50 transition"
+                                >
+                                    ✨ এই Question টা Explain করো
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Image preview */}
+                    {imagePreview && (
+                        <div className="mb-2 flex items-center gap-2">
+                            <div className="relative">
+                                <img src={imagePreview} alt="preview" className="h-16 rounded-lg object-cover border border-slate-200" />
+                                <button
+                                    onClick={clearImage}
+                                    className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-white shadow"
+                                >
+                                    <X size={10} />
+                                </button>
+                            </div>
+                            <p className="text-xs text-slate-500">Image attach হয়েছে — প্রশ্ন লিখে send করো।</p>
+                        </div>
+                    )}
+
                     <div className="flex items-end gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 focus-within:border-indigo-400 focus-within:bg-white transition">
+                        {/* Image upload button */}
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={loading}
+                            title="ছবি upload করো"
+                            className="mb-0.5 shrink-0 text-slate-400 hover:text-indigo-500 transition disabled:opacity-40"
+                        >
+                            <ImageIcon size={18} />
+                        </button>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            className="hidden"
+                            onChange={handleImageSelect}
+                        />
+
                         <textarea
                             ref={inputRef}
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            placeholder="IELTS নিয়ে যেকোনো প্রশ্ন করো... (Enter = send, Shift+Enter = নতুন লাইন)"
+                            placeholder={isListening ? '🎤 বলো... (শুনছি)' : 'IELTS নিয়ে যেকোনো প্রশ্ন করো... (Enter = send, Shift+Enter = নতুন লাইন)'}
                             rows={1}
                             className="flex-1 resize-none bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none leading-relaxed"
                             style={{ maxHeight: '120px', overflowY: 'auto' }}
@@ -364,16 +610,44 @@ export default function AiTutorPage() {
                             }}
                             disabled={loading}
                         />
+
+                        {/* Voice language toggle (bn/en) */}
+                        <button
+                            type="button"
+                            onClick={() => setVoiceLang(l => l === 'bn-BD' ? 'en-US' : 'bn-BD')}
+                            disabled={loading}
+                            title="Voice language toggle"
+                            className="mb-0.5 shrink-0 rounded px-1 text-[10px] font-bold text-slate-400 hover:text-indigo-500 transition"
+                        >
+                            {voiceLang === 'bn-BD' ? 'বাং' : 'EN'}
+                        </button>
+
+                        {/* Voice input button */}
+                        <button
+                            type="button"
+                            onClick={toggleVoiceInput}
+                            disabled={loading}
+                            title={isListening ? 'বন্ধ করো' : 'Voice দিয়ে বলো'}
+                            className={`mb-0.5 shrink-0 transition disabled:opacity-40 ${
+                                isListening
+                                    ? 'animate-pulse text-rose-500'
+                                    : 'text-slate-400 hover:text-indigo-500'
+                            }`}
+                        >
+                            {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+                        </button>
+
+                        {/* Send button */}
                         <button
                             onClick={() => sendMessage()}
-                            disabled={!input.trim() || loading}
+                            disabled={(!input.trim() && !imagePreview) || loading}
                             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white transition hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             <Send size={15} />
                         </button>
                     </div>
                     <p className="mt-1.5 text-center text-[10px] text-slate-400">
-                        AI উত্তর সবসময় verify করো। Cambridge answers এর জন্য official books দেখো।
+                        📸 ছবি | 🎤 Voice | ⌨️ Type — যেভাবে সহজ। AI উত্তর সবসময় verify করো।
                     </p>
                 </div>
             </div>

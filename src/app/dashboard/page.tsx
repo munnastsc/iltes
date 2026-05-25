@@ -5,9 +5,10 @@ import { useState } from 'react';
 import {
     ArrowUpRight, BarChart3, Bot, CircleHelp, FilePenLine,
     Headphones, BookOpen, PenLine, Mic, Layers3, Sparkles,
-    BookMarked, FlaskConical, SendHorizonal, ChevronRight, GraduationCap, Zap,
+    BookMarked, FlaskConical, SendHorizonal, ChevronRight, GraduationCap, Zap, Radio, MessageSquare, ClipboardList, Award, SpellCheck, TrendingUp, Pencil, Library,
 } from 'lucide-react';
 import ExamCountdown from '../../components/ExamCountdown';
+import DailyStudyPlan from '../../components/DailyStudyPlan';
 
 type Message = { role: 'user' | 'assistant'; content: string };
 
@@ -149,6 +150,48 @@ export default function DashboardPage() {
                         </div>
                         <ChevronRight size={16} className="text-slate-300 group-hover:text-rose-500 transition" />
                     </Link>
+                    <Link href="/dashboard/ai-conversation"
+                        className="group flex items-center gap-4 rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 to-orange-50 p-5 shadow-sm hover:shadow-md hover:border-rose-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-rose-600 group-hover:bg-rose-500 transition shadow-md shadow-rose-200">
+                            <MessageSquare size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">AI Conversation</p>
+                                <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-black text-rose-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">IELTS Speaking · 15 Topics</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-rose-500 transition" />
+                    </Link>
+                    <Link href="/dashboard/spoken-english"
+                        className="group flex items-center gap-4 rounded-2xl border border-teal-100 bg-gradient-to-br from-teal-50 to-cyan-50 p-5 shadow-sm hover:shadow-md hover:border-teal-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-teal-600 group-hover:bg-teal-500 transition shadow-md shadow-teal-200">
+                            <Radio size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">Spoken English</p>
+                                <span className="rounded-full bg-teal-100 px-2 py-0.5 text-[10px] font-black text-teal-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">Headway Dictation & Shadowing</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-teal-500 transition" />
+                    </Link>
+                    <Link href="/dashboard/mock"
+                        className="group flex items-center gap-4 rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-purple-50 p-5 shadow-sm hover:shadow-md hover:border-violet-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-600 group-hover:bg-violet-500 transition shadow-md shadow-violet-200">
+                            <ClipboardList size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">Mock Tests</p>
+                                <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-black text-violet-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">3 Full Tests · Reading + Writing</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-violet-500 transition" />
+                    </Link>
                     <Link href="/dashboard/analytics"
                         className="group flex items-center gap-4 rounded-2xl border border-blue-100 bg-white p-5 shadow-sm hover:shadow-md hover:border-blue-300 transition-all">
                         <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-blue-100 group-hover:bg-blue-200 transition">
@@ -215,9 +258,97 @@ export default function DashboardPage() {
                         </div>
                         <ChevronRight size={16} className="text-slate-300 group-hover:text-emerald-500 transition" />
                     </Link>
+                    <Link href="/dashboard/certificate"
+                        className="group flex items-center gap-4 rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-5 shadow-sm hover:shadow-md hover:border-amber-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500 group-hover:bg-amber-400 transition shadow-md shadow-amber-200">
+                            <Award size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">Certificate</p>
+                                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black text-amber-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">Achievement Badge · Download PDF</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-amber-500 transition" />
+                    </Link>
+                    <Link href="/dashboard/grammar"
+                        className="group flex items-center gap-4 rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-600 group-hover:bg-emerald-500 transition shadow-md shadow-emerald-200">
+                            <SpellCheck size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">Grammar Checker</p>
+                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-black text-emerald-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">AI বাংলায় ভুল explain করবে</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-emerald-500 transition" />
+                    </Link>
+                    <Link href="/dashboard/band-predictor"
+                        className="group flex items-center gap-4 rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-blue-50 p-5 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-indigo-600 group-hover:bg-indigo-500 transition shadow-md shadow-indigo-200">
+                            <TrendingUp size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">Band Predictor</p>
+                                <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-black text-indigo-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">তোমার predicted IELTS band দেখো</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-indigo-500 transition" />
+                    </Link>
+                    <Link href="/dashboard/grammar-practice"
+                        className="group flex items-center gap-4 rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-purple-50 p-5 shadow-sm hover:shadow-md hover:border-violet-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-violet-600 group-hover:bg-violet-500 transition shadow-md shadow-violet-200">
+                            <Pencil size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">Grammar Practice</p>
+                                <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-black text-violet-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">Easy → Hard · MCQ · বাংলায় Rule</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-violet-500 transition" />
+                    </Link>
+                    <Link href="/dashboard/stories"
+                        className="group flex items-center gap-4 rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 to-pink-50 p-5 shadow-sm hover:shadow-md hover:border-rose-300 transition-all">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-rose-600 group-hover:bg-rose-500 transition shadow-md shadow-rose-200">
+                            <Library size={22} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                                <p className="font-black text-slate-900">English Stories</p>
+                                <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-black text-rose-700">NEW</span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-0.5">শব্দে click → বাংলা অর্থ · Quiz</p>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-rose-500 transition" />
+                    </Link>
                 </div>
 
                 <ExamCountdown />
+
+                <DailyStudyPlan />
+
+                {/* Referral Banner */}
+                <div className="rounded-2xl border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <p className="font-black text-green-800 text-sm">🎁 বন্ধুকে invite করো!</p>
+                        <p className="text-xs text-green-600 mt-0.5">WhatsApp-এ share করো — বন্ধু join করলে তুমিও benefit পাবে।</p>
+                    </div>
+                    <a
+                        href={`https://wa.me/?text=${encodeURIComponent('🎓 ILTES Sathi AI — বাংলায় IELTS প্র্যাকটিস! Cambridge Books 9-20, AI Tutor, Speaking Practice, Writing Checker সব একসাথে। এখনই try করো: https://iltes-sathi.com')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-shrink-0 flex items-center gap-2 rounded-xl bg-green-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-green-500 transition shadow-md shadow-green-200"
+                    >
+                        <SendHorizonal size={15} /> WhatsApp-এ Share করো
+                    </a>
+                </div>
 
                 {/* Books + Chat grid */}
                 <div className="mt-8 grid gap-6 lg:grid-cols-[1.7fr_1fr]">

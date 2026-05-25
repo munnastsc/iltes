@@ -1,0 +1,953 @@
+export type Vocab = { word: string; bangla: string; partOfSpeech: string; example?: string };
+export type Question = { q: string; options: string[]; answer: string };
+export type Story = {
+    id: string; title: string; subtitle: string;
+    level: 'Beginner' | 'Intermediate'; levelColor: string; topic: string;
+    learningObjectives: string[]; grammarFocus: string[];
+    passage: string; vocabulary: Vocab[]; questions: Question[];
+};
+
+export const STORIES: Story[] = [
+    {
+        id: 's1', title: 'A Morning Walk', subtitle: 'একটি সকালের হাঁটা',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Daily Life',
+        learningObjectives: ['Present Simple দিয়ে daily routine বর্ণনা', 'Adverbs of frequency: usually, often, always', 'Descriptive adjectives: fresh, quiet, peaceful'],
+        grammarFocus: ['Present Simple', 'Adverbs of Frequency', 'Adjectives'],
+        passage: `Every morning, Ahmed wakes up at six o'clock. He puts on his shoes and walks to the nearby park. The air is fresh and the streets are quiet at that time. He usually walks for thirty minutes.
+
+During his walk, Ahmed often sees his neighbors. Some are jogging, and others are sitting on benches. An old man always feeds the pigeons near the fountain. Ahmed finds this scene very peaceful.
+
+After his walk, he returns home and drinks a glass of cold water. Then he takes a shower and eats breakfast. He believes that a morning walk gives him energy for the whole day. It is his favorite daily habit.`,
+        vocabulary: [
+            { word: 'nearby', bangla: 'কাছাকাছি', partOfSpeech: 'adjective' },
+            { word: 'fresh', bangla: 'সতেজ', partOfSpeech: 'adjective' },
+            { word: 'quiet', bangla: 'শান্ত', partOfSpeech: 'adjective' },
+            { word: 'usually', bangla: 'সাধারণত', partOfSpeech: 'adverb' },
+            { word: 'during', bangla: 'সময়কালে', partOfSpeech: 'preposition' },
+            { word: 'neighbors', bangla: 'প্রতিবেশী', partOfSpeech: 'noun' },
+            { word: 'fountain', bangla: 'ফোয়ারা', partOfSpeech: 'noun' },
+            { word: 'peaceful', bangla: 'শান্তিপূর্ণ', partOfSpeech: 'adjective' },
+            { word: 'energy', bangla: 'শক্তি', partOfSpeech: 'noun' },
+            { word: 'habit', bangla: 'অভ্যাস', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'What time does Ahmed wake up?', options: ["5 o'clock", "6 o'clock", "7 o'clock", "8 o'clock"], answer: "6 o'clock" },
+            { q: 'How long does Ahmed usually walk?', options: ['15 minutes', '20 minutes', '30 minutes', '45 minutes'], answer: '30 minutes' },
+            { q: 'What does the old man do near the fountain?', options: ['Reads a book', 'Jogs', 'Feeds the pigeons', 'Sits on a bench'], answer: 'Feeds the pigeons' },
+            { q: 'What does Ahmed drink after his walk?', options: ['Tea', 'Cold water', 'Juice', 'Milk'], answer: 'Cold water' },
+        ],
+    },
+    {
+        id: 's2', title: 'The Library Visit', subtitle: 'লাইব্রেরিতে একদিন',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Education',
+        learningObjectives: ['Past Simple দিয়ে ঘটনা বর্ণনা', 'Sequence words: first, then, after that, finally', 'Library vocabulary'],
+        grammarFocus: ['Past Simple', 'Sequence Words', 'Education Vocabulary'],
+        passage: `Last Saturday, Nadia visited the public library for the first time. She felt nervous because she did not know where to find the books she needed.
+
+First, she walked to the information desk and spoke to the librarian. The librarian was very helpful. She explained the system and gave Nadia a map of the library. Then, Nadia searched for books on English grammar. She found three useful books on the shelf.
+
+After that, she sat at a quiet table near the window. She read for two hours without any disturbance. Finally, she borrowed two books and took them home. Nadia decided to visit the library every weekend because she enjoyed the calm and peaceful atmosphere so much.`,
+        vocabulary: [
+            { word: 'nervous', bangla: 'উদ্বিগ্ন', partOfSpeech: 'adjective' },
+            { word: 'librarian', bangla: 'গ্রন্থাগারিক', partOfSpeech: 'noun' },
+            { word: 'helpful', bangla: 'সহায়ক', partOfSpeech: 'adjective' },
+            { word: 'shelf', bangla: 'তাক', partOfSpeech: 'noun' },
+            { word: 'disturbance', bangla: 'বিঘ্ন', partOfSpeech: 'noun' },
+            { word: 'borrowed', bangla: 'ধার নিলেন', partOfSpeech: 'verb' },
+            { word: 'atmosphere', bangla: 'পরিবেশ', partOfSpeech: 'noun' },
+            { word: 'calm', bangla: 'শান্ত', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'When did Nadia visit the library?', options: ['Friday evening', 'Last Saturday', 'Sunday morning', 'Last Monday'], answer: 'Last Saturday' },
+            { q: "Why did Nadia feel nervous?", options: ['She was late', "No library card", "Didn't know where to find books", 'Forgot her bag'], answer: "Didn't know where to find books" },
+            { q: 'What subject were the books about?', options: ['History', 'Mathematics', 'English grammar', 'Science'], answer: 'English grammar' },
+            { q: 'How many books did she borrow?', options: ['One', 'Two', 'Three', 'Four'], answer: 'Two' },
+        ],
+    },
+    {
+        id: 's3', title: 'Shopping at the Market', subtitle: 'বাজারে কেনাকাটা',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Daily Life',
+        learningObjectives: ['Present Simple for regular habits', 'Countable and uncountable nouns', 'Shopping vocabulary'],
+        grammarFocus: ['Present Simple', 'Countable Nouns', 'Shopping Vocabulary'],
+        passage: `Every Saturday, Fatima goes to the local market to buy fresh vegetables and fruit. She always makes a list before she leaves the house because she does not want to forget anything.
+
+At the market, there are many stalls with different products. The vegetable seller greets her with a smile. She buys two kilograms of tomatoes, a bunch of spinach, and some onions. Then she walks to the fruit section and picks up some bananas and a few oranges.
+
+When she has everything, she goes to the counter and asks for the total price. She pays with cash and receives her change. Fatima enjoys shopping at the market because the food is fresh and cheap. She always returns home feeling satisfied.`,
+        vocabulary: [
+            { word: 'stalls', bangla: 'দোকানের স্টল', partOfSpeech: 'noun' },
+            { word: 'greets', bangla: 'স্বাগত জানায়', partOfSpeech: 'verb' },
+            { word: 'bunch', bangla: 'আঁটি / গুচ্ছ', partOfSpeech: 'noun' },
+            { word: 'spinach', bangla: 'পালং শাক', partOfSpeech: 'noun' },
+            { word: 'counter', bangla: 'কাউন্টার', partOfSpeech: 'noun' },
+            { word: 'receives', bangla: 'পায় / গ্রহণ করে', partOfSpeech: 'verb' },
+            { word: 'satisfied', bangla: 'সন্তুষ্ট', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'When does Fatima go to the market?', options: ['Every Friday', 'Every Saturday', 'Every Sunday', 'Every Monday'], answer: 'Every Saturday' },
+            { q: 'Why does she make a list?', options: ['To save money', "She doesn't want to forget anything", 'The seller asks for it', 'To check prices'], answer: "She doesn't want to forget anything" },
+            { q: 'How does she pay?', options: ['By card', 'By phone', 'With cash', 'By cheque'], answer: 'With cash' },
+            { q: 'Why does she like the market?', options: ['It is close to her house', 'Food is fresh and cheap', 'She has friends there', 'It opens early'], answer: 'Food is fresh and cheap' },
+        ],
+    },
+    {
+        id: 's4', title: 'Cooking Dinner', subtitle: 'রাতের রান্না',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Daily Life',
+        learningObjectives: ['Present continuous for ongoing actions', 'Imperative for instructions', 'Sequence: first, then, after that'],
+        grammarFocus: ['Present Continuous', 'Imperatives', 'Sequence Words'],
+        passage: `Tonight, Karim is cooking dinner for his family for the first time. His mother is teaching him how to make chicken curry.
+
+First, she tells him to wash the chicken and cut it into pieces. Then, he heats some oil in a large pan. When the oil is hot, he adds onions and stirs them until they are golden. After that, he puts in the spices — turmeric, cumin, and chilli powder.
+
+"Now add the chicken," his mother says. Karim carefully places the chicken in the pan. The kitchen fills with a delicious smell.
+
+"How long do I cook it for?" Karim asks. "About twenty minutes on medium heat," she replies. "Then add some water and let it simmer."
+
+When the curry is ready, the whole family sits down together. His father says it is the best chicken curry he has ever had. Karim feels very proud.`,
+        vocabulary: [
+            { word: 'stirs', bangla: 'নাড়াচাড়া করে', partOfSpeech: 'verb' },
+            { word: 'golden', bangla: 'সোনালি', partOfSpeech: 'adjective' },
+            { word: 'spices', bangla: 'মশলা', partOfSpeech: 'noun' },
+            { word: 'turmeric', bangla: 'হলুদ', partOfSpeech: 'noun' },
+            { word: 'cumin', bangla: 'জিরা', partOfSpeech: 'noun' },
+            { word: 'simmer', bangla: 'মৃদু আঁচে রান্না করা', partOfSpeech: 'verb' },
+            { word: 'delicious', bangla: 'সুস্বাদু', partOfSpeech: 'adjective' },
+            { word: 'proud', bangla: 'গর্বিত', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: "Who is teaching Karim to cook?", options: ['His father', 'His sister', 'His mother', 'His grandmother'], answer: 'His mother' },
+            { q: 'What does he add after the onions turn golden?', options: ['Water', 'Chicken', 'Spices', 'Salt'], answer: 'Spices' },
+            { q: 'What does the kitchen smell when the chicken is added?', options: ['Burnt', 'Delicious', 'Strange', 'Sour'], answer: 'Delicious' },
+            { q: 'What does his father say about the curry?', options: ['Too spicy', 'Not enough salt', 'The best he has ever had', 'A little cold'], answer: 'The best he has ever had' },
+        ],
+    },
+    {
+        id: 's5', title: "At the Doctor's", subtitle: 'ডাক্তারের কাছে',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Health',
+        learningObjectives: ['Modal verbs: should, must for advice and obligation', 'Present perfect for recent situations', 'Health and medical vocabulary'],
+        grammarFocus: ['Modal Verbs', 'Present Perfect', 'Health Vocabulary'],
+        passage: `Nadia has not been feeling well for two days. She has a sore throat, a headache, and a slight fever. Her mother makes an appointment with the family doctor.
+
+At the clinic, Nadia waits in the waiting room for about ten minutes. A nurse takes her weight and temperature. Then the doctor comes in.
+
+"How long have you had these symptoms?" the doctor asks. "Since Monday," Nadia replies.
+
+The doctor examines her throat and listens to her chest. "You have a minor throat infection," he says. "You should drink plenty of water and rest. I will prescribe some antibiotics. You must take them twice a day for five days."
+
+"Should I stay home from school?" Nadia asks. "Yes, rest for at least two days," the doctor advises.
+
+Nadia takes the prescription to the pharmacy next door. By the next morning, she already feels a little better.`,
+        vocabulary: [
+            { word: 'sore', bangla: 'ব্যথাযুক্ত', partOfSpeech: 'adjective' },
+            { word: 'fever', bangla: 'জ্বর', partOfSpeech: 'noun' },
+            { word: 'appointment', bangla: 'অ্যাপয়েন্টমেন্ট', partOfSpeech: 'noun' },
+            { word: 'symptoms', bangla: 'উপসর্গ', partOfSpeech: 'noun' },
+            { word: 'examines', bangla: 'পরীক্ষা করেন', partOfSpeech: 'verb' },
+            { word: 'prescribe', bangla: 'ওষুধ লিখে দেওয়া', partOfSpeech: 'verb' },
+            { word: 'antibiotics', bangla: 'অ্যান্টিবায়োটিক', partOfSpeech: 'noun' },
+            { word: 'pharmacy', bangla: 'ওষুধের দোকান', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'How long has Nadia been sick?', options: ['One day', 'Two days', 'Three days', 'A week'], answer: 'Two days' },
+            { q: "What does the doctor say is wrong?", options: ['Flu', 'Headache only', 'Minor throat infection', 'Fever only'], answer: 'Minor throat infection' },
+            { q: 'How should she take the antibiotics?', options: ['Once a day', 'Twice a day', 'Three times a day', 'Only at night'], answer: 'Twice a day' },
+            { q: 'Where does Nadia go after the clinic?', options: ['Home directly', 'School', 'To the pharmacy', 'To a hospital'], answer: 'To the pharmacy' },
+        ],
+    },
+    {
+        id: 's6', title: 'A Birthday Surprise', subtitle: 'জন্মদিনের চমক',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Social Life',
+        learningObjectives: ['Present continuous for actions happening now', 'Contrast: thinks vs reality', 'Celebrations vocabulary'],
+        grammarFocus: ['Present Continuous', 'Contrast Structures', 'Social Vocabulary'],
+        passage: `Today is Rafi's tenth birthday. His parents are organising a surprise party for him. His mother is baking a chocolate cake in the kitchen, and his father is blowing up balloons in the living room. His older sister is writing birthday messages on colourful cards.
+
+Rafi does not know anything about the party. He thinks he is going to a quiet family dinner. When he arrives home at six o'clock, the living room is dark. Suddenly, all the lights come on and everyone shouts, "Surprise!"
+
+Rafi is completely shocked. All his friends and cousins are there. There is a long table filled with food and sweets. After singing the birthday song, Rafi blows out the ten candles on his cake in one breath. Everyone claps and cheers.
+
+He opens his presents and thanks everyone. It is the best birthday he has ever had.`,
+        vocabulary: [
+            { word: 'organising', bangla: 'আয়োজন করছে', partOfSpeech: 'verb' },
+            { word: 'colourful', bangla: 'রঙিন', partOfSpeech: 'adjective' },
+            { word: 'shocked', bangla: 'হতবাক', partOfSpeech: 'adjective' },
+            { word: 'cousins', bangla: 'চাচাতো/মামাতো ভাই-বোন', partOfSpeech: 'noun' },
+            { word: 'candles', bangla: 'মোমবাতি', partOfSpeech: 'noun' },
+            { word: 'claps', bangla: 'তালি দেয়', partOfSpeech: 'verb' },
+            { word: 'cheers', bangla: 'উৎসাহ দেয়', partOfSpeech: 'verb' },
+            { word: 'presents', bangla: 'উপহার', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: "What is Rafi's mother doing?", options: ['Blowing balloons', 'Writing cards', 'Baking a chocolate cake', 'Arranging chairs'], answer: 'Baking a chocolate cake' },
+            { q: 'What does Rafi think he is going to?', options: ['A restaurant', 'A surprise party', 'A quiet family dinner', 'A friend\'s house'], answer: 'A quiet family dinner' },
+            { q: 'How does Rafi blow out the candles?', options: ['With help', 'In two breaths', 'In one breath', 'His sister helps'], answer: 'In one breath' },
+            { q: 'How did Rafi feel at the surprise?', options: ['Angry', 'Completely shocked', 'Sad', 'Bored'], answer: 'Completely shocked' },
+        ],
+    },
+    {
+        id: 's7', title: 'The Weather Forecast', subtitle: 'আবহাওয়ার পূর্বাভাস',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Daily Life',
+        learningObjectives: ['Future predictions: will, is expected to, may', 'Present continuous for current conditions', 'Weather vocabulary'],
+        grammarFocus: ['Future Tense', 'Present Continuous', 'Weather Vocabulary'],
+        passage: `This morning, Tariq looks out of his bedroom window. The sky is dark grey and heavy clouds are gathering above the city. The trees are swaying in the wind. He turns on the radio to listen to the weather forecast.
+
+"Temperatures today will be around twelve degrees," the presenter says. "Heavy rain is expected in the afternoon. People are advised to carry an umbrella and wear a warm jacket."
+
+Tariq goes to the kitchen, where his grandmother is making tea. She looks out of the window and shakes her head. "I remember when winters were warmer," she says. "The weather has changed so much."
+
+Tariq nods. He puts on a thick coat and a scarf. Before he leaves for university, he checks the weather app on his phone one more time. Rain is still forecast for the whole day. He grabs his umbrella and steps outside into the cold morning air.`,
+        vocabulary: [
+            { word: 'gathering', bangla: 'জমা হচ্ছে', partOfSpeech: 'verb' },
+            { word: 'swaying', bangla: 'দুলছে', partOfSpeech: 'verb' },
+            { word: 'forecast', bangla: 'পূর্বাভাস', partOfSpeech: 'noun' },
+            { word: 'presenter', bangla: 'উপস্থাপক', partOfSpeech: 'noun' },
+            { word: 'advised', bangla: 'পরামর্শ দেওয়া হয়েছে', partOfSpeech: 'verb' },
+            { word: 'nods', bangla: 'মাথা নাড়ায়', partOfSpeech: 'verb' },
+            { word: 'scarf', bangla: 'মাফলার', partOfSpeech: 'noun' },
+            { word: 'grabs', bangla: 'তুলে নেয়', partOfSpeech: 'verb' },
+        ],
+        questions: [
+            { q: 'What does Tariq see when he looks outside?', options: ['Sunshine', 'Snow', 'Dark grey sky and clouds', 'Clear blue sky'], answer: 'Dark grey sky and clouds' },
+            { q: 'What is the forecast temperature?', options: ['Eight degrees', 'Twelve degrees', 'Fifteen degrees', 'Twenty degrees'], answer: 'Twelve degrees' },
+            { q: "What does Tariq's grandmother say?", options: ['She likes cold weather', 'Winters were warmer before', 'She wants to go out', 'The forecast is wrong'], answer: 'Winters were warmer before' },
+            { q: 'What does Tariq take before leaving?', options: ['An umbrella only', 'A coat only', 'An umbrella and a coat', 'Nothing'], answer: 'An umbrella and a coat' },
+        ],
+    },
+    {
+        id: 's8', title: 'At the Bank', subtitle: 'ব্যাংকে',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Daily Life',
+        learningObjectives: ['Polite request forms: would like to, could I, please', 'Modal verbs for formality', 'Banking vocabulary'],
+        grammarFocus: ['Modal Verbs', 'Polite Requests', 'Banking Vocabulary'],
+        passage: `Mr Hasan needs to open a savings account at the bank. He puts all his documents in a folder — his passport, a recent utility bill, and his employment letter.
+
+At the bank, a security guard directs him to the customer service desk. He waits for about fifteen minutes before a bank officer calls him over.
+
+"Good morning. How can I help you today?" the officer asks.
+
+"I would like to open a savings account, please," Mr Hasan replies politely.
+
+The officer checks his documents carefully. She explains the different types of accounts available and the interest rates. Mr Hasan chooses a standard savings account. He signs some forms and receives a temporary card. The officer tells him that his permanent debit card will arrive by post within five working days.
+
+Mr Hasan thanks the officer and leaves the bank feeling confident. It was easier than he expected.`,
+        vocabulary: [
+            { word: 'savings', bangla: 'সঞ্চয়', partOfSpeech: 'noun' },
+            { word: 'documents', bangla: 'নথিপত্র', partOfSpeech: 'noun' },
+            { word: 'utility', bangla: 'ইউটিলিটি (বিদ্যুৎ/গ্যাস)', partOfSpeech: 'adjective' },
+            { word: 'employment', bangla: 'চাকরি', partOfSpeech: 'noun' },
+            { word: 'interest', bangla: 'সুদ', partOfSpeech: 'noun' },
+            { word: 'temporary', bangla: 'অস্থায়ী', partOfSpeech: 'adjective' },
+            { word: 'permanent', bangla: 'স্থায়ী', partOfSpeech: 'adjective' },
+            { word: 'confident', bangla: 'আত্মবিশ্বাসী', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'Why does Mr Hasan go to the bank?', options: ['To withdraw money', 'To open a savings account', 'To pay a bill', 'To apply for a loan'], answer: 'To open a savings account' },
+            { q: 'What documents does he bring?', options: ['Only his passport', 'Passport, utility bill, employment letter', 'ID card only', 'Utility bill only'], answer: 'Passport, utility bill, employment letter' },
+            { q: 'What account does he choose?', options: ['Current account', 'Business account', 'Standard savings account', 'Student account'], answer: 'Standard savings account' },
+            { q: 'How will he receive his permanent card?', options: ['He collects it today', 'By email', 'By post within five working days', 'He must come back next week'], answer: 'By post within five working days' },
+        ],
+    },
+    {
+        id: 's9', title: 'The New Neighbour', subtitle: 'নতুন প্রতিবেশী',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Social Life',
+        learningObjectives: ['Past simple for past events', 'Introduction and greeting vocabulary', 'Personality adjectives: warm, kind, curious'],
+        grammarFocus: ['Past Simple', 'Social Vocabulary', 'Adjectives'],
+        passage: `Last week, a new family moved into the house next door. The Karims had lived alone on the street for years, so they were curious about their new neighbours.
+
+On Saturday morning, Mrs Karim baked a tray of sweets and walked over to introduce herself. A woman around her age answered the door. Her name was Mrs Rahman, and she had just moved from another city.
+
+"Welcome to the neighbourhood," Mrs Karim said with a warm smile. "I hope you are settling in well."
+
+"Thank you so much," Mrs Rahman replied. "We are still unpacking, but everyone has been so kind."
+
+Mrs Karim invited her for tea later that afternoon. Over tea, the two women discovered that they had a lot in common. Both enjoyed cooking, had children the same age, and liked the same television programmes.
+
+By the end of the afternoon, they had made plans to visit the local market together the following Saturday. A new friendship had quietly begun.`,
+        vocabulary: [
+            { word: 'curious', bangla: 'কৌতূহলী', partOfSpeech: 'adjective' },
+            { word: 'introduce', bangla: 'পরিচয় করিয়ে দেওয়া', partOfSpeech: 'verb' },
+            { word: 'neighbourhood', bangla: 'এলাকা', partOfSpeech: 'noun' },
+            { word: 'settling', bangla: 'মিলিয়ে নেওয়া', partOfSpeech: 'verb' },
+            { word: 'unpacking', bangla: 'মালপত্র গোছানো', partOfSpeech: 'verb' },
+            { word: 'invited', bangla: 'আমন্ত্রণ জানালেন', partOfSpeech: 'verb' },
+            { word: 'discovered', bangla: 'আবিষ্কার করলেন', partOfSpeech: 'verb' },
+            { word: 'quietly', bangla: 'নীরবে', partOfSpeech: 'adverb' },
+        ],
+        questions: [
+            { q: 'What does Mrs Karim bring to the new neighbours?', options: ['Flowers', 'A tray of sweets', 'Some vegetables', 'A book'], answer: 'A tray of sweets' },
+            { q: 'Where had Mrs Rahman moved from?', options: ['Another country', 'Another city', 'The next street', 'A village'], answer: 'Another city' },
+            { q: 'What do the two women have in common?', options: ['Same job', 'Same school', 'Cooking, same-age children, same TV shows', 'Same family'], answer: 'Cooking, same-age children, same TV shows' },
+            { q: 'What do they plan to do next Saturday?', options: ['Cook together', 'Visit the local market', 'Go to a restaurant', 'Meet their children'], answer: 'Visit the local market' },
+        ],
+    },
+    {
+        id: 's10', title: 'Lost in the City', subtitle: 'শহরে হারিয়ে',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Daily Life',
+        learningObjectives: ['Asking for directions: Could you tell me how to...', 'Imperative for directions: go straight, turn left', 'Past simple narrative'],
+        grammarFocus: ['Asking for Directions', 'Imperatives', 'Past Simple'],
+        passage: `Rina arrived in Dhaka for the first time last month. She was visiting her aunt, but she had written down the address incorrectly. She got off the bus at the wrong stop and did not know where she was.
+
+She looked around. There were tall buildings, busy roads, and many people walking in different directions. She felt confused and a little scared.
+
+Rina decided to ask for help. She stopped a middle-aged man who was standing near a shop.
+
+"Excuse me," she said. "Could you tell me how to get to Dhanmondi Road?"
+
+The man thought for a moment. "Yes, of course. Go straight ahead and turn left at the traffic lights. Then take the second road on the right. You will see a big mosque on the corner — the road you need is just after that."
+
+Rina thanked him and followed the directions carefully. After about ten minutes, she found the street. She felt relieved and called her aunt to say she was almost there.`,
+        vocabulary: [
+            { word: 'incorrectly', bangla: 'ভুলভাবে', partOfSpeech: 'adverb' },
+            { word: 'confused', bangla: 'বিভ্রান্ত', partOfSpeech: 'adjective' },
+            { word: 'straight', bangla: 'সোজা', partOfSpeech: 'adverb' },
+            { word: 'traffic', bangla: 'যানজট', partOfSpeech: 'noun' },
+            { word: 'mosque', bangla: 'মসজিদ', partOfSpeech: 'noun' },
+            { word: 'directions', bangla: 'দিকনির্দেশনা', partOfSpeech: 'noun' },
+            { word: 'relieved', bangla: 'স্বস্তি পেলেন', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'Why did Rina get lost?', options: ['She missed the bus', 'She wrote the address incorrectly', 'Her phone died', 'She forgot the name'], answer: 'She wrote the address incorrectly' },
+            { q: 'Who did she ask for help?', options: ['A police officer', 'A shopkeeper', 'A middle-aged man near a shop', 'A woman'], answer: 'A middle-aged man near a shop' },
+            { q: 'What landmark does the man mention?', options: ['A school', 'A big mosque', 'A hospital', 'A market'], answer: 'A big mosque' },
+            { q: 'How did Rina feel after finding the street?', options: ['Tired', 'Angry', 'Relieved', 'Still confused'], answer: 'Relieved' },
+        ],
+    },
+    {
+        id: 's11', title: 'First Flight Abroad', subtitle: 'প্রথম বিদেশ যাত্রা',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Travel',
+        learningObjectives: ['Future tense: is flying, will depart', 'Present perfect: has never been', 'Travel vocabulary'],
+        grammarFocus: ['Future Tense', 'Present Perfect', 'Travel Vocabulary'],
+        passage: `Tomorrow, Farhan is flying to London for his university studies. He has never been abroad before, and he is feeling both excited and nervous.
+
+His flight departs at nine in the morning, so he and his family leave home at six. They arrive at the airport at seven, which gives him two hours before boarding.
+
+At the check-in counter, Farhan gives his passport and boarding pass to the agent. She weighs his luggage and tells him it is two kilograms over the limit. He removes some books and puts them in his hand luggage.
+
+After check-in, Farhan says goodbye to his family. His mother hugs him tightly and tells him to look after himself. His younger brother gives him a card he made at school.
+
+At the departure gate, Farhan looks out at the planes on the runway. He thinks about the journey ahead — new country, new friends, new life. He takes a deep breath. He is ready.`,
+        vocabulary: [
+            { word: 'departs', bangla: 'ছাড়ে / রওনা হয়', partOfSpeech: 'verb' },
+            { word: 'boarding', bangla: 'বিমানে ওঠা', partOfSpeech: 'noun' },
+            { word: 'luggage', bangla: 'মালপত্র', partOfSpeech: 'noun' },
+            { word: 'limit', bangla: 'সীমা', partOfSpeech: 'noun' },
+            { word: 'removes', bangla: 'সরিয়ে নেয়', partOfSpeech: 'verb' },
+            { word: 'departure', bangla: 'প্রস্থান', partOfSpeech: 'noun' },
+            { word: 'runway', bangla: 'রানওয়ে', partOfSpeech: 'noun' },
+            { word: 'tightly', bangla: 'শক্ত করে', partOfSpeech: 'adverb' },
+        ],
+        questions: [
+            { q: 'Why is Farhan flying to London?', options: ['For a holiday', 'For university studies', 'For a job', 'To visit family'], answer: 'For university studies' },
+            { q: 'What is the problem with his luggage?', options: ['It is lost', 'It is too small', 'It is two kilograms over the limit', 'It has the wrong items'], answer: 'It is two kilograms over the limit' },
+            { q: 'What does his brother give him?', options: ['Money', 'A book', 'A card he made at school', 'A phone'], answer: 'A card he made at school' },
+            { q: 'How does Farhan feel at the departure gate?', options: ['Sad and regretful', 'Ready for the journey ahead', 'Angry about the luggage', 'Sleepy'], answer: 'Ready for the journey ahead' },
+        ],
+    },
+    {
+        id: 's12', title: 'Family Dinner', subtitle: 'পারিবারিক রাতের খাবার',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Family',
+        learningObjectives: ['Present simple for family routines', 'Present perfect: has just been made', 'Family and celebration vocabulary'],
+        grammarFocus: ['Present Simple', 'Present Perfect', 'Family Vocabulary'],
+        passage: `Every Friday evening, the Ahmed family gathers for dinner together. It is a tradition that everyone looks forward to. The children set the table, the grandmother makes soup, and the parents prepare the main dishes.
+
+This Friday, the family is celebrating Nadia's promotion at work. She has just been made the manager of her department. Her father says he is very proud of her. Her mother fills everyone's glass and proposes a toast.
+
+"To Nadia," she says. "Hard work always pays off."
+
+During dinner, everyone talks about their week. The youngest child, Ali, tells a funny story about his teacher. Everyone laughs. The grandfather shares a memory from when he was young. The grandmother reminds everyone to eat more.
+
+After dinner, the family sit together and drink tea. They watch an old film. By ten o'clock, the younger children are falling asleep on the sofa. It is a perfect evening.`,
+        vocabulary: [
+            { word: 'gathers', bangla: 'একত্রিত হয়', partOfSpeech: 'verb' },
+            { word: 'tradition', bangla: 'ঐতিহ্য / রীতি', partOfSpeech: 'noun' },
+            { word: 'promotion', bangla: 'পদোন্নতি', partOfSpeech: 'noun' },
+            { word: 'department', bangla: 'বিভাগ', partOfSpeech: 'noun' },
+            { word: 'proposes', bangla: 'প্রস্তাব করেন', partOfSpeech: 'verb' },
+            { word: 'toast', bangla: 'উৎসব পানীয়', partOfSpeech: 'noun' },
+            { word: 'pays off', bangla: 'ফল দেয়', partOfSpeech: 'phrase' },
+            { word: 'memory', bangla: 'স্মৃতি', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'When does the family gather for dinner?', options: ['Every Thursday', 'Every Friday', 'Every Saturday', 'Every Sunday'], answer: 'Every Friday' },
+            { q: "What is Nadia celebrating?", options: ['Her birthday', 'Finishing university', 'Her promotion to manager', 'Getting married'], answer: 'Her promotion to manager' },
+            { q: 'What funny story does Ali tell?', options: ['About his friend', 'About a film', 'About his teacher', 'About the grandfather'], answer: 'About his teacher' },
+            { q: 'What do they do after dinner?', options: ['Go for a walk', 'Play games', 'Drink tea and watch a film', 'Go to sleep immediately'], answer: 'Drink tea and watch a film' },
+        ],
+    },
+    {
+        id: 's13', title: 'The Job Interview', subtitle: 'চাকরির সাক্ষাৎকার',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Work',
+        learningObjectives: ['Present perfect with "for": has been preparing for', 'Formal language and polite expressions', 'Job interview vocabulary'],
+        grammarFocus: ['Present Perfect', 'Formal Language', 'Work Vocabulary'],
+        passage: `Mina has an important job interview tomorrow. She has been preparing for two weeks. She researched the company, practised common interview questions, and bought a new formal outfit.
+
+On the morning of the interview, she wakes up early and reviews her notes. She checks that she has all the documents — her CV, her certificates, and a copy of the job description.
+
+She arrives at the office ten minutes before the scheduled time. The receptionist offers her water and asks her to wait.
+
+When she enters the interview room, two managers are sitting at a table. "Tell us about yourself," one of them begins.
+
+Mina speaks clearly and confidently. She explains her qualifications, her experience, and why she wants to work for this company. When they ask about her weaknesses, she answers honestly.
+
+At the end, they tell her they will contact her within a week. She thanks them and leaves. Outside, she takes a long breath. She feels good about how it went.`,
+        vocabulary: [
+            { word: 'preparing', bangla: 'প্রস্তুতি নিচ্ছে', partOfSpeech: 'verb' },
+            { word: 'researched', bangla: 'গবেষণা করেছে', partOfSpeech: 'verb' },
+            { word: 'outfit', bangla: 'পোশাক', partOfSpeech: 'noun' },
+            { word: 'scheduled', bangla: 'নির্ধারিত', partOfSpeech: 'adjective' },
+            { word: 'receptionist', bangla: 'অভ্যর্থনাকর্মী', partOfSpeech: 'noun' },
+            { word: 'qualifications', bangla: 'যোগ্যতা', partOfSpeech: 'noun' },
+            { word: 'confidently', bangla: 'আত্মবিশ্বাসের সাথে', partOfSpeech: 'adverb' },
+            { word: 'honestly', bangla: 'সৎভাবে', partOfSpeech: 'adverb' },
+        ],
+        questions: [
+            { q: 'How long has Mina been preparing?', options: ['One week', 'Two weeks', 'Three weeks', 'One month'], answer: 'Two weeks' },
+            { q: 'How early does she arrive at the office?', options: ['Exactly on time', 'Five minutes early', 'Ten minutes early', 'Thirty minutes early'], answer: 'Ten minutes early' },
+            { q: 'How does Mina speak during the interview?', options: ['Quietly and nervously', 'Clearly and confidently', 'Quickly and quietly', 'Slowly and unsurely'], answer: 'Clearly and confidently' },
+            { q: 'When will they contact her?', options: ['Tomorrow', 'In two weeks', 'Within a week', 'Next month'], answer: 'Within a week' },
+        ],
+    },
+    {
+        id: 's14', title: 'Playing Football', subtitle: 'ফুটবল খেলা',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Sports',
+        learningObjectives: ['Present perfect with "since": has played since', 'Feelings adjectives: disappointed, proud, happy', 'Sports vocabulary'],
+        grammarFocus: ['Present Perfect', 'Feelings Adjectives', 'Sports Vocabulary'],
+        passage: `Yasir has played football since he was six years old. He practises with his school team three times a week. His dream is to become a professional footballer one day.
+
+On Tuesday afternoons, the team trains at the school field. The coach always starts with a warm-up run, then moves on to passing and shooting drills. Sometimes, the session ends with a small practice match.
+
+Yasir is a midfielder. His job is to help both the defence and the attack. He is good at passing the ball accurately and making quick decisions.
+
+Last weekend, Yasir's team played in a regional tournament. They won their first two matches but lost the final on penalties. The coach told them that it was a great effort and they should be proud.
+
+Although they did not win the trophy, the team celebrated at a local restaurant. Yasir felt disappointed about losing, but he was still happy with his team's performance.`,
+        vocabulary: [
+            { word: 'professional', bangla: 'পেশাদার', partOfSpeech: 'adjective' },
+            { word: 'drills', bangla: 'অনুশীলন', partOfSpeech: 'noun' },
+            { word: 'midfielder', bangla: 'মিডফিল্ডার', partOfSpeech: 'noun' },
+            { word: 'defence', bangla: 'রক্ষণভাগ', partOfSpeech: 'noun' },
+            { word: 'accurately', bangla: 'নির্ভুলভাবে', partOfSpeech: 'adverb' },
+            { word: 'tournament', bangla: 'টুর্নামেন্ট', partOfSpeech: 'noun' },
+            { word: 'penalties', bangla: 'পেনাল্টি', partOfSpeech: 'noun' },
+            { word: 'disappointed', bangla: 'হতাশ', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'How long has Yasir played football?', options: ['Since he was four', 'Since he was six', 'Since he was eight', 'Since he was ten'], answer: 'Since he was six' },
+            { q: "What is Yasir's playing position?", options: ['Goalkeeper', 'Defender', 'Midfielder', 'Striker'], answer: 'Midfielder' },
+            { q: 'How did the tournament final end?', options: ['They won 2-0', 'They drew', 'They lost on penalties', 'The match was cancelled'], answer: 'They lost on penalties' },
+            { q: 'How did Yasir feel after the tournament?', options: ['Only happy', 'Only disappointed', 'Disappointed but still happy with the performance', 'Angry at the coach'], answer: 'Disappointed but still happy with the performance' },
+        ],
+    },
+    {
+        id: 's15', title: 'A Phone Call Home', subtitle: 'বাড়িতে ফোন',
+        level: 'Beginner', levelColor: 'emerald', topic: 'Family',
+        learningObjectives: ['Past simple for telling a story', 'Direct speech: she said, he replied', 'Modal verbs: should, will'],
+        grammarFocus: ['Past Simple', 'Direct Speech', 'Modal Verbs'],
+        passage: `Ahmed's mother called him on his mobile phone while he was at work. He saw her name on the screen and answered immediately.
+
+"Hello, Mum," he said. "Is everything okay?"
+
+"Yes, dear," she replied. "I just wanted to know if you are coming home for dinner tonight. I am cooking your favourite dish — rice and lentil soup."
+
+Ahmed smiled. "Of course I will come," he said. "What time should I be there?"
+
+"Around seven o'clock," his mother said. "And please bring some bread from the bakery on your way."
+
+"No problem," Ahmed replied. "See you tonight."
+
+After the call, Ahmed felt happy. He worked hard all day knowing that a warm home-cooked meal was waiting for him. When he arrived at seven, the whole family was already sitting at the table. The food smelled wonderful.`,
+        vocabulary: [
+            { word: 'immediately', bangla: 'সঙ্গে সঙ্গে', partOfSpeech: 'adverb' },
+            { word: 'replied', bangla: 'উত্তর দিলেন', partOfSpeech: 'verb' },
+            { word: 'favourite', bangla: 'প্রিয়', partOfSpeech: 'adjective' },
+            { word: 'lentil', bangla: 'মসুর ডাল', partOfSpeech: 'noun' },
+            { word: 'bakery', bangla: 'বেকারি', partOfSpeech: 'noun' },
+            { word: 'home-cooked', bangla: 'ঘরে রান্না করা', partOfSpeech: 'adjective' },
+            { word: 'wonderful', bangla: 'অসাধারণ', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: "Why did Ahmed's mother call?", options: ['There was an emergency', 'To ask if he is coming for dinner', 'To ask him to buy medicine', 'To wish him luck'], answer: 'To ask if he is coming for dinner' },
+            { q: "What is Ahmed's favourite dish?", options: ['Chicken curry', 'Rice and lentil soup', 'Fish and rice', 'Bread and butter'], answer: 'Rice and lentil soup' },
+            { q: 'What does his mother ask him to bring?', options: ['Milk', 'Bread from the bakery', 'Vegetables', 'Fruit'], answer: 'Bread from the bakery' },
+            { q: 'How did Ahmed feel after the call?', options: ['Worried', 'Tired', 'Angry', 'Happy'], answer: 'Happy' },
+        ],
+    },
+    {
+        id: 's16', title: 'Climate Change and Our Future', subtitle: 'জলবায়ু পরিবর্তন',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Environment',
+        learningObjectives: ['Cause and effect: due to, as a result, consequently', 'Present perfect for ongoing issues', 'Academic vocabulary: emission, renewable, sustainable'],
+        grammarFocus: ['Cause & Effect', 'Present Perfect', 'Academic Vocabulary'],
+        passage: `Over the past century, the Earth's temperature has risen significantly due to human activities. Industries have released enormous amounts of carbon dioxide and other greenhouse gases into the atmosphere. As a result, weather patterns across the world have become increasingly unpredictable.
+
+Scientists have warned that if greenhouse gas emissions continue at the current rate, the consequences will be severe. Rising sea levels threaten coastal communities, while droughts and floods affect food production in many regions. Consequently, millions of people may be forced to migrate from their homes.
+
+However, there is reason for hope. Many countries have already started investing in renewable energy sources such as solar and wind power. International agreements like the Paris Agreement aim to reduce carbon emissions globally. Individuals can also contribute by making sustainable choices — using public transport, reducing waste, and consuming less energy at home.
+
+The challenge of climate change requires urgent collective action. Every effort, however small, plays a role in building a sustainable future for generations to come.`,
+        vocabulary: [
+            { word: 'significantly', bangla: 'উল্লেখযোগ্যভাবে', partOfSpeech: 'adverb' },
+            { word: 'enormous', bangla: 'বিশাল', partOfSpeech: 'adjective' },
+            { word: 'atmosphere', bangla: 'বায়ুমণ্ডল', partOfSpeech: 'noun' },
+            { word: 'increasingly', bangla: 'ক্রমবর্ধমানভাবে', partOfSpeech: 'adverb' },
+            { word: 'unpredictable', bangla: 'অনিশ্চিত', partOfSpeech: 'adjective' },
+            { word: 'emissions', bangla: 'নির্গমন', partOfSpeech: 'noun' },
+            { word: 'consequences', bangla: 'পরিণতি', partOfSpeech: 'noun' },
+            { word: 'severe', bangla: 'তীব্র', partOfSpeech: 'adjective' },
+            { word: 'coastal', bangla: 'উপকূলীয়', partOfSpeech: 'adjective' },
+            { word: 'droughts', bangla: 'খরা', partOfSpeech: 'noun' },
+            { word: 'migrate', bangla: 'স্থানান্তরিত হওয়া', partOfSpeech: 'verb' },
+            { word: 'renewable', bangla: 'নবায়নযোগ্য', partOfSpeech: 'adjective' },
+            { word: 'sustainable', bangla: 'টেকসই', partOfSpeech: 'adjective' },
+            { word: 'collective', bangla: 'সম্মিলিত', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'What is the main cause of rising temperatures?', options: ['Natural events', 'Human activities', 'Volcanic eruptions', 'Solar changes'], answer: 'Human activities' },
+            { q: 'What does "unpredictable" mean for weather?', options: ['Very cold', 'Cannot be forecasted', 'Getting warmer', 'More rainy'], answer: 'Cannot be forecasted' },
+            { q: 'What do many countries invest in as a solution?', options: ['Nuclear power', 'Coal energy', 'Renewable energy', 'Oil refineries'], answer: 'Renewable energy' },
+            { q: 'Which international agreement is mentioned?', options: ['Kyoto Protocol', 'Paris Agreement', 'Montreal Protocol', 'Rio Declaration'], answer: 'Paris Agreement' },
+        ],
+    },
+    {
+        id: 's17', title: 'The Power of Habit', subtitle: 'অভ্যাসের শক্তি',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Psychology',
+        learningObjectives: ['Contrast linkers: however, although, on the other hand', 'Passive voice: habits are formed, research has been conducted', 'Academic nouns: routine, behaviour, willpower'],
+        grammarFocus: ['Contrast Linkers', 'Passive Voice', 'Academic Vocabulary'],
+        passage: `Habits shape our lives in ways we often fail to recognise. According to psychologists, approximately 40 percent of our daily actions are performed out of habit rather than conscious decision. This means that almost half of what we do every day is driven by automatic behaviour, not active thinking.
+
+Research has shown that habits are formed through a three-part process known as the "habit loop." First, there is a trigger or cue — something that signals the brain to begin the behaviour. Then the routine follows automatically. Finally, a reward reinforces the loop, making the habit stronger over time.
+
+Although breaking a bad habit can be extremely difficult, it is not impossible. Psychologists recommend replacing the unwanted behaviour with a healthier alternative, while keeping the same trigger and reward. For example, if someone always reaches for a biscuit when stressed, they could replace it with a short walk instead.
+
+On the other hand, building good habits requires consistency and patience. Research suggests it takes an average of 66 days to form a new habit. However, this varies greatly between individuals. The key is not willpower alone, but designing an environment that supports the desired behaviour.`,
+        vocabulary: [
+            { word: 'approximately', bangla: 'প্রায়', partOfSpeech: 'adverb' },
+            { word: 'conscious', bangla: 'সচেতন', partOfSpeech: 'adjective' },
+            { word: 'automatic', bangla: 'স্বয়ংক্রিয়', partOfSpeech: 'adjective' },
+            { word: 'trigger', bangla: 'উদ্দীপক', partOfSpeech: 'noun' },
+            { word: 'cue', bangla: 'সংকেত', partOfSpeech: 'noun' },
+            { word: 'reinforces', bangla: 'শক্তিশালী করে', partOfSpeech: 'verb' },
+            { word: 'routine', bangla: 'নিয়মিত কার্যক্রম', partOfSpeech: 'noun' },
+            { word: 'alternative', bangla: 'বিকল্প', partOfSpeech: 'noun' },
+            { word: 'consistency', bangla: 'ধারাবাহিকতা', partOfSpeech: 'noun' },
+            { word: 'willpower', bangla: 'ইচ্ছাশক্তি', partOfSpeech: 'noun' },
+            { word: 'desired', bangla: 'কাঙ্ক্ষিত', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'What percentage of daily actions are habits?', options: ['20%', '30%', '40%', '50%'], answer: '40%' },
+            { q: 'What are the three parts of the habit loop in order?', options: ['Reward, Trigger, Routine', 'Trigger, Routine, Reward', 'Routine, Reward, Trigger', 'Cue, Reward, Routine'], answer: 'Trigger, Routine, Reward' },
+            { q: 'On average, how many days to form a new habit?', options: ['21 days', '30 days', '66 days', '100 days'], answer: '66 days' },
+            { q: 'What is more important than willpower according to the author?', options: ['Strong motivation', 'Designing a supportive environment', 'Having a partner', 'Reading self-help books'], answer: 'Designing a supportive environment' },
+        ],
+    },
+    {
+        id: 's18', title: 'Social Media and Mental Health', subtitle: 'সোশ্যাল মিডিয়া ও মানসিক স্বাস্থ্য',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Technology & Society',
+        learningObjectives: ['Contrast linkers: while, however, rather than', 'Hedging language: suggests, may have, arguably', 'Academic vocabulary: perceive, curate, marginalised'],
+        grammarFocus: ['Hedging Language', 'Contrast Linkers', 'Academic Vocabulary'],
+        passage: `Over the past decade, social media platforms have transformed the way people communicate, share information, and perceive themselves. While these platforms offer undeniable benefits — connecting people across distances and giving voice to those who were previously unheard — mounting evidence suggests that excessive use may have a damaging effect on mental health, particularly among young people.
+
+Studies have shown that heavy social media users are more likely to experience feelings of loneliness, anxiety, and low self-esteem. Researchers suggest that constantly comparing oneself to the carefully curated images of others can create unrealistic expectations. Unlike genuine conversation, social media interactions often lack depth and nuance, leaving users feeling superficially connected yet emotionally isolated.
+
+However, it would be an oversimplification to conclude that social media is entirely harmful. Many individuals use these platforms to find communities of shared interest, access mental health resources, and maintain relationships with friends abroad. For marginalised groups, online spaces can provide a sense of belonging.
+
+The key lies in how these tools are used. Limiting screen time and prioritising face-to-face interaction are widely recommended strategies. Developing digital literacy — the ability to engage with technology critically and mindfully — may offer the most sustainable path forward.`,
+        vocabulary: [
+            { word: 'transformed', bangla: 'রূপান্তরিত করেছে', partOfSpeech: 'verb' },
+            { word: 'perceive', bangla: 'উপলব্ধি করা', partOfSpeech: 'verb' },
+            { word: 'mounting', bangla: 'ক্রমবর্ধমান', partOfSpeech: 'adjective' },
+            { word: 'excessive', bangla: 'অতিরিক্ত', partOfSpeech: 'adjective' },
+            { word: 'curated', bangla: 'সাজানো / বাছাই করা', partOfSpeech: 'adjective' },
+            { word: 'nuance', bangla: 'সূক্ষ্ম পার্থক্য', partOfSpeech: 'noun' },
+            { word: 'superficially', bangla: 'উপরিভাগে', partOfSpeech: 'adverb' },
+            { word: 'isolated', bangla: 'বিচ্ছিন্ন', partOfSpeech: 'adjective' },
+            { word: 'marginalised', bangla: 'প্রান্তিক', partOfSpeech: 'adjective' },
+            { word: 'prioritising', bangla: 'অগ্রাধিকার দেওয়া', partOfSpeech: 'verb' },
+            { word: 'literacy', bangla: 'সাক্ষরতা / দক্ষতা', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'What does research suggest about heavy social media users?', options: ['They are more creative', 'They earn more', 'More likely to feel lonely and have low self-esteem', 'They sleep better'], answer: 'More likely to feel lonely and have low self-esteem' },
+            { q: 'What can social media provide for marginalised groups?', options: ['Money', 'A sense of belonging', 'Better jobs', 'More friends offline'], answer: 'A sense of belonging' },
+            { q: 'What does "digital literacy" mean here?', options: ['Reading e-books', 'Using more apps', 'Engaging with technology critically and mindfully', 'Having fast internet'], answer: 'Engaging with technology critically and mindfully' },
+            { q: "What is the author's main recommendation?", options: ['Delete all social media', 'Use more social media', 'Develop digital literacy', 'Only use social media for news'], answer: 'Develop digital literacy' },
+        ],
+    },
+    {
+        id: 's19', title: 'The Benefits of Reading', subtitle: 'পড়ার উপকারিতা',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Education',
+        learningObjectives: ['Cause and effect: has been shown to, has been linked to', 'Present perfect passive', 'Academic vocabulary: cognitive, empathy, neural'],
+        grammarFocus: ['Present Perfect Passive', 'Cause & Effect', 'Academic Vocabulary'],
+        passage: `In an age dominated by digital screens and short-form content, the habit of reading books has declined significantly among young people. Yet research consistently demonstrates that reading remains one of the most powerful tools for cognitive and emotional development.
+
+Reading fiction and non-fiction has been shown to strengthen vocabulary, improve concentration, and enhance critical thinking skills. Unlike passive media such as television, reading requires the brain to actively construct meaning from abstract symbols, exercising neural pathways associated with language and imagination.
+
+Beyond intellectual benefits, reading literature also fosters empathy. When readers immerse themselves in a character's perspective — particularly one from a different culture — they develop a deeper understanding of human experience. This exposure to diverse viewpoints has been linked to greater tolerance and social awareness.
+
+Furthermore, reading has well-documented effects on stress reduction. Research found that reading for just six minutes reduced participants' stress levels by 68 percent, outperforming listening to music or taking a walk.
+
+Given these benefits, educators increasingly advocate for making reading a daily habit, regardless of age.`,
+        vocabulary: [
+            { word: 'dominated', bangla: 'আধিপত্য বিস্তার করা', partOfSpeech: 'verb' },
+            { word: 'cognitive', bangla: 'জ্ঞানীয়', partOfSpeech: 'adjective' },
+            { word: 'concentration', bangla: 'মনোযোগ', partOfSpeech: 'noun' },
+            { word: 'enhance', bangla: 'উন্নত করা', partOfSpeech: 'verb' },
+            { word: 'abstract', bangla: 'বিমূর্ত', partOfSpeech: 'adjective' },
+            { word: 'neural', bangla: 'স্নায়বিক', partOfSpeech: 'adjective' },
+            { word: 'fosters', bangla: 'লালন করে', partOfSpeech: 'verb' },
+            { word: 'empathy', bangla: 'সহানুভূতি', partOfSpeech: 'noun' },
+            { word: 'immerse', bangla: 'ডুবে যাওয়া', partOfSpeech: 'verb' },
+            { word: 'tolerance', bangla: 'সহিষ্ণুতা', partOfSpeech: 'noun' },
+            { word: 'advocate', bangla: 'সমর্থন করা', partOfSpeech: 'verb' },
+        ],
+        questions: [
+            { q: 'What has happened to reading habits among young people?', options: ['Increased', 'Stayed the same', 'Declined significantly', 'Improved a little'], answer: 'Declined significantly' },
+            { q: 'How does reading differ from watching TV?', options: ['It is faster', 'It requires active construction of meaning', 'It is cheaper', 'It is more social'], answer: 'It requires active construction of meaning' },
+            { q: 'How does reading literature foster empathy?', options: ['By teaching grammar', 'By immersing readers in different perspectives', 'By improving vocabulary', 'By reducing screen time'], answer: 'By immersing readers in different perspectives' },
+            { q: 'By how much did reading reduce stress in the study?', options: ['28%', '48%', '58%', '68%'], answer: '68%' },
+        ],
+    },
+    {
+        id: 's20', title: 'Working from Home', subtitle: 'ঘরে বসে কাজ',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Work & Society',
+        learningObjectives: ['Advantages/disadvantages structure', 'Contrast: however, not without its drawbacks', 'Academic vocabulary: autonomy, cohesion, hybrid'],
+        grammarFocus: ['Advantage/Disadvantage Structure', 'Contrast Linkers', 'Academic Vocabulary'],
+        passage: `The widespread adoption of remote working, accelerated by the global pandemic of 2020, has fundamentally changed modern employment. What was once considered a privilege for a select few has become a standard expectation for millions of office workers worldwide.
+
+Proponents of remote working point to a number of clear advantages. Workers gain back significant amounts of commuting time, which can be redirected towards exercise or personal development. Many also report higher levels of productivity and job satisfaction when working from home, citing fewer interruptions and greater autonomy over their working environment.
+
+However, remote working is not without its drawbacks. The boundary between professional and personal life can become blurred, leading some individuals to work longer hours. Social isolation is another concern, as the absence of daily in-person interaction can reduce team cohesion.
+
+A hybrid approach, where employees divide their time between office and home, has emerged as a widely accepted compromise. This model aims to preserve the flexibility of remote work while restoring the human connection that many employees value.`,
+        vocabulary: [
+            { word: 'adoption', bangla: 'গ্রহণ', partOfSpeech: 'noun' },
+            { word: 'accelerated', bangla: 'ত্বরান্বিত করেছে', partOfSpeech: 'verb' },
+            { word: 'privilege', bangla: 'সুবিধা', partOfSpeech: 'noun' },
+            { word: 'commuting', bangla: 'যাতায়াত', partOfSpeech: 'noun' },
+            { word: 'autonomy', bangla: 'স্বায়ত্তশাসন / স্বাধীনতা', partOfSpeech: 'noun' },
+            { word: 'drawbacks', bangla: 'অসুবিধা', partOfSpeech: 'noun' },
+            { word: 'blurred', bangla: 'ঝাপসা / অস্পষ্ট', partOfSpeech: 'adjective' },
+            { word: 'cohesion', bangla: 'ঐক্য', partOfSpeech: 'noun' },
+            { word: 'hybrid', bangla: 'মিশ্র', partOfSpeech: 'adjective' },
+            { word: 'compromise', bangla: 'আপোষ', partOfSpeech: 'noun' },
+            { word: 'restoring', bangla: 'পুনরুদ্ধার করা', partOfSpeech: 'verb' },
+        ],
+        questions: [
+            { q: 'What accelerated the adoption of remote working?', options: ['Technology advances', 'The 2020 pandemic', 'Employee demand', 'Cost cutting'], answer: 'The 2020 pandemic' },
+            { q: 'What advantage does remote working give workers?', options: ['Higher salaries', 'Better offices', 'More commuting time saved and autonomy', 'Free food'], answer: 'More commuting time saved and autonomy' },
+            { q: 'What is a drawback of remote working?', options: ['Too much exercise', 'Blurred work-life boundary and social isolation', 'Better productivity', 'More meetings'], answer: 'Blurred work-life boundary and social isolation' },
+            { q: 'What solution does the author suggest?', options: ['Full remote work', 'Full office work', 'A hybrid approach', 'Shorter working hours'], answer: 'A hybrid approach' },
+        ],
+    },
+    {
+        id: 's21', title: 'The Importance of Sleep', subtitle: 'ঘুমের গুরুত্ব',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Health & Science',
+        learningObjectives: ['Passive voice: has been established, has been associated', 'Academic hedging: well-documented, may have', 'Health vocabulary: physiological, immune, deprivation'],
+        grammarFocus: ['Passive Voice', 'Hedging Language', 'Health Vocabulary'],
+        passage: `Despite its apparent simplicity, sleep is one of the most complex and vital biological processes the human body performs. Yet in modern society, it is frequently undervalued, with many people viewing it as wasted time.
+
+Scientific research has established that adequate sleep — generally seven to nine hours per night for adults — is essential for a wide range of physiological and psychological functions. During sleep, the brain consolidates memories, processes emotions, and clears toxic waste products that accumulate during waking hours. Simultaneously, the body repairs tissue, regulates hormones, and strengthens the immune system.
+
+The consequences of sleep deprivation are well-documented. Cognitive function, including attention and decision-making, declines sharply after even one poor night's sleep. Chronic sleep deprivation has been associated with an increased risk of obesity, diabetes, and cardiovascular disease.
+
+Contrary to popular belief, sleep debt cannot be repaid simply by sleeping longer at the weekend. Sleep specialists recommend establishing a regular sleep schedule, avoiding screens before bedtime, and creating a calm sleeping environment.`,
+        vocabulary: [
+            { word: 'vital', bangla: 'অত্যন্ত জরুরি', partOfSpeech: 'adjective' },
+            { word: 'undervalued', bangla: 'কম মূল্যায়ন করা', partOfSpeech: 'adjective' },
+            { word: 'physiological', bangla: 'শারীরবৃত্তীয়', partOfSpeech: 'adjective' },
+            { word: 'consolidates', bangla: 'একত্রিত করে', partOfSpeech: 'verb' },
+            { word: 'accumulate', bangla: 'জমা হওয়া', partOfSpeech: 'verb' },
+            { word: 'immune', bangla: 'রোগপ্রতিরোধ', partOfSpeech: 'adjective' },
+            { word: 'deprivation', bangla: 'বঞ্চনা', partOfSpeech: 'noun' },
+            { word: 'cardiovascular', bangla: 'হৃদযন্ত্র ও রক্তনালি সংক্রান্ত', partOfSpeech: 'adjective' },
+            { word: 'contrary', bangla: 'বিপরীত', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'How many hours of sleep do adults generally need?', options: ['5–6 hours', '6–7 hours', '7–9 hours', '9–11 hours'], answer: '7–9 hours' },
+            { q: 'What does the brain do during sleep?', options: ['Stays inactive', 'Consolidates memories and clears waste', 'Only dreams', 'Increases blood pressure'], answer: 'Consolidates memories and clears waste' },
+            { q: "What is the author's view on sleeping longer at weekends?", options: ['It fully repays sleep debt', 'It is the best solution', 'It cannot effectively repay sleep debt', 'It has no effect'], answer: 'It cannot effectively repay sleep debt' },
+            { q: 'What do specialists recommend?', options: ['Sleeping any time', 'No screens ever', 'Regular schedule, no screens, calm environment', 'Sleeping 10 hours'], answer: 'Regular schedule, no screens, calm environment' },
+        ],
+    },
+    {
+        id: 's22', title: 'Learning a New Language', subtitle: 'নতুন ভাষা শেখা',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Education',
+        learningObjectives: ['Gerunds and infinitives: learning to be, achieving fluency', 'Comparison and contrast structure', 'Academic vocabulary: immersion, bilingualism, cognitive'],
+        grammarFocus: ['Gerunds & Infinitives', 'Comparison', 'Academic Vocabulary'],
+        passage: `Learning a foreign language is widely acknowledged to be one of the most intellectually challenging yet rewarding pursuits available to adults. Unlike children, who acquire language naturally through immersion and social interaction, adults must approach language learning through deliberate study, often battling established linguistic habits.
+
+Despite the challenges, the benefits of bilingualism are substantial. Research has demonstrated that speaking more than one language enhances cognitive flexibility, delays the onset of dementia in older age, and improves multitasking ability. On a social level, language skills open doors to new relationships, career opportunities, and cultural experiences.
+
+The most effective method of learning a new language remains a subject of debate. Traditional classroom instruction offers structured grammar teaching and guided practice. Immersion-based approaches — such as living in a country where the target language is spoken — are widely regarded as producing faster and more natural results.
+
+Technology has also added new dimensions. Language applications offer flexible, gamified study experiences accessible to anyone with a smartphone. Ultimately, consistency and motivation are considered the most critical factors in achieving fluency, regardless of the method used.`,
+        vocabulary: [
+            { word: 'acknowledged', bangla: 'স্বীকৃত', partOfSpeech: 'adjective' },
+            { word: 'immersion', bangla: 'নিমজ্জন / পরিবেশে থাকা', partOfSpeech: 'noun' },
+            { word: 'deliberate', bangla: 'উদ্দেশ্যমূলক', partOfSpeech: 'adjective' },
+            { word: 'bilingualism', bangla: 'দ্বিভাষিকতা', partOfSpeech: 'noun' },
+            { word: 'cognitive', bangla: 'জ্ঞানীয়', partOfSpeech: 'adjective' },
+            { word: 'flexibility', bangla: 'নমনীয়তা', partOfSpeech: 'noun' },
+            { word: 'dementia', bangla: 'স্মৃতিভ্রংশ', partOfSpeech: 'noun' },
+            { word: 'gamified', bangla: 'খেলাধুলার ধাঁচে', partOfSpeech: 'adjective' },
+            { word: 'consistency', bangla: 'ধারাবাহিকতা', partOfSpeech: 'noun' },
+            { word: 'fluency', bangla: 'দক্ষতা / প্রবাহ', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'How do adults differ from children in language learning?', options: ['Adults are faster', 'Adults learn through immersion', 'Adults must use deliberate study', 'Adults have better memory'], answer: 'Adults must use deliberate study' },
+            { q: 'What cognitive benefit does bilingualism provide in old age?', options: ['Better hearing', 'Delays the onset of dementia', 'Stronger muscles', 'Better vision'], answer: 'Delays the onset of dementia' },
+            { q: 'What is considered the fastest approach to language learning?', options: ['Apps only', 'Classroom study', 'Immersion-based approaches', 'Self-study books'], answer: 'Immersion-based approaches' },
+            { q: 'What are the most critical factors for achieving fluency?', options: ['Expensive courses', 'Native teachers', 'Consistency and motivation', 'Living abroad'], answer: 'Consistency and motivation' },
+        ],
+    },
+    {
+        id: 's23', title: 'Public Transport vs Cars', subtitle: 'গণপরিবহন বনাম গাড়ি',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Environment & Society',
+        learningObjectives: ['Comparison: in contrast, whereas', 'Academic vocabulary: equity, congestion, infrastructure', 'Passive voice: are offered, can be replaced'],
+        grammarFocus: ['Comparison', 'Passive Voice', 'Academic Vocabulary'],
+        passage: `The debate over whether individuals should rely on private cars or public transport intersects with questions of urban planning, environmental sustainability, and personal freedom.
+
+Advocates of public transport argue that buses, trains, and metro systems offer an efficient and environmentally responsible means of moving large numbers of people. When used at full capacity, a single metro train can replace hundreds of private cars, substantially reducing carbon emissions and traffic congestion. Furthermore, public transport is generally more affordable for lower-income groups, making it an instrument of social equity.
+
+In contrast, private vehicles offer a level of convenience and flexibility that mass transit systems struggle to match. Drivers can travel door-to-door, carry heavy loads, and choose their own schedules without relying on timetables. For those living in rural areas poorly served by public transport, car ownership may be a practical necessity.
+
+Environmental concerns have intensified pressure on governments to expand public transport networks. Many cities now offer incentives for electric vehicle ownership while simultaneously investing in cycling infrastructure and pedestrian-friendly urban design.
+
+The most effective approach likely involves a combination of well-funded public transport and reduced private car dependency.`,
+        vocabulary: [
+            { word: 'intersects', bangla: 'সংযুক্ত হয়', partOfSpeech: 'verb' },
+            { word: 'sustainability', bangla: 'টেকসইতা', partOfSpeech: 'noun' },
+            { word: 'advocates', bangla: 'সমর্থকরা', partOfSpeech: 'noun' },
+            { word: 'congestion', bangla: 'যানজট', partOfSpeech: 'noun' },
+            { word: 'equity', bangla: 'সাম্যতা', partOfSpeech: 'noun' },
+            { word: 'timetables', bangla: 'সময়সূচি', partOfSpeech: 'noun' },
+            { word: 'intensified', bangla: 'তীব্র হয়েছে', partOfSpeech: 'verb' },
+            { word: 'incentives', bangla: 'প্রণোদনা', partOfSpeech: 'noun' },
+            { word: 'infrastructure', bangla: 'অবকাঠামো', partOfSpeech: 'noun' },
+            { word: 'pedestrian', bangla: 'পথচারী', partOfSpeech: 'noun' },
+            { word: 'dependency', bangla: 'নির্ভরতা', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'What environmental benefit does a metro train offer?', options: ['It uses less electricity', 'It reduces carbon emissions and congestion', 'It is quieter', 'It costs less to build'], answer: 'It reduces carbon emissions and congestion' },
+            { q: 'What advantage do private vehicles have?', options: ['They are cheaper', 'They are better for the environment', 'They offer door-to-door convenience', 'They reduce traffic'], answer: 'They offer door-to-door convenience' },
+            { q: 'For whom might car ownership be a necessity?', options: ['Rich people', 'City centre workers', 'People in rural areas poorly served by public transport', 'Young people'], answer: 'People in rural areas poorly served by public transport' },
+            { q: 'What does the author suggest is the best solution?', options: ['Ban all cars', 'Use only cars', 'A combination of public transport and reduced car dependency', 'Build more roads'], answer: 'A combination of public transport and reduced car dependency' },
+        ],
+    },
+    {
+        id: 's24', title: 'Volunteering in the Community', subtitle: 'সমাজসেবা',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Society',
+        learningObjectives: ['Relative clauses: those who volunteer, communities that are served', 'Formal vocabulary: cornerstone, tangible, embedded', 'Contrast: critics argue, however'],
+        grammarFocus: ['Relative Clauses', 'Formal Vocabulary', 'Contrast Linkers'],
+        passage: `Community volunteering — the act of giving time and skills freely for the benefit of others — has long been regarded as a cornerstone of civil society. In Bangladesh and across South Asia, volunteering traditions are deeply embedded in cultural and religious practices, from helping neighbours during festivals to organising relief efforts after natural disasters.
+
+The benefits of volunteering extend well beyond the communities that are served. Research consistently shows that volunteers themselves report higher levels of life satisfaction, a stronger sense of purpose, and improved mental health compared to non-volunteers. The act of contributing to something larger than oneself appears to activate feelings of connection and meaning that are fundamental to human wellbeing.
+
+Young people stand to gain significantly from volunteer experience. Beyond the skills acquired — teamwork, communication, and problem-solving — volunteering provides tangible evidence of character and commitment that is highly valued by universities and employers alike.
+
+Critics argue, however, that not everyone has equal access to volunteering opportunities. Those working multiple jobs or caring for dependants often lack the time. Organisations seeking to maximise participation must therefore offer flexible arrangements.`,
+        vocabulary: [
+            { word: 'cornerstone', bangla: 'ভিত্তিপ্রস্তর', partOfSpeech: 'noun' },
+            { word: 'embedded', bangla: 'গভীরভাবে প্রোথিত', partOfSpeech: 'adjective' },
+            { word: 'extend', bangla: 'বিস্তৃত হওয়া', partOfSpeech: 'verb' },
+            { word: 'satisfaction', bangla: 'সন্তুষ্টি', partOfSpeech: 'noun' },
+            { word: 'fundamental', bangla: 'মৌলিক', partOfSpeech: 'adjective' },
+            { word: 'tangible', bangla: 'বাস্তব / স্পর্শযোগ্য', partOfSpeech: 'adjective' },
+            { word: 'commitment', bangla: 'প্রতিশ্রুতি', partOfSpeech: 'noun' },
+            { word: 'dependants', bangla: 'নির্ভরশীলরা', partOfSpeech: 'noun' },
+            { word: 'flexible', bangla: 'নমনীয়', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'Where are volunteering traditions deeply embedded?', options: ['Only in Western countries', 'In cultural and religious practices in South Asia', 'Only in schools', 'In businesses'], answer: 'In cultural and religious practices in South Asia' },
+            { q: 'What personal benefits do volunteers experience?', options: ['Higher salary', 'More free time', 'Higher life satisfaction and better mental health', 'Free training'], answer: 'Higher life satisfaction and better mental health' },
+            { q: 'What challenge do critics raise?', options: ['Volunteering costs money', 'Not everyone has equal access or time', 'It teaches bad habits', 'It takes too long'], answer: 'Not everyone has equal access or time' },
+            { q: 'What do organisations need to offer to increase participation?', options: ['Payment', 'Certificates', 'Flexible arrangements', 'Transport'], answer: 'Flexible arrangements' },
+        ],
+    },
+    {
+        id: 's25', title: 'Fast Food and Health', subtitle: 'ফাস্টফুড ও স্বাস্থ্য',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Health & Society',
+        learningObjectives: ['Cause and effect academic language', 'Passive voice: has been linked to, have been implemented', 'Policy and health vocabulary'],
+        grammarFocus: ['Cause & Effect', 'Passive Voice', 'Policy Vocabulary'],
+        passage: `The rapid expansion of fast food chains across the developing world over the past three decades has fundamentally altered the dietary habits of millions of people. Driven by urbanisation, rising income levels, and aggressive marketing, fast food has become a daily meal option for a growing proportion of the population.
+
+From a nutritional standpoint, the regular consumption of fast food is associated with a range of adverse health outcomes. High in saturated fat, refined carbohydrates, and sodium, typical fast food meals contribute to weight gain, elevated blood pressure, and insulin resistance. Longitudinal studies have linked diets high in processed food to significantly increased risks of type two diabetes and cardiovascular disease.
+
+Defenders of the fast food industry point to the role these businesses play in providing affordable meals to time-poor workers and low-income families. They also note the industry's growing investment in healthier menu options.
+
+Public health officials, however, advocate for structural interventions such as sugar taxes, restrictions on marketing to children, and mandatory calorie labelling. Evidence from countries that have implemented such policies suggests that regulatory approaches can produce meaningful reductions in consumption.`,
+        vocabulary: [
+            { word: 'expansion', bangla: 'বিস্তার', partOfSpeech: 'noun' },
+            { word: 'dietary', bangla: 'খাদ্যাভ্যাস সংক্রান্ত', partOfSpeech: 'adjective' },
+            { word: 'nutritional', bangla: 'পুষ্টিগত', partOfSpeech: 'adjective' },
+            { word: 'saturated', bangla: 'সম্পৃক্ত', partOfSpeech: 'adjective' },
+            { word: 'insulin', bangla: 'ইনসুলিন', partOfSpeech: 'noun' },
+            { word: 'longitudinal', bangla: 'দীর্ঘমেয়াদী', partOfSpeech: 'adjective' },
+            { word: 'processed', bangla: 'প্রক্রিয়াজাত', partOfSpeech: 'adjective' },
+            { word: 'mandatory', bangla: 'বাধ্যতামূলক', partOfSpeech: 'adjective' },
+            { word: 'labelling', bangla: 'লেবেলিং', partOfSpeech: 'noun' },
+            { word: 'regulatory', bangla: 'নিয়ন্ত্রণমূলক', partOfSpeech: 'adjective' },
+        ],
+        questions: [
+            { q: 'What has driven the expansion of fast food?', options: ['Only urbanisation', 'Only marketing', 'Urbanisation, rising incomes, and marketing', 'Government policies'], answer: 'Urbanisation, rising incomes, and marketing' },
+            { q: 'What health condition is linked to regular fast food consumption?', options: ['Better immunity', 'Type two diabetes and cardiovascular disease', 'Stronger bones', 'Better sleep'], answer: 'Type two diabetes and cardiovascular disease' },
+            { q: 'What do defenders of fast food say?', options: ['It is healthy', 'It provides affordable meals to low-income families', 'It creates jobs only', 'It has no disadvantages'], answer: 'It provides affordable meals to low-income families' },
+            { q: 'What policies do public health officials advocate for?', options: ['Banning fast food', 'Sugar taxes, marketing restrictions, calorie labelling', 'Subsidising fast food', 'Building more restaurants'], answer: 'Sugar taxes, marketing restrictions, calorie labelling' },
+        ],
+    },
+    {
+        id: 's26', title: 'The Rise of Online Shopping', subtitle: 'অনলাইন কেনাকাটার উত্থান',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Technology & Economy',
+        learningObjectives: ['Present perfect for change over time', 'Cause and effect: has led to, has increased', 'Business and technology vocabulary'],
+        grammarFocus: ['Present Perfect', 'Cause & Effect', 'Technology Vocabulary'],
+        passage: `The growth of e-commerce over the past two decades has transformed consumer behaviour in ways that few could have predicted. What began as a niche service for technology enthusiasts has evolved into a mainstream channel through which billions of dollars worth of goods are exchanged daily.
+
+The appeal of online shopping lies primarily in its convenience. Consumers can browse thousands of products, compare prices, read customer reviews, and complete a purchase within minutes — all without leaving their homes. For those with limited mobility or demanding schedules, this convenience is particularly significant.
+
+The rise of online retail has, however, had a profound impact on traditional high-street commerce. Many physical retailers, unable to compete with the lower overheads and wider product ranges of online platforms, have been forced to close. This has led to visible consequences — empty shop fronts, reduced footfall, and the gradual erosion of community spaces.
+
+Online shopping also raises concerns about environmental sustainability. The rapid growth of home deliveries has increased packaging waste and carbon emissions from delivery vehicles.
+
+Retailers and policymakers are now grappling with how to balance the consumer benefits of e-commerce with its broader social and environmental costs.`,
+        vocabulary: [
+            { word: 'niche', bangla: 'বিশেষ শ্রেণির', partOfSpeech: 'adjective' },
+            { word: 'mainstream', bangla: 'মূলধারা', partOfSpeech: 'adjective' },
+            { word: 'browse', bangla: 'খুঁজে দেখা', partOfSpeech: 'verb' },
+            { word: 'profound', bangla: 'গভীর', partOfSpeech: 'adjective' },
+            { word: 'overheads', bangla: 'পরিচালনা ব্যয়', partOfSpeech: 'noun' },
+            { word: 'footfall', bangla: 'পদচারণা', partOfSpeech: 'noun' },
+            { word: 'erosion', bangla: 'ক্ষয়', partOfSpeech: 'noun' },
+            { word: 'grappling', bangla: 'মোকাবেলা করছে', partOfSpeech: 'verb' },
+        ],
+        questions: [
+            { q: 'What is the main appeal of online shopping?', options: ['Lower prices always', 'Convenience', 'Better quality', 'Faster delivery only'], answer: 'Convenience' },
+            { q: 'How has online retail affected physical shops?', options: ['Helped them grow', 'Had no effect', 'Many have been forced to close', 'Made them more popular'], answer: 'Many have been forced to close' },
+            { q: 'What environmental concern is raised?', options: ['Noise pollution', 'Light pollution', 'Increased packaging waste and carbon emissions', 'Water pollution'], answer: 'Increased packaging waste and carbon emissions' },
+            { q: 'What are policymakers trying to balance?', options: ['Speed and quality', 'Consumer benefits and social/environmental costs', 'Profit and loss', 'Jobs and automation'], answer: 'Consumer benefits and social/environmental costs' },
+        ],
+    },
+    {
+        id: 's27', title: 'Living Alone vs with Family', subtitle: 'একা থাকা বনাম পরিবারের সাথে',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Society & Culture',
+        learningObjectives: ['Comparison and contrast structure', 'Hedging: arguably, likely to, may', 'Societal vocabulary: autonomy, multigenerational, collective'],
+        grammarFocus: ['Compare & Contrast', 'Hedging Language', 'Cultural Vocabulary'],
+        passage: `The decision of whether to live independently or with one's family is influenced by a complex interplay of cultural expectations, financial circumstances, and personal values. In many South and Southeast Asian societies, multigenerational households are not merely a practical arrangement but a deeply held cultural norm, rooted in traditions of collective responsibility and mutual support.
+
+Those who advocate for independent living often emphasise the benefits of personal autonomy. Living alone enables individuals to develop self-reliance, manage their own finances, and make decisions without familial input. Young professionals who move to cities for work frequently report that living independently accelerated their personal growth.
+
+On the other hand, living with family offers emotional security, financial savings, and a practical support network that is particularly valuable during times of difficulty. For students, the presence of family can reduce stress and provide a stable base from which to pursue their education.
+
+Cultural expectations, however, can sometimes create pressure that overrides personal preference. Young adults who wish to live independently may face resistance from families who view such a decision as rejecting collective values.
+
+There is arguably no universally correct answer. The best arrangement likely depends on the individual's stage of life, the quality of family relationships, and the cultural context.`,
+        vocabulary: [
+            { word: 'interplay', bangla: 'পারস্পরিক প্রভাব', partOfSpeech: 'noun' },
+            { word: 'multigenerational', bangla: 'বহু প্রজন্মের', partOfSpeech: 'adjective' },
+            { word: 'norm', bangla: 'আদর্শ / রীতি', partOfSpeech: 'noun' },
+            { word: 'mutual', bangla: 'পারস্পরিক', partOfSpeech: 'adjective' },
+            { word: 'autonomy', bangla: 'স্বায়ত্তশাসন', partOfSpeech: 'noun' },
+            { word: 'self-reliance', bangla: 'আত্মনির্ভরতা', partOfSpeech: 'noun' },
+            { word: 'familial', bangla: 'পারিবারিক', partOfSpeech: 'adjective' },
+            { word: 'overrides', bangla: 'প্রাধান্য পায়', partOfSpeech: 'verb' },
+            { word: 'resistance', bangla: 'প্রতিরোধ', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: 'What do advocates of independent living emphasise?', options: ['Saving money', 'Personal autonomy and self-reliance', 'Family support', 'Better food'], answer: 'Personal autonomy and self-reliance' },
+            { q: 'What practical benefit does living with family offer?', options: ['More privacy', 'Financial savings and a support network', 'More freedom', 'Better career options'], answer: 'Financial savings and a support network' },
+            { q: 'What pressure might young adults face?', options: ['Pressure to earn more', 'Resistance from families who see independence as rejecting collective values', 'Pressure to study', 'Pressure to travel'], answer: 'Resistance from families who see independence as rejecting collective values' },
+            { q: 'What does the author say determines the best arrangement?', options: ['Only money', 'Only culture', 'Individual circumstances, family relationships, and cultural context', 'Age only'], answer: 'Individual circumstances, family relationships, and cultural context' },
+        ],
+    },
+    {
+        id: 's28', title: 'The Value of Failure', subtitle: 'ব্যর্থতার মূল্য',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Psychology & Education',
+        learningObjectives: ['Complex relative clauses', 'Academic hedging: consistently, arguably', 'Vocabulary: mindset, innate, productive'],
+        grammarFocus: ['Relative Clauses', 'Hedging Language', 'Psychology Vocabulary'],
+        passage: `In academic and professional settings alike, failure is frequently regarded as something to be avoided or overcome as quickly as possible. Yet a growing body of research in psychology suggests that experiencing failure — and reflecting meaningfully upon it — is a fundamental component of lasting success.
+
+Psychologist Carol Dweck's influential research distinguishes between a "fixed mindset," in which individuals believe their abilities are innate and unchangeable, and a "growth mindset," in which failure is perceived as an opportunity for learning rather than evidence of inadequacy. Students who adopt a growth mindset consistently outperform their peers over time, not because they experience fewer setbacks, but because they respond to those setbacks more productively.
+
+The business world offers perhaps the most visible examples of this principle. Many successful entrepreneurs have spoken openly about spectacular failures that preceded their eventual achievements. These experiences provided insights that success alone could not have furnished.
+
+It is important, however, to distinguish between productive failure — in which mistakes are analysed and lessons extracted — and repeated failure without reflection. Educators increasingly advocate for creating classroom environments in which students feel safe to take risks and engage in honest self-assessment.
+
+Ultimately, the relationship between failure and success may be less of a contradiction than a continuum.`,
+        vocabulary: [
+            { word: 'regarded', bangla: 'মনে করা হয়', partOfSpeech: 'verb' },
+            { word: 'fundamental', bangla: 'মৌলিক', partOfSpeech: 'adjective' },
+            { word: 'influential', bangla: 'প্রভাবশালী', partOfSpeech: 'adjective' },
+            { word: 'innate', bangla: 'সহজাত', partOfSpeech: 'adjective' },
+            { word: 'inadequacy', bangla: 'অপ্রতুলতা', partOfSpeech: 'noun' },
+            { word: 'outperform', bangla: 'ভালো ফলাফল করা', partOfSpeech: 'verb' },
+            { word: 'setbacks', bangla: 'বিপত্তি', partOfSpeech: 'noun' },
+            { word: 'spectacular', bangla: 'চমকপ্রদ', partOfSpeech: 'adjective' },
+            { word: 'preceded', bangla: 'পূর্বে হয়েছিল', partOfSpeech: 'verb' },
+            { word: 'continuum', bangla: 'ধারাবাহিকতা', partOfSpeech: 'noun' },
+        ],
+        questions: [
+            { q: "What does Carol Dweck's research distinguish between?", options: ['Success and money', 'A fixed and a growth mindset', 'School and university', 'Hard work and talent'], answer: 'A fixed and a growth mindset' },
+            { q: 'Why do growth mindset students outperform others?', options: ['They study more hours', 'They experience no failure', 'They respond to setbacks more productively', 'They have better teachers'], answer: 'They respond to setbacks more productively' },
+            { q: 'What is "productive failure"?', options: ['Failing repeatedly', 'Giving up quickly', 'Analysing mistakes and extracting lessons', 'Blaming others'], answer: 'Analysing mistakes and extracting lessons' },
+            { q: 'What metaphor does the author use for failure and success?', options: ['A battle', 'Two separate roads', 'A continuum', 'A cycle'], answer: 'A continuum' },
+        ],
+    },
+    {
+        id: 's29', title: 'Urbanisation and Quality of Life', subtitle: 'নগরায়ণ ও জীবনমান',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Society & Environment',
+        learningObjectives: ['Hedging language: tends to, arguably', 'Complex relative clauses', 'Advanced vocabulary: infrastructure, disparity, proliferation'],
+        grammarFocus: ['Hedging Language', 'Relative Clauses', 'Academic Vocabulary'],
+        passage: `The rapid urbanisation witnessed across developing nations over the past five decades has fundamentally altered the social and economic landscape of millions of people. Cities, which were once home to a minority of the population, now accommodate over half of the world's inhabitants. While this demographic shift has brought undeniable economic benefits, it has also introduced complex challenges that policymakers struggle to address.
+
+Proponents of urbanisation argue that cities offer unparalleled opportunities for employment, education, and social mobility. The concentration of industries in urban centres tends to generate higher wages, which in turn attract further migration from rural areas. Furthermore, cities generally provide better access to healthcare, cultural institutions, and infrastructure such as transportation networks.
+
+However, rapid population growth tends to outpace the development of affordable housing, resulting in the proliferation of informal settlements. These communities, which often lack basic sanitation, highlight the uneven distribution of urban prosperity.
+
+Arguably, the most pressing concern is the environmental impact of expanding cities. Urban areas consume a disproportionate share of global energy and are responsible for a significant proportion of greenhouse gas emissions. Addressing these issues requires not merely technical solutions, but a fundamental rethinking of how cities are planned and governed.`,
+        vocabulary: [
+            { word: 'urbanisation', bangla: 'নগরায়ণ', partOfSpeech: 'noun' },
+            { word: 'accommodate', bangla: 'ধারণ করা', partOfSpeech: 'verb' },
+            { word: 'demographic', bangla: 'জনসংখ্যাতাত্ত্বিক', partOfSpeech: 'adjective' },
+            { word: 'unparalleled', bangla: 'অতুলনীয়', partOfSpeech: 'adjective' },
+            { word: 'infrastructure', bangla: 'অবকাঠামো', partOfSpeech: 'noun' },
+            { word: 'proliferation', bangla: 'দ্রুত বিস্তার', partOfSpeech: 'noun' },
+            { word: 'sanitation', bangla: 'স্বাস্থ্যসম্মত ব্যবস্থা', partOfSpeech: 'noun' },
+            { word: 'prosperity', bangla: 'সমৃদ্ধি', partOfSpeech: 'noun' },
+            { word: 'disproportionate', bangla: 'অসামঞ্জস্যপূর্ণ', partOfSpeech: 'adjective' },
+            { word: 'governed', bangla: 'পরিচালিত', partOfSpeech: 'verb' },
+            { word: 'arguably', bangla: 'বলা যেতে পারে', partOfSpeech: 'adverb' },
+        ],
+        questions: [
+            { q: "What share of the world's population now lives in cities?", options: ['25%', 'Less than 40%', 'Over 50%', 'About 70%'], answer: 'Over 50%' },
+            { q: 'What tends to happen to housing when cities grow rapidly?', options: ['It becomes cheaper', 'It improves quickly', 'Affordable housing development is outpaced', 'It stays the same'], answer: 'Affordable housing development is outpaced' },
+            { q: 'What is identified as the most pressing concern?', options: ['Crime rates', 'Traffic jams', 'Environmental impact of expanding cities', 'Lack of schools'], answer: 'Environmental impact of expanding cities' },
+            { q: 'What does the author say is needed to address these issues?', options: ['More technology only', 'Reducing population', 'Rethinking how cities are planned and governed', 'Moving people to rural areas'], answer: 'Rethinking how cities are planned and governed' },
+        ],
+    },
+    {
+        id: 's30', title: 'Technology and Education', subtitle: 'প্রযুক্তি ও শিক্ষা',
+        level: 'Intermediate', levelColor: 'amber', topic: 'Education & Technology',
+        learningObjectives: ['Contrast: while, however, despite', 'Passive voice for academic writing', 'Technology and education vocabulary'],
+        grammarFocus: ['Contrast Linkers', 'Passive Voice', 'Academic Vocabulary'],
+        passage: `The integration of technology into education has been one of the most significant developments of the past two decades. Digital tools — from interactive whiteboards and educational software to online learning platforms — have transformed the way teachers teach and students learn. While these changes have been widely welcomed, they have also introduced a number of challenges that educators and policymakers must address.
+
+Proponents of educational technology argue that it makes learning more engaging, personalised, and accessible. Students can access a vast range of resources at any time, and adaptive learning software can tailor content to individual needs and abilities. For students in remote or underserved areas, online platforms have opened doors to educational opportunities that were previously unavailable.
+
+However, the digital divide remains a significant concern. Not all students have equal access to devices or reliable internet connections, which risks widening existing inequalities. Moreover, excessive screen time and the risk of distraction are frequently cited as drawbacks of technology-heavy classrooms.
+
+Despite these challenges, the integration of technology into education is widely regarded as inevitable. The most effective approach is likely to be one that uses technology as a tool to support, rather than replace, the relationship between teachers and students. Critical digital skills — the ability to evaluate online information and use technology responsibly — have become as important as traditional literacy.`,
+        vocabulary: [
+            { word: 'integration', bangla: 'একীভূতকরণ', partOfSpeech: 'noun' },
+            { word: 'interactive', bangla: 'ইন্টারেক্টিভ', partOfSpeech: 'adjective' },
+            { word: 'platforms', bangla: 'প্ল্যাটফর্ম', partOfSpeech: 'noun' },
+            { word: 'personalised', bangla: 'ব্যক্তিগতকৃত', partOfSpeech: 'adjective' },
+            { word: 'adaptive', bangla: 'অভিযোজিত', partOfSpeech: 'adjective' },
+            { word: 'underserved', bangla: 'অবহেলিত', partOfSpeech: 'adjective' },
+            { word: 'inequalities', bangla: 'অসমতা', partOfSpeech: 'noun' },
+            { word: 'distraction', bangla: 'মনোযোগ বিচ্যুতি', partOfSpeech: 'noun' },
+            { word: 'inevitable', bangla: 'অনিবার্য', partOfSpeech: 'adjective' },
+            { word: 'evaluate', bangla: 'মূল্যায়ন করা', partOfSpeech: 'verb' },
+        ],
+        questions: [
+            { q: 'What benefit does technology offer students in remote areas?', options: ['Cheaper textbooks', 'Access to educational opportunities previously unavailable', 'Faster internet', 'Better teachers'], answer: 'Access to educational opportunities previously unavailable' },
+            { q: 'What is the "digital divide"?', options: ['A gap between old and new technology', 'Unequal access to devices and internet', 'The difference between online and offline learning', 'A type of software'], answer: 'Unequal access to devices and internet' },
+            { q: 'What drawbacks are mentioned for technology-heavy classrooms?', options: ['Too expensive', 'Excessive screen time and distraction', 'No social interaction', 'Teachers lose jobs'], answer: 'Excessive screen time and distraction' },
+            { q: 'What should technology do in education according to the author?', options: ['Replace teachers', 'Support the teacher-student relationship', 'Only be used for homework', 'Replace all textbooks'], answer: 'Support the teacher-student relationship' },
+        ],
+    },
+];

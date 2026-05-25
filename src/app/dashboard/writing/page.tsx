@@ -93,6 +93,8 @@ export default function WritingAIEvaluatorPage() {
     const [source, setSource] = useState<'practice' | 'cambridge'>('cambridge');
     const [camBook, setCamBook] = useState(9);
     const [camTest, setCamTest] = useState(1);
+    const [chartImage, setChartImage] = useState<string | null>(null);
+    const [chartMime, setChartMime] = useState('image/jpeg');
 
     const prompts = useMemo(() => (taskType === 'task1' ? TASK_1_PROMPTS : TASK_2_PROMPTS), [taskType]);
 
@@ -114,7 +116,14 @@ export default function WritingAIEvaluatorPage() {
             const res = await fetch('/api/writing/evaluate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ taskType, prompt: prompt.trim(), response: response.trim(), targetBand }),
+                body: JSON.stringify({
+                    taskType,
+                    prompt: prompt.trim(),
+                    response: response.trim(),
+                    targetBand,
+                    image: chartImage || undefined,
+                    imageType: chartImage ? chartMime : undefined,
+                }),
             });
             const data = (await res.json()) as Result;
             if (!res.ok) { setError(data?.error || 'Evaluation failed.'); return; }
@@ -122,6 +131,15 @@ export default function WritingAIEvaluatorPage() {
         } catch { setError('Network issue. Please try again.'); }
         finally { setLoading(false); }
     };
+
+    function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setChartMime(file.type || 'image/jpeg');
+        const reader = new FileReader();
+        reader.onload = ev => setChartImage(ev.target?.result as string);
+        reader.readAsDataURL(file);
+    }
 
     return (
         <div className="min-h-screen bg-[#f5f6fa]">
@@ -253,6 +271,27 @@ export default function WritingAIEvaluatorPage() {
                                     </p>
                                 );
                             })()}
+
+                            {/* Practice mode Task 1: upload chart image */}
+                            {source === 'practice' && taskType === 'task1' && (
+                                <div className="mt-3">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 mb-2">Chart / Graph Image (Optional)</p>
+                                    {chartImage ? (
+                                        <div className="relative rounded-xl overflow-hidden border border-violet-200">
+                                            <img src={chartImage} alt="Chart" className="w-full h-auto max-h-60 object-contain bg-white" />
+                                            <button onClick={() => setChartImage(null)}
+                                                className="absolute top-2 right-2 rounded-lg bg-rose-500 px-2 py-1 text-[10px] font-bold text-white hover:bg-rose-400 transition">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 py-4 text-sm text-slate-500 hover:border-violet-300 hover:bg-violet-50 transition">
+                                            <span>📊 Chart/Graph ছবি upload করো</span>
+                                            <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                                        </label>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* Response */}

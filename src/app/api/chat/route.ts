@@ -7,6 +7,8 @@ type ChatRequestBody = {
     message?: string;
     context?: string;
     history?: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }>;
+    image?: string;      // base64 data URL  (data:image/jpeg;base64,...)
+    imageType?: string;  // MIME type
 };
 
 type ReadingKBEntry = { book: number; test: number; qn: number; ans: string; explanation?: string };
@@ -25,6 +27,8 @@ ABSOLUTE RULES:
 - "Note:", "OpenAI", "API key", "fallback", "audio নেই", "data নেই" — কখনো বলবে না
 - Cambridge question বা passage নিজে বানাবে না
 - [KB_DATA] block নিজে generate করবে না
+- [KB_DATA] block এ ANSWER যা লেখা আছে সেটাই একমাত্র সঠিক উত্তর — নিজের Cambridge book knowledge দিয়ে override করবে না
+- [KB_DATA] block থাকলে শুধু ওই data থেকেই explain করো, নিজে Cambridge passage বা question বানাবে না
 
 ════════════════════════════════════
 FORMAT A — [KB_DATA] block আসলে:
@@ -59,15 +63,67 @@ Step 3: [কীভাবে match/mismatch detect করলে]
 👇 **১** গল্পে বিস্তারিত 📖 | **২** Distractor analysis ❌ | **৩** এই type এর full strategy 🎯
 
 ════════════════════════════════════
-FORMAT B — General IELTS question (no KB_DATA):
+FORMAT B — General IELTS / English question (no KB_DATA):
 ════════════════════════════════════
 
-🎯 **[2-3 লাইনে direct answer]**
-📌 **Tip:** [একটি rule]
-💡 **Trick:** [memory trick, এক লাইন]
-🔥 [এক লাইন encourage]
+Real teacher এর মতো explain করো — সহজ বাংলায়, concrete example সহ।
 
-👇 **১** গল্পে example | **২** Grammar deep dive | **৩** Practice question`;
+🎯 **[Direct answer — 2-3 লাইন, কোনো fluff নেই]**
+
+📌 **Rule:**
+[1-2 টি concrete rule, real IELTS example সহ]
+
+💡 **মনে রাখার trick:**
+[একটি memory hook — ছোট, catchy]
+
+📝 **Example:**
+[IELTS-style example — question + answer দেখাও]
+
+🔥 [এক লাইন specific encourage — generic না]
+
+👇 **১** আরো example | **২** Practice question দাও | **৩** Common mistakes দেখাও
+
+════════════════════════════════════
+IELTS TEACHING KNOWLEDGE:
+════════════════════════════════════
+
+Reading:
+- True/False/NG: NG = passage এ কোনো info নেই; False = passage বিপরীত বলেছে; True = exactly বলেছে। "similar word থাকলেই True না" — claim টা exactly match করতে হবে।
+- Heading match: paragraph এর main idea = heading। Detail নয়, overall theme।
+- Fill blank: blank এর আগে/পরের word = grammar clue (a/an = singular noun; recently = past participle)
+- MCQ: সব option পড়ো, passage এ locate করো, "absolute" words (always/never/only/all) সন্দেহ করো।
+- Sentence ending: answer গুলো passage এ order অনুযায়ী।
+
+Listening:
+- Audio শুরুর আগে 30-45 sec question পড়ো, keyword underline করো।
+- Distractor: প্রথমে যা বলে সেটা change হয় → শেষ answer টাই সঠিক।
+- Fill blank: spelling সতর্ক, CAPITALIZATION মনে রাখো।
+- Map/Plan: directions শোনো — opposite/next to/between/behind। ছবিতে letter দিয়ে track করো।
+- Multiple choice: সব option আগে পড়ো, synonym শোনো।
+
+Writing Task 2 structure:
+Intro (2-3 sentences: paraphrase topic + thesis) → Body 1 (topic sentence + explanation + example) → Body 2 (topic sentence + explanation + example) → Conclusion (restate thesis, no new info). Band 7+: varied grammar, topic-specific vocab, clear coherence.
+
+Writing Task 1 Academic:
+Overview paragraph বাধ্যতামূলক (2 most striking trends)। Specific data cite করো। Present/Past tense অনুযায়ী।
+
+Speaking:
+- Part 1: 2-3 sentence answer, এক্সট্রা detail add করো।
+- Part 2: PEEL (Point-Example-Explanation-Link), 1.5-2 min।
+- Part 3: "That's a great point. I think..." দিয়ে শুরু, agree/disagree + reason + example।
+- Fluency: filler words (um/uh) বাদ দাও। Pause করো, তারপর বলো।
+
+Grammar common IELTS points:
+- Articles: a (first mention), the (known/specific/unique), no article (plural general)
+- Conditionals: Type 2 (If + past simple, would + inf) for hypothetical
+- Passive: When agent unknown/unimportant — "is/was + past participle"
+- Relative clauses: which/that (thing), who (person), where (place)
+
+Vocabulary:
+- Word families matter: economy → economic → economically → economist
+- Collocations: make a decision (না "do"), take responsibility (না "make")
+- Paraphrase is key: important → crucial/vital/significant`;
+
 
 // ─── QUESTION-TYPE TIPS (used in fallback explanations) ───────────────────────
 
@@ -189,12 +245,26 @@ function parseCambridgeRefFromHistory(
 
 function findQuestionText(questionText: string, qn: number): string {
     if (!questionText) return '';
-    const lines = questionText.split('\n');
-    const idx = lines.findIndex(l => /^\d+[.\s)]/.test(l.trim()) && parseInt(l.trim()) === qn);
+    const lines = questionText.split('\n').map(l => l.trim()).filter(Boolean);
+
+    // Pattern 1: line starts with "3." or "3)" or "3 text"
+    let idx = lines.findIndex(l => /^\d+[.\s)]/.test(l) && parseInt(l) === qn);
     if (idx >= 0) {
-        const start = Math.max(0, idx - 2);
-        return lines.slice(start, Math.min(lines.length, idx + 3)).join(' ').trim();
+        return lines.slice(idx, Math.min(lines.length, idx + 3)).join(' ').trim();
     }
+
+    // Pattern 2: standalone number on its own line, text follows next line
+    idx = lines.findIndex(l => l === String(qn));
+    if (idx >= 0 && idx + 1 < lines.length) {
+        const parts: string[] = [];
+        let i = idx + 1;
+        while (i < lines.length && !/^[A-Ca-c]$|^TRUE$|^FALSE$|^NOT GIVEN$|^\d+$/.test(lines[i]) && parts.length < 4) {
+            parts.push(lines[i]);
+            i++;
+        }
+        return parts.join(' ').trim();
+    }
+
     return '';
 }
 
@@ -334,16 +404,37 @@ function buildKBFallbackAnswer(kb: KBResult): string {
 
 function buildGenericFallback(message: string): string {
     const lower = message.toLowerCase();
+    if (lower.includes('true') || lower.includes('false') || lower.includes('not given') || lower.includes('tfng')) {
+        return '🎯 **True/False/Not Given strategy:**\n📌 TRUE → passage এ exactly same idea আছে\n📌 FALSE → passage বিপরীত বলেছে\n📌 NOT GIVEN → passage এ কোনো mention নেই\n💡 Trick: similar word থাকলেই TRUE না — claim টা match করতে হবে\n📝 Example: Q says "all players" → passage says "most players" → NOT GIVEN\n🔥 Practice করো, pattern clear হবে!';
+    }
+    if (lower.includes('heading') || lower.includes('হেডিং')) {
+        return '🎯 **Heading Match strategy:**\n📌 Paragraph এর MAIN IDEA = heading, detail নয়\n📌 প্রথম ও শেষ sentence সবচেয়ে important\n💡 Trick: heading এ যদি "contrast/shift" থাকে → paragraph এ "but/however/although" খোঁজো\n🔥 Paragraph কে ১ লাইনে summarize করার practice করো!';
+    }
+    if (lower.includes('fill') || lower.includes('blank') || lower.includes('ফিল')) {
+        return '🎯 **Fill in the Blank strategy:**\n📌 Blank এর আগের word = grammar clue (a/an → singular noun)\n📌 Passage এর exact word ব্যবহার করো — paraphrase নয়\n📌 Word limit মানো (NO MORE THAN TWO WORDS)\n💡 Trick: blank এর context পড়ো → passage এ keyword খোঁজো → surrounding words দেখো\n🔥 Spelling carefully লেখো!';
+    }
     if (lower.includes('reading') || lower.includes('রিডিং')) {
-        return '🎯 **Reading strategy:**\n📌 True/False/NG → passage এ exact idea খোঁজো\n📌 Fill blank → blank এর context পড়ো\n💡 Answer গুলো passage এর order এ থাকে\n🔥 Practice করো!';
+        return '🎯 **Reading Master Strategy:**\n📌 Skimming → সব question পড়ো → locate করো → verify করো\n📌 Answer গুলো passage এর order এ থাকে (fill blank/sentence completion)\n📌 "Absolute" words (always/never/all/only) সন্দেহ করো\n💡 Trick: keyword এর synonym passage এ থাকে — direct word নয়\n🔥 Daily 1 passage practice করো!';
     }
-    if (lower.includes('listening') || lower.includes('লিসেনিং')) {
-        return '🎯 **Listening strategy:**\n📌 Audio শুরুর আগে question পড়ো\n📌 Keyword এর synonym শোনো\n💡 Distractor: প্রথমে যা বলে সেটা change হয়\n🔥 তুমি পারবে!';
+    if (lower.includes('listening') || lower.includes('লিসেনিং') || lower.includes('listen')) {
+        return '🎯 **Listening Master Strategy:**\n📌 Audio শুরুর আগে question পড়ো, keyword underline করো\n📌 Distractor: প্রথমে যা বলে সেটা change হয় → শেষ answer সঠিক\n📌 Fill blank: exact word লেখো, spelling সঠিক করো\n💡 Trick: question এর keyword এর SYNONYM audio তে শোনা যাবে\n🔥 Section 1 সবচেয়ে easy — এখানে full marks নাও!';
     }
-    if (lower.includes('writing') || lower.includes('রাইটিং')) {
-        return '🎯 **Writing tip:**\n📌 Task 1: describe, not interpret\n📌 Task 2: clear thesis + 2 body paragraphs\n💡 IELTS writing এ personal opinion শেষে দাও\n🔥 চমৎকার করবে!';
+    if (lower.includes('writing') || lower.includes('রাইটিং') || lower.includes('task 2') || lower.includes('task 1')) {
+        return '🎯 **Writing Band 7+ Formula:**\n**Task 2:** Intro (paraphrase + thesis) → Body 1 (point+example) → Body 2 (point+example) → Conclusion\n**Task 1:** Overview paragraph বাধ্যতামূলক + specific data cite করো\n📌 Varied sentence structure + topic-specific vocabulary\n💡 Trick: 1 complex sentence + 1 simple sentence + 1 compound sentence — vary করো\n🔥 Daily 1 essay draft করো, word limit মানো!';
     }
-    return '🎯 **IELTS এ দরকার strategy + practice!**\n📌 Daily: 1 Listening + 1 Reading + 15 min Writing\n💡 Band 7+ এর জন্য accuracy > speed\n🔥 তুমি পারবে!';
+    if (lower.includes('speaking') || lower.includes('স্পিকিং')) {
+        return '🎯 **Speaking Fluency Strategy:**\n📌 Part 1: 2-3 sentence, extra detail add করো (reason/example)\n📌 Part 2: PEEL method → Point, Example, Explain, Link — 2 min\n📌 Part 3: Opinion + reason + real example দাও\n💡 Trick: pause করো, তারপর বলো — "um/uh" বলার চেয়ে pause ভালো\n🔥 Daily 2 min mirror এর সামনে practice করো!';
+    }
+    if (lower.includes('grammar') || lower.includes('গ্রামার') || lower.includes('article') || lower.includes('tense') || lower.includes('passive')) {
+        return '🎯 **IELTS Grammar shortcuts:**\n📌 Article: a (first mention) / the (known/specific) / no article (plural general)\n📌 Passive: is/was + past participle — when agent unknown/unimportant\n📌 Conditionals: Type 2 = If + past simple, would + infinitive (hypothetical)\n💡 Trick: IELTS Writing এ variety দেখাও — same structure repeat করো না\n🔥 Grammar mistakes Band score কমায় — daily 5 sentence practice করো!';
+    }
+    if (lower.includes('vocab') || lower.includes('word') || lower.includes('vocabulary') || lower.includes('ভোকাব')) {
+        return '🎯 **IELTS Vocabulary shortcuts:**\n📌 Word families শেখো: economy/economic/economically/economist\n📌 Collocations: make a decision, take responsibility, do research\n📌 Paraphrase: important→crucial/vital/significant, show→demonstrate/illustrate\n💡 Trick: প্রতিদিন 5 টা word → 3 forms শেখো → example sentence লেখো\n🔥 Vocabulary Band score সরাসরি বাড়ায়!';
+    }
+    if (lower.includes('band') || lower.includes('score') || lower.includes('ব্যান্ড')) {
+        return '🎯 **Band Score বাড়ানোর roadmap:**\n📌 Band 6→7: Reading accuracy + Listening note-taking\n📌 Band 7→8: Writing coherence + Speaking fluency\n📌 সব section এ balanced practice করো\n💡 Trick: weakness identify করো → সেটাতে double time দাও\n🔥 Daily 2 hours focused practice > 6 hours random study!';
+    }
+    return '🎯 **IELTS এ দরকার strategy + practice!**\n📌 Daily: 1 Listening + 1 Reading + 15 min Writing + 5 min Speaking\n📌 Cambridge Books 9-20 থেকে practice করো\n📌 আমাকে specific question করো — Cambridge book এর question ও explain করতে পারি!\n💡 Band 7+ এর জন্য accuracy > speed\n🔥 তুমি পারবে — শুধু consistent থাকো!';
 }
 
 // ─── MAIN HANDLER ─────────────────────────────────────────────────────────────
@@ -365,40 +456,51 @@ export async function POST(request: Request) {
             kb = await lookupKB(ref.book, ref.test, ref.question, ref.module);
         }
 
-        // 2. Try Gemini
+        // 2. Try Gemini (primary: 2.5-flash, fallback: 2.0-flash)
         const apiKey = process.env.GEMINI_API_KEY;
         if (apiKey) {
-            try {
-                const genAI = new GoogleGenerativeAI(apiKey);
-                const model = genAI.getGenerativeModel({
-                    model: 'gemini-2.5-flash',
-                    systemInstruction: SYSTEM_PROMPT,
-                });
+            const contextPrefix = body.context && body.context !== 'General' ? `[Context: ${body.context}]\n` : '';
+            const kbBlock = kb ? buildKBContext(kb) + '\n\n' : '';
+            const textPart = `${contextPrefix}${kbBlock}Student এর প্রশ্ন: ${message}`;
 
-                const chat = model.startChat({
-                    history: body.history || [],
-                    generationConfig: { temperature: 0.7, topK: 40, topP: 0.95, maxOutputTokens: 1500 },
-                });
-
-                const contextPrefix = body.context && body.context !== 'General' ? `[Context: ${body.context}]\n` : '';
-                const kbBlock = kb ? buildKBContext(kb) + '\n\n' : '';
-                const fullMessage = `${contextPrefix}${kbBlock}Student এর প্রশ্ন: ${message}`;
-
-                const result = await chat.sendMessage(fullMessage);
-                const text = result.response.text();
-                return NextResponse.json({ text, source: 'gemini' });
-
-            } catch (err: unknown) {
-                const msg = err instanceof Error ? err.message : String(err);
-                if (msg.includes('429') || msg.includes('quota') || msg.includes('Too Many')) {
-                    return NextResponse.json({
-                        text: '⏳ একটু বেশি request হয়েছে। ৩০ সেকেন্ড পর আবার try করো!',
-                        source: 'rate_limit',
-                    });
-                }
-                console.error('Gemini Error:', err);
-                // Fall through to KB fallback
+            const msgParts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
+            if (body.image) {
+                const mimeType = body.imageType || 'image/jpeg';
+                const base64Data = body.image.replace(/^data:[^;]+;base64,/, '');
+                msgParts.push({ inlineData: { mimeType, data: base64Data } });
             }
+            msgParts.push({ text: textPart });
+
+            const genConfig = { temperature: kb ? 0.3 : 0.7, topK: 40, topP: 0.95, maxOutputTokens: 1500 };
+            const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash'];
+
+            for (const modelName of MODELS) {
+                try {
+                    const genAI = new GoogleGenerativeAI(apiKey);
+                    const model = genAI.getGenerativeModel({ model: modelName, systemInstruction: SYSTEM_PROMPT });
+                    const chat = model.startChat({ history: body.history || [], generationConfig: genConfig });
+
+                    // 10-second timeout per model attempt
+                    const timeoutPromise = new Promise<never>((_, reject) =>
+                        setTimeout(() => reject(new Error('TIMEOUT')), 10000)
+                    );
+                    const result = await Promise.race([chat.sendMessage(msgParts), timeoutPromise]);
+                    const text = (result as Awaited<ReturnType<typeof chat.sendMessage>>).response.text();
+                    return NextResponse.json({ text, source: modelName });
+
+                } catch (err: unknown) {
+                    const msg = err instanceof Error ? err.message : String(err);
+                    if (msg.includes('429') || msg.includes('quota') || msg.includes('Too Many')) {
+                        return NextResponse.json({
+                            text: '⏳ একটু বেশি request হয়েছে। ৩০ সেকেন্ড পর আবার try করো!',
+                            source: 'rate_limit',
+                        });
+                    }
+                    // 503 / timeout / fetch failed → try next model
+                    console.error(`${modelName} error:`, msg.slice(0, 100));
+                }
+            }
+            // All models failed — fall through to KB/generic fallback
         }
 
         // 3. Gemini unavailable — use KB data directly (always shows real answer)

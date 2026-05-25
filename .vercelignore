@@ -1,0 +1,8 @@
+# Cambridge listening audio — app uses /api/audio/stream with external fallback
+public/audio/*.mp3
+
+# Headway 4B + Oxford — served from Cloudflare R2 CDN
+public/audio/headway4B
+public/audio/Oxford_Audios
+public/audio/16-20
+public/audio/_needs-review

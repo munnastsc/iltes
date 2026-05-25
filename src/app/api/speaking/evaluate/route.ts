@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { findSpeakingTopicById } from '../../../../lib/speakingTopics';
 
 type BandBreakdown = {
@@ -46,8 +46,8 @@ function buildFallbackEvaluation(transcript: string): SpeakingEvaluation {
             'Topic related vocabulary ব্যবহার করার চেষ্টা আছে।',
         ],
         mistakes: [
-            'কিছু sentence structure ছোট ও repetitive হয়েছে।',
-            'উত্তরে concrete example আরও বেশি দিলে score বাড়বে।',
+            'কিছু sentence structure ছোট ও repetitive হয়েছে।',
+            'উত্তরে concrete example আরও বেশি দিলে score বাড়বে।',
         ],
         improvementPlan: [
             'Answer framework ব্যবহার করুন: Main idea -> Reason -> Example -> Result.',
@@ -61,7 +61,9 @@ function buildFallbackEvaluation(transcript: string): SpeakingEvaluation {
 
 function parseAiJson(content: string): Omit<SpeakingEvaluation, 'transcript'> | null {
     try {
-        const parsed = JSON.parse(content);
+        const cleaned = content.trim()
+            .replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/i, '').trim();
+        const parsed = JSON.parse(cleaned);
         return {
             estimatedBand: {
                 fluencyAndCoherence: safeNumber(parsed?.estimatedBand?.fluencyAndCoherence, 5.5),
@@ -93,21 +95,23 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Invalid topic.' }, { status: 400 });
         }
 
+        const apiKey = process.env.GEMINI_API_KEY;
         let transcript = manualTranscript;
 
-        if (!transcript && audioFile instanceof File) {
-            if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'sk-your-openai-api-key-here') {
-                return NextResponse.json({ error: 'OPENAI_API_KEY missing for audio scoring.' }, { status: 400 });
-            }
-
+        // Transcribe audio via Gemini multimodal
+        if (!transcript && audioFile instanceof File && apiKey) {
             try {
-                const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-                const transcription = await openai.audio.transcriptions.create({
-                    file: audioFile,
-                    model: 'whisper-1',
-                    language: 'en',
-                });
-                transcript = transcription.text?.trim() || '';
+                const audioBytes = await audioFile.arrayBuffer();
+                const base64Audio = Buffer.from(audioBytes).toString('base64');
+                const mimeType = (audioFile.type || 'audio/webm') as string;
+
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+                const result = await model.generateContent([
+                    { inlineData: { mimeType, data: base64Audio } },
+                    { text: 'Transcribe exactly what is spoken in this audio. Return only the transcription text, nothing else.' },
+                ]);
+                transcript = result.response.text().trim();
             } catch {
                 return NextResponse.json({ error: 'Audio transcription failed.' }, { status: 500 });
             }
@@ -117,13 +121,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Provide audio or transcript.' }, { status: 400 });
         }
 
-        if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'sk-your-openai-api-key-here') {
+        if (!apiKey) {
             return NextResponse.json(buildFallbackEvaluation(transcript));
         }
 
-        const prompt = `
-You are an IELTS Speaking examiner.
-Return ONLY valid JSON. No markdown, no explanations.
+        const evalPrompt = `You are an IELTS Speaking examiner. Return ONLY valid JSON, no markdown.
 
 User context:
 - Topic: ${topic.title}
@@ -147,37 +149,29 @@ Required JSON shape:
   "mistakes": ["Bangla bullet with example/fix", "..."],
   "improvementPlan": ["Actionable Bangla step", "..."],
   "modelResponse": "Band 8 style sample answer in English (120-170 words)"
-}
-`;
+}`;
 
-        try {
-            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-            const completion = await openai.chat.completions.create({
-                model: 'gpt-4o-mini',
-                temperature: 0.3,
-                messages: [
-                    {
-                        role: 'system',
-                        content:
-                            'You are a strict IELTS speaking examiner and coach. Keep feedback concise but precise. বাংলা feedback দিন, কিন্তু sample উত্তর English-এ দিন।',
-                    },
-                    { role: 'user', content: prompt },
-                ],
-            });
-
-            const raw = completion.choices[0]?.message?.content?.trim() || '';
-            const parsed = parseAiJson(raw);
-            if (!parsed) {
-                return NextResponse.json(buildFallbackEvaluation(transcript));
+        const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash'];
+        for (const modelName of MODELS) {
+            try {
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({
+                    model: modelName,
+                    generationConfig: { temperature: 0.3, maxOutputTokens: 1200 },
+                });
+                const result = await model.generateContent(evalPrompt);
+                const raw = result.response.text();
+                const parsed = parseAiJson(raw);
+                if (!parsed) continue;
+                return NextResponse.json({ transcript, ...parsed });
+            } catch (e: unknown) {
+                const msg = e instanceof Error ? e.message : '';
+                if (msg.includes('429') || msg.includes('quota')) continue;
+                break;
             }
-
-            return NextResponse.json({
-                transcript,
-                ...parsed,
-            });
-        } catch {
-            return NextResponse.json(buildFallbackEvaluation(transcript));
         }
+
+        return NextResponse.json(buildFallbackEvaluation(transcript));
     } catch {
         return NextResponse.json({ error: 'Invalid request payload.' }, { status: 400 });
     }

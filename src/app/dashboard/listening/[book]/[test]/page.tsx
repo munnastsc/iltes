@@ -230,13 +230,13 @@ function McqGroup({ group, answers, submitted, onChange }: {
                             {q.q}
                         </p>
                         <div className="space-y-1.5 ml-5">
-                            {(q.opts || []).map(opt => {
+                            {(q.opts || []).map((opt, optIdx) => {
                                 const letter = opt.charAt(0);
                                 const isSelected = sel === letter;
                                 const isCorrect = submitted && letter === (q.ans as string);
                                 const isWrong = submitted && isSelected && !isCorrect;
                                 return (
-                                    <label key={letter} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 cursor-pointer transition text-sm select-none ${
+                                    <label key={optIdx} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 cursor-pointer transition text-sm select-none ${
                                         isCorrect ? 'bg-emerald-50 border border-emerald-300 text-emerald-800' :
                                         isWrong ? 'bg-red-50 border border-red-300 text-red-700' :
                                         isSelected ? 'bg-blue-50 border border-blue-300 text-blue-900' :
@@ -294,7 +294,7 @@ function MultiGroup({ group, answer, submitted, onChange }: {
                 {group.qs[0]?.q && !group.qs[0].q.startsWith('(same') ? group.qs[0].q : group.instruction}
             </p>
             <div className="space-y-1.5 ml-5">
-                {options.map(opt => {
+                {options.map((opt, optIdx) => {
                     const letter = opt.charAt(0);
                     const isSelected = sel.includes(letter);
                     const isRequired = required.includes(letter);
@@ -302,7 +302,7 @@ function MultiGroup({ group, answer, submitted, onChange }: {
                     const isMissed = submitted && !isSelected && isRequired;
                     const isWrong = submitted && isSelected && !isRequired;
                     return (
-                        <label key={letter} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 cursor-pointer transition text-sm select-none ${
+                        <label key={optIdx} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 cursor-pointer transition text-sm select-none ${
                             isCorrectSel ? 'bg-emerald-50 border border-emerald-300 text-emerald-800' :
                             isMissed ? 'bg-amber-50 border border-amber-300 text-amber-700' :
                             isWrong ? 'bg-red-50 border border-red-300 text-red-700' :
@@ -379,9 +379,9 @@ function MatchGroup({ group, answers, submitted, onChange }: {
                                 }`}
                             >
                                 <option value="">—</option>
-                                {pool.map(item => {
+                                {pool.map((item, poolIdx) => {
                                     const letter = item.charAt(0);
-                                    return <option key={letter} value={letter}>{letter}</option>;
+                                    return <option key={poolIdx} value={letter}>{letter}</option>;
                                 })}
                             </select>
                             {bad && sel && (

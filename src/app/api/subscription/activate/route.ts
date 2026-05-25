@@ -1,37 +1,48 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
-import { findLocalPaymentByTransaction } from '../../../../lib/localStore';
 
 type Body = {
     email?: string;
-    transactionId?: string;
 };
 
 export async function POST(request: Request) {
     try {
         const body = (await request.json()) as Body;
         const email = body.email?.trim().toLowerCase();
-        const transactionId = body.transactionId?.trim().toUpperCase();
 
-        if (!email || !transactionId) {
-            return NextResponse.json({ error: 'email and transactionId are required.' }, { status: 400 });
+        if (!email) {
+            return NextResponse.json({ error: 'Email দাও।' }, { status: 400 });
         }
 
-        let approved = false;
+        let plan = 'spoken';
+        let found = false;
 
         try {
-            const requestRow = await prisma.paymentRequest.findUnique({ where: { transactionId } });
-            approved = Boolean(requestRow && requestRow.email === email && requestRow.status === 'APPROVED');
+            // Find most recent APPROVED payment for this email
+            const row = await prisma.paymentRequest.findFirst({
+                where: { email, status: 'APPROVED' },
+                orderBy: { updatedAt: 'desc' },
+            });
+
+            if (row) {
+                found = true;
+                plan = row.plan || 'spoken';
+            }
         } catch {
-            const local = await findLocalPaymentByTransaction(transactionId);
-            approved = Boolean(local && local.email === email && local.status === 'APPROVED');
+            return NextResponse.json({ error: 'Database error।' }, { status: 500 });
         }
 
-        if (!approved) {
-            return NextResponse.json({ error: 'Payment is not approved yet.' }, { status: 403 });
+        if (!found) {
+            return NextResponse.json({ error: 'এই email এ কোনো approved payment নেই। Admin approval এর জন্য অপেক্ষা করো।' }, { status: 403 });
         }
 
-        const response = NextResponse.json({ success: true, status: 'active' });
+        const response = NextResponse.json({ success: true, plan });
+        response.cookies.set('subscription_plan', plan, {
+            httpOnly: false,
+            path: '/',
+            maxAge: 60 * 60 * 24 * 30,
+            sameSite: 'lax',
+        });
         response.cookies.set('is_subscribed', 'true', {
             httpOnly: false,
             path: '/',
@@ -40,6 +51,6 @@ export async function POST(request: Request) {
         });
         return response;
     } catch {
-        return NextResponse.json({ error: 'Activation failed.' }, { status: 500 });
+        return NextResponse.json({ error: 'Activation failed।' }, { status: 500 });
     }
 }

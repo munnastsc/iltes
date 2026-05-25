@@ -12,6 +12,7 @@ model User {
   name             String?
   email            String         @unique
   isSubscribed     Boolean        @default(false)
+  plan             String?
   subscriptionEnd  DateTime?
   chatHistory      ChatHistory[]
   progress         Progress[]
@@ -23,7 +24,8 @@ model PaymentRequest {
   email         String
   transactionId String   @unique
   amount        Float
-  status        String   @default("PENDING") 
+  plan          String?
+  status        String   @default("PENDING")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

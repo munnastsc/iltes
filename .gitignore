@@ -46,3 +46,5 @@ npm
 dev-run.log
 add-16-20.js
 Sidebar.tsx
+
+.vercel

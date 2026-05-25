@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 type Body = {
     taskType?: 'task1' | 'task2';
     prompt?: string;
     response?: string;
     targetBand?: number;
+    image?: string;
+    imageType?: string;
 };
 
 function safeBand(value: unknown, fallback: number) {
@@ -58,18 +60,19 @@ export async function POST(request: Request) {
         const prompt = String(body.prompt || '').trim();
         const response = String(body.response || '').trim();
         const targetBand = safeBand(body.targetBand, 7);
+        const imageData = body.image ? body.image.replace(/^data:[^;]+;base64,/, '') : null;
+        const imageMime = body.imageType || 'image/jpeg';
 
         if (!prompt || !response) {
             return NextResponse.json({ error: 'prompt and response are required.' }, { status: 400 });
         }
 
-        if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'sk-your-openai-api-key-here') {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
             return NextResponse.json(fallbackEvaluation(taskType, prompt, response));
         }
 
-        const userPrompt = `
-You are a strict IELTS Writing examiner.
-Return ONLY valid JSON.
+        const userPrompt = `You are a strict IELTS Writing examiner. Return ONLY valid JSON, no markdown, no explanation.
 
 Task type: ${taskType}
 Target band: ${targetBand}
@@ -79,59 +82,66 @@ Student response: ${response}
 Required JSON shape:
 {
   "wordCount": number,
-  "estimatedBand": number,
+  "estimatedBand": number (0-9, one decimal),
   "criteria": {
     "taskResponse": number,
     "coherenceAndCohesion": number,
     "lexicalResource": number,
     "grammaticalRangeAndAccuracy": number
   },
-  "strengths": ["short bullet", "..."],
-  "mistakes": ["short bullet with fix", "..."],
-  "improvementPlan": ["actionable step", "..."],
-  "improvedSample": "better model paragraph/mini essay aligned with prompt"
+  "strengths": ["short bullet in Bangla", "..."],
+  "mistakes": ["short bullet with fix in Bangla", "..."],
+  "improvementPlan": ["actionable step in Bangla", "..."],
+  "improvedSample": "better model paragraph in English aligned with prompt"
 }
-`;
 
-        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-        const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            temperature: 0.2,
-            messages: [
-                {
-                    role: 'system',
-                    content:
-                        'You are an IELTS Writing examiner. Be accurate and concise. Provide feedback in simple English.',
-                },
-                { role: 'user', content: userPrompt },
-            ],
-        });
+strengths, mistakes, improvementPlan — write in Bangla. improvedSample — write in English.`;
 
-        const raw = completion.choices[0]?.message?.content?.trim() || '';
-        let parsed: any = null;
-        try {
-            parsed = JSON.parse(raw);
-        } catch {
-            return NextResponse.json(fallbackEvaluation(taskType, prompt, response));
+        const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash'];
+        for (const modelName of MODELS) {
+            try {
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({
+                    model: modelName,
+                    generationConfig: { temperature: 0.2, maxOutputTokens: 1500 },
+                });
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const parts: any[] = imageData
+                    ? [{ inlineData: { mimeType: imageMime, data: imageData } }, { text: userPrompt }]
+                    : [{ text: userPrompt }];
+                const result = await model.generateContent(parts);
+                const raw = result.response.text().trim()
+                    .replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/i, '').trim();
+
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                let parsed: any = null;
+                try { parsed = JSON.parse(raw); } catch { continue; }
+
+                return NextResponse.json({
+                    taskType,
+                    prompt,
+                    wordCount: Number(parsed?.wordCount) || response.split(/\s+/).length,
+                    estimatedBand: safeBand(parsed?.estimatedBand, 6),
+                    criteria: {
+                        taskResponse: safeBand(parsed?.criteria?.taskResponse, 6),
+                        coherenceAndCohesion: safeBand(parsed?.criteria?.coherenceAndCohesion, 6),
+                        lexicalResource: safeBand(parsed?.criteria?.lexicalResource, 6),
+                        grammaticalRangeAndAccuracy: safeBand(parsed?.criteria?.grammaticalRangeAndAccuracy, 6),
+                    },
+                    strengths: Array.isArray(parsed?.strengths) ? parsed.strengths.slice(0, 6) : [],
+                    mistakes: Array.isArray(parsed?.mistakes) ? parsed.mistakes.slice(0, 6) : [],
+                    improvementPlan: Array.isArray(parsed?.improvementPlan) ? parsed.improvementPlan.slice(0, 6) : [],
+                    improvedSample: typeof parsed?.improvedSample === 'string' ? parsed.improvedSample : '',
+                    source: modelName,
+                });
+            } catch (e: unknown) {
+                const msg = e instanceof Error ? e.message : '';
+                if (msg.includes('429') || msg.includes('quota')) continue;
+                break;
+            }
         }
 
-        return NextResponse.json({
-            taskType,
-            prompt,
-            wordCount: Number(parsed?.wordCount) || response.split(/\s+/).length,
-            estimatedBand: safeBand(parsed?.estimatedBand, 6),
-            criteria: {
-                taskResponse: safeBand(parsed?.criteria?.taskResponse, 6),
-                coherenceAndCohesion: safeBand(parsed?.criteria?.coherenceAndCohesion, 6),
-                lexicalResource: safeBand(parsed?.criteria?.lexicalResource, 6),
-                grammaticalRangeAndAccuracy: safeBand(parsed?.criteria?.grammaticalRangeAndAccuracy, 6),
-            },
-            strengths: Array.isArray(parsed?.strengths) ? parsed.strengths.slice(0, 6) : [],
-            mistakes: Array.isArray(parsed?.mistakes) ? parsed.mistakes.slice(0, 6) : [],
-            improvementPlan: Array.isArray(parsed?.improvementPlan) ? parsed.improvementPlan.slice(0, 6) : [],
-            improvedSample: typeof parsed?.improvedSample === 'string' ? parsed.improvedSample : '',
-            source: 'openai',
-        });
+        return NextResponse.json(fallbackEvaluation(taskType, prompt, response));
     } catch {
         return NextResponse.json({ error: 'Invalid request payload.' }, { status: 400 });
     }
